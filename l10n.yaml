@@ -1,0 +1,9 @@
+arb-dir: lib/core/base/localization/l10n
+template-arb-file: app_en.arb
+output-localization-file: app_localizations.dart
+output-dir: lib/core/base/localization/l10n
+# synthetic-package: false
+nullable-getter: false
+untranslated-messages-file: lib/core/base/localization/l10n/un_translated_localizatons.txt
+
+# flutter gen-l10n

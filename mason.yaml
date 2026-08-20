@@ -1,0 +1,31 @@
+bricks:
+  feature:
+    path: bricks/feature
+  
+
+  # feature:
+  #   git:
+  #     url: https://github.com/hassanMetwally/flutter_clean_arch_feature.git
+  #     path: bricks/feature
+
+
+
+# to Activate from https://pub.dev
+# dart pub global activate mason_cli
+
+# Install your first brick
+# mason add feature
+
+# To get all bricks registered in mason.yaml via:
+# mason get
+
+# Then you can use mason make to generate your first file:
+# mason make feature
+
+
+
+
+
+##### To get the right path of the brick #####
+# 1- remove mason-lock.json and .mason
+# 2- run mason get 

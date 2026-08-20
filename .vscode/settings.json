@@ -1,0 +1,22 @@
+{
+    "editor.defaultFormatter": "Dart-Code.dart-code",
+    "notebook.defaultFormatter": "Dart-Code.dart-code",
+    "zenMode.hideStatusBar": false,
+    "editor.suggest.showStatusBar": false,
+    "debug.enableStatusBarColor": false,
+    "workbench.sideBar.location": "left",
+    "workbench.activityBar.orientation": "vertical",
+    "workbench.preferredDarkColorTheme": "Dark Modern",
+    "workbench.preferredHighContrastColorTheme": "Dark Modern",
+    "workbench.preferredHighContrastLightColorTheme": "Dark Modern",
+    "workbench.preferredLightColorTheme": "Dark Modern",
+    "workbench.startupEditor": "newUntitledFile",
+    "window.zoomLevel": 1.2,
+    "files.autoSaveDelay": 600,
+    "files.autoSaveWhenNoErrors": true,
+    "dart.hotReloadOnSave": "all",
+    "dart.flutterHotReloadOnSave": "all",
+    "[json]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    }
+}
