@@ -153,7 +153,7 @@ class _MainCategoryHomeItem extends StatelessWidget {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () {
-        Navigator.of(context).pushNamed(AppRoutes.subCategoriesPage, arguments: SubCategoriesPage(categoryId: entity.id));
+        // Navigator.of(context).pushNamed(AppRoutes.subCategoriesPage, arguments: SubCategoriesPage(categoryId: entity.id));
       },
       child: Column(
         children: [

@@ -104,6 +104,8 @@ import '../../src/chats_inbox/domain/usecases/get_chats_inbox_usecase.dart'
 import '../../src/chats_inbox/presentation/chats_inbox_cubit.dart' as _i659;
 import '../../src/common/data/datasources/common_datasource.dart' as _i1065;
 import '../../src/common/data/datasources/menu_common_datasource.dart' as _i758;
+import '../../src/common/data/datasources/menu_common_mock_datasource.dart'
+    as _i896;
 import '../../src/common/data/repository/common_repository_imp.dart' as _i867;
 import '../../src/common/data/repository/menu_common_repository_imp.dart'
     as _i294;
@@ -247,6 +249,9 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i203.LanguageCacheDateSourceImp(),
     );
     gh.factory<_i984.ThemeRepository>(() => _i715.ThemeRepositoryImp());
+    gh.factory<_i758.MenuCommonDatasource>(
+      () => _i896.MenuCommonMockDatasource(),
+    );
     gh.factory<_i1069.StatisticsDatasource>(
       () => _i214.StatisticsMockDatasource(),
     );
@@ -269,9 +274,6 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i226.CategoriesDatasource>(
       () => _i152.CategoriesMockDatasource(),
-    );
-    gh.factory<_i758.MenuCommonDatasource>(
-      () => _i758.MenuCommonDatasourceImpl(gh<_i351.DioHelper>()),
     );
     gh.factory<_i690.CartDatasource>(
       () => _i690.CartDatasourceImpl(gh<_i351.DioHelper>()),
