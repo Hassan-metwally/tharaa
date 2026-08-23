@@ -69,16 +69,19 @@ class AppLocalizationsAr extends AppLocalizations {
   String get friday => 'الجمعة';
 
   @override
-  String get pickImageFromGallery => 'اختر صورة من المعرض';
+  String get pickImageFromGallery => 'معرض الصور';
 
   @override
-  String get pickImageFromCamera => 'اختر صورة من الكاميرا';
+  String get pickImageFromCamera => 'الكاميرا';
 
   @override
   String get pickVideoFromCamera => 'اختر فيديو من الكاميرا';
 
   @override
   String get pickVideoFromGallery => 'اختر فيديو من المعرض';
+
+  @override
+  String get deleteImage => 'حذف الصورة';
 
   @override
   String get cantOpenLink => 'لا يمكن فتح الرابط، تأكد من صحته.';
@@ -88,6 +91,15 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get changeLanguage => 'تغيير اللغة';
+
+  @override
+  String get changeLanguageSubtitle => 'اختر اللغة التي ترغب في استخدامها داخل التطبيق.';
+
+  @override
+  String get arabicLanguage => 'اللغة العربية';
+
+  @override
+  String get englishLanguage => 'اللغة الإنجليزية';
 
   @override
   String get guestHeaderMessage => 'الرجاء تسجيل الدخول اولاً';
@@ -162,7 +174,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get next => 'التالي';
 
   @override
-  String get skip => 'تخطِ';
+  String get skip => 'تخطي';
 
   @override
   String get save => 'حفظ';
@@ -201,13 +213,16 @@ class AppLocalizationsAr extends AppLocalizations {
   String get retry => 'إعادة المحاولة';
 
   @override
-  String get startNow => 'ابدأ الأن';
+  String get startNow => 'ابدأ الآن';
 
   @override
   String get apply => 'تطبيق';
 
   @override
   String get back => 'رجوع';
+
+  @override
+  String get goBack => 'تراجع';
 
   @override
   String get agree => 'موافق';
@@ -217,6 +232,12 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get edit => 'تعديل';
+
+  @override
+  String get editPhoto => 'تعديل الصورة';
+
+  @override
+  String get editProfilePicture => 'تعديل الصورة الشخصية';
 
   @override
   String get open => 'مفتوح';
@@ -258,7 +279,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get agree2 => 'موافقة';
 
   @override
-  String get saveEdites => 'حفظ التعديلات';
+  String get saveEdites => 'حفظ التغييرات';
 
   @override
   String get filter => 'تصفية';
@@ -516,7 +537,28 @@ class AppLocalizationsAr extends AppLocalizations {
   String get loginWelcomeMessage => 'أهلا بعودتك فى تطبيق';
 
   @override
+  String get loginHeadline => 'جاهز تملّي سلتك؟ 🛒';
+
+  @override
+  String get loginSubtitle => 'سجل دخولك وخلك قريب من أجود المنتجات الطازجة، وكل اللي تحتاجه لباب بيتك';
+
+  @override
+  String get phoneNumberExampleHint => 'مثال : 0512345687';
+
+  @override
+  String get phoneNumberHelperText => 'أدخل رقم الجوال المكون من 9 أرقام ويبدأ بـ 05';
+
+  @override
   String get registerWelcomeMessage => 'أهلًا بك فى تطبيق';
+
+  @override
+  String get registerHeadline => 'خلّنا نبدأ! ✨';
+
+  @override
+  String get registerSubtitle => 'أنشئ حسابك الآن واستمتع بتجربة تسوق أسهل وأسرع، واكتشف المنتجات والعروض المميزة.';
+
+  @override
+  String get fullName => 'الاسم كامل';
 
   @override
   String get phoneNumber => 'رقم الجوال';
@@ -540,13 +582,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String get createAccount => 'سجل الأن';
 
   @override
-  String get createNewAccount => 'تسجيل حساب جديد';
+  String get createNewAccount => 'إنشاء حساب جديد';
 
   @override
   String get name => 'الإسم';
 
   @override
-  String get nameHint => 'ادخل اسمك';
+  String get nameHint => 'مثال : محمد أحمد محمد';
 
   @override
   String get accountType => 'نوع الحساب';
@@ -564,7 +606,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get enterIdNumber => 'ادخل رقم الهوية';
 
   @override
-  String get register => 'تسجيل جديد';
+  String get register => 'تسجيل';
 
   @override
   String get alreadyHaveAccount => 'لديك حساب بالفعل؟';
@@ -573,7 +615,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String get agreeFor => 'الموافقة على';
 
   @override
-  String get termsAndConditions => 'االشروط والأحكام';
+  String get termsAndConditions => 'الشروط والأحكام';
+
+  @override
+  String get otpHeadline => 'تأكدنا إنك أنت! 🔐';
+
+  @override
+  String get otpSubtitle => 'أدخل رمز التحقق المرسل على جوالك ونكمل لك تسجيل الدخول بكل سهولة.';
 
   @override
   String get otpHeaderMessage => 'ادخل كود التفعيل المرسل إلى رقم';
@@ -585,7 +633,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get resendCode => 'إعادة الإرسال';
 
   @override
-  String get resendCodeMessage => 'لم يتم إرسال كود التفعيل ؟';
+  String get resendCodeMessage => 'لم يتم إرسال الكود؟';
 
   @override
   String get resendVersionCodeOtp => 'إعادة إرسال رمز التحقق';
@@ -642,13 +690,22 @@ class AppLocalizationsAr extends AppLocalizations {
   String get logOut => 'تسجيل الخروج';
 
   @override
+  String get yesLogOut => 'نعم، تسجيل الخروج';
+
+  @override
+  String get noGoBack => 'لا، تراجع';
+
+  @override
   String get deleteAccount => 'حذف الحساب';
 
   @override
-  String get logoutMessage => 'هل أنت متأكد من##تسجيل الخروج##من التطبيق؟';
+  String get yesDeleteAccount => 'نعم، حذف الحساب';
 
   @override
-  String get deleteAccountMessage => 'هل أنت متأكد من انك تريد##حذف حسابك؟';
+  String get logoutMessage => 'سيتم تسجيل خروجك من حسابك، ويمكنك تسجيل الدخول مرة أخرى في أي وقت.';
+
+  @override
+  String get deleteAccountMessage => 'سيتم حذف حسابك وبياناتك بشكل نهائي، ولن تتمكن من استعادتها بعد إتمام العملية.';
 
   @override
   String get deleteAccountSuccessMessage => 'تم حذف حسابك بنجاح';
@@ -660,13 +717,16 @@ class AppLocalizationsAr extends AppLocalizations {
   String get enterEmailAddress => 'ادخل بريدك الإلكتروني';
 
   @override
+  String get emailExampleHint => 'مثال : mohamed@example.com';
+
+  @override
   String get enterYourPhoneNumber => 'ادخل رقم الجوال##الخاص بك';
 
   @override
   String get verifyCode => 'التحقق من الكود';
 
   @override
-  String get continueAsGuest => 'تخطِ الدخول كزائر';
+  String get continueAsGuest => 'تخطي و الدخول كزائر';
 
   @override
   String get commercialRegistrationNumber => 'رقم السجل التجاري';
@@ -708,7 +768,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get enterProviderName => 'ادخل اسم متجرك';
 
   @override
-  String get deleteAccountWarrningMessage => 'في حالة حذف الحساب سيتم ## حذف البيانات نهائيا ## من التطبيق.';
+  String get deleteAccountWarrningMessage => 'في حالة حذف الحساب سيتم حذف البيانات نهائيا من التطبيق.';
 
   @override
   String get sendContactUsMessageSuccess => 'تم ارسال رسالتك للادارة بنحاج';
@@ -718,6 +778,54 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get sendMessage => 'إرسال رسالة';
+
+  @override
+  String get sendTheMessage => 'إرسال الرسالة';
+
+  @override
+  String get contactInformation => 'معلومات التواصل';
+
+  @override
+  String get contactNumbers => 'أرقام التواصل';
+
+  @override
+  String get contactNumber => 'رقم التواصل';
+
+  @override
+  String get callNow => 'اتصل الآن';
+
+  @override
+  String get emailNow => 'أرسل الآن';
+
+  @override
+  String get writeYourMessage => 'اكتب رسالتك';
+
+  @override
+  String get socialX => 'اكس';
+
+  @override
+  String get socialInstagram => 'انستجرام';
+
+  @override
+  String get socialFacebook => 'فيس بوك';
+
+  @override
+  String get socialWhatsApp => 'واتساب';
+
+  @override
+  String get socialTikTok => 'تيك توك';
+
+  @override
+  String get socialSnapchat => 'سناب شات';
+
+  @override
+  String get socialYoutube => 'يوتيوب';
+
+  @override
+  String get socialGooglePlay => 'جوجل بلاي';
+
+  @override
+  String get socialAppStore => 'آب ستور';
 
   @override
   String get messageType => 'نوع الرسالة';
@@ -816,7 +924,43 @@ class AppLocalizationsAr extends AppLocalizations {
   String get personalProfileUpdateSuccessMessage => 'تم تحديث الملف الشخصي بنجاح';
 
   @override
+  String get changePhoneNumber => 'تغيير رقم الجوال';
+
+  @override
+  String get newPhoneNumber => 'رقم الجوال الجديد';
+
+  @override
   String get myAddress => 'عناويني';
+
+  @override
+  String get account => 'الحساب';
+
+  @override
+  String get supportAndInfo => 'الدعم و المعلومات';
+
+  @override
+  String get policies => 'السياسات';
+
+  @override
+  String get preferences => 'التفضيلات';
+
+  @override
+  String get accountManagement => 'إدارة الحساب';
+
+  @override
+  String get discountCoupons => 'كوبونات الخصم';
+
+  @override
+  String get whoWeAre => 'من نحن';
+
+  @override
+  String get newOrders => 'الطلبات الجديدة';
+
+  @override
+  String get ordersInProgress => 'الطلبات قيد التنفيذ';
+
+  @override
+  String get finishedOrders => 'الطلبات المنتهية';
 
   @override
   String get providerOnBoardingTitle1 => 'متجرك الرقمي وسيلة وصولك لآلاف العملاء!';
@@ -837,22 +981,22 @@ class AppLocalizationsAr extends AppLocalizations {
   String get providerOnBoardingSubTitle3 => 'خدمات مضمونة بأحسن سعر, جودة عالية وأسرع توصيل';
 
   @override
-  String get userOnBoardingTitle1 => 'راحتك تبدأ من خدمة توصل لحد بابك!';
+  String get userOnBoardingTitle1 => 'منتجات غذائية بأسعار مناسبة للجميع';
 
   @override
-  String get userOnBoardingSubTitle1 => 'خدمة سباكة، كهرباء، دهان، نجارة… كله في تطبيق واحد أسرع من ما تتخيل في أي وقت وأي مكان.';
+  String get userOnBoardingSubTitle1 => 'احصل على منتجات غذائية بأسعار مناسبة للجميع، كل يوم.';
 
   @override
-  String get userOnBoardingTitle2 => 'كل الحرفيين في جيبك!';
+  String get userOnBoardingTitle2 => 'أشهى الفواكه الطازجة في مكان واحد';
 
   @override
-  String get userOnBoardingSubTitle2 => 'حرفيين موثوقين,شغل مضمون,خدمات منزلية في أي وقت وأي مكان.';
+  String get userOnBoardingSubTitle2 => 'استمتع بتشكيلة متنوعة من الفواكه الطازجة، بجودة عالية وطعم لا يقاوم.';
 
   @override
-  String get userOnBoardingTitle3 => 'عرض سعر يناسبك وخدمة ترضيك!';
+  String get userOnBoardingTitle3 => 'خضروات طازجة يوميًا بأسعار مناسبة';
 
   @override
-  String get userOnBoardingSubTitle3 => 'اختر الخدمة… واحصل على أفضل سعر وخدمة ترضيك قبل ما تبدأ العمل.';
+  String get userOnBoardingSubTitle3 => 'اختار من تشكيلة واسعة من الخضروات الطازجة يوميًا، بجودة مضمونة.';
 
   @override
   String get wallet => 'المحفظة';
@@ -1119,6 +1263,17 @@ class AppLocalizationsAr extends AppLocalizations {
   String get mostRequestedServices => 'الخدمات الأكثر طلباً';
 
   @override
+  String get mostRequestedProducts => 'المنتجات الأكثر طلباً';
+
+  @override
+  String get offersList => 'قائمة العروض';
+
+  @override
+  String discountPercent(int percent) {
+    return 'خصم $percent%';
+  }
+
+  @override
   String get viewMore => 'عرض المزيد';
 
   @override
@@ -1132,6 +1287,9 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get welcomeSubMessage => 'بإمكانك الأستمتاع بخدمات التطبيق عند تسجيل الدخول';
+
+  @override
+  String get homeAppBarSlogan => 'طازج، لذيذ، ويوصلك لبابك! 🍎';
 
   @override
   String get highestRated => 'الأعلي تقييم';

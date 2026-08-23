@@ -10,14 +10,9 @@ class _UseCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 12.0),
-      child: LoggedUserCheckerWidget(
-        loggedBuilder: (user) {
-          return _LoggedClientCard(user: user);
-        },
-        guestWidget: const _GuestCard(),
-      ),
+    return LoggedUserCheckerWidget(
+      loggedBuilder: (user) => _LoggedClientCard(user: user),
+      guestWidget: const _GuestCard(),
     );
   }
 }
@@ -30,79 +25,12 @@ class _LoggedClientCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimatedSlideWithOpacityWidget(
-      child: Container(
-        padding: const EdgeInsets.all(12),
-        decoration: BoxDecoration(color: AppColors.cardColor, borderRadius: BorderRadius.circular(12)),
-        child: Row(
-          spacing: 10,
+      child: _MoreUserCardShell(
+        child: Column(
           children: [
-            () {
-              if (user.avatar.isNotEmpty) {
-                return AppImage.circle(
-                  path: user.avatar,
-                  dimension: 54,
-                  border: Border.all(color: AppColors.primary50),
-                  placholderWidget: AppSvgIcon(path: AppIcons.userOutline, size: 24),
-                );
-              } else {
-                return Container(
-                  padding: const EdgeInsets.all(6),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(color: AppColors.primary50),
-                  ),
-                  child: AppSvgIcon(path: AppIcons.userOutline, size: 35),
-                );
-              }
-            }(),
-            Expanded(
-              child: Column(
-                spacing: 2,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    user.name,
-                    style: TextStyles.medium16.copyWith(color: AppColors.black900),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.end,
-                  ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    spacing: 4,
-                    children: [
-                      AppSvgIcon(path: ""),
-                      Flexible(
-                        child: Text(
-                          _formatSaudiMobile(user.mobile),
-                          textDirection: TextDirection.ltr,
-                          style: TextStyles.medium14.copyWith(color: AppColors.grey, height: 1.6),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            OutlinedButton(
-              onPressed: () {
-                Navigator.of(context).pushNamed(AppRoutes.clientPersonalProfile);
-              },
-              style: OutlinedButton.styleFrom(
-                minimumSize: const Size(80, 40),
-                shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(12))),
-              ),
-              child: Row(
-                spacing: 4,
-                children: [
-                  AppSvgIcon(path: ""),
-                  Text(appLocalizer.edit, style: TextStyles.regular12.copyWith(color: AppColors.primary)),
-                ],
-              ),
-            ),
+            _UserCardIdentity(name: user.name, mobile: _formatSaudiMobile(user.mobile), avatar: user.avatar),
+            const SizedBox(height: Dimensions.p4),
+            const _UserCardStatistics(),
           ],
         ),
       ),
@@ -120,45 +48,233 @@ class _GuestCard extends StatelessWidget {
         onTap: () {
           AppAuthenticationBloc.of(context).add(const LoggedOutEvent());
         },
-        child: Container(
-          padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(color: AppColors.cardColor, borderRadius: BorderRadius.circular(12), boxShadow: [AppColors.boxShadow]),
-          child: Row(
-            children: [
-              AppSvgIcon(path: AppIcons.userOutline, size: 50),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Column(
-                  spacing: 4,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(appLocalizer.userName, style: TextStyles.light14),
-                    Text(appLocalizer.phoneNumber, style: TextStyles.light12.copyWith(color: AppColors.primary800)),
-                  ],
+        child: _MoreUserCardShell(
+          child: _UserCardIdentity(name: appLocalizer.userName, mobile: appLocalizer.phoneNumber, avatar: ''),
+        ),
+      ),
+    );
+  }
+}
+
+class _MoreUserCardShell extends StatelessWidget {
+  const _MoreUserCardShell({required this.child});
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(Dimensions.r16),
+      child: ColoredBox(
+        color: AppColors.black900,
+        child: Stack(
+          children: [
+            Positioned.fill(
+              child: IgnorePointer(
+                child: Opacity(
+                  opacity: 0.05,
+                  child: Transform.rotate(
+                    angle: math.pi,
+                    child: Center(
+                      child: AppSvgIcon(path: AppImages.moreUserCardPattern, fit: BoxFit.cover),
+                    ),
+                  ),
                 ),
               ),
-              OutlinedButton(
-                onPressed: () {},
+            ),
+            Padding(padding: const EdgeInsets.all(Dimensions.p16), child: child),
+          ],
+        ),
+      ),
+    );
+  }
+}
 
-                style: OutlinedButton.styleFrom(
-                  minimumSize: const Size(80, 40),
-                  shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(12))),
-                  side: BorderSide(color: AppColors.black200),
-                  overlayColor: AppColors.black200.withOpacityPercent(10),
-                ),
+class _UserCardIdentity extends StatelessWidget {
+  const _UserCardIdentity({required this.name, required this.mobile, required this.avatar});
 
-                child: Row(
-                  spacing: 4,
-                  children: [
-                    AppSvgIcon(path: "", color: AppColors.black200),
-                    Text(appLocalizer.edit, style: TextStyles.regular12.copyWith(color: AppColors.black200)),
-                  ],
+  final String name;
+  final String mobile;
+  final String avatar;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        if (avatar.isNotEmpty)
+          AppImage.circle(
+            path: avatar,
+            dimension: 68,
+            bgColor: Colors.white.withOpacityPercent(10),
+            placholderWidget: AppSvgIcon(path: AppIcons.userOutline, size: 32, color: Colors.white),
+          )
+        else
+          Container(
+            width: 68,
+            height: 68,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.white.withOpacityPercent(10),
+              border: Border.all(color: Colors.white.withOpacityPercent(20)),
+            ),
+            alignment: Alignment.center,
+            child: AppSvgIcon(path: AppIcons.userOutline, size: 32, color: Colors.white),
+          ),
+        const SizedBox(height: Dimensions.p4),
+        Text(
+          name,
+          style: TextStyles.semiBold14.copyWith(color: Colors.white, height: 1),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          textAlign: TextAlign.center,
+        ),
+        const SizedBox(height: 2),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Flexible(
+              child: Text(
+                mobile,
+                textDirection: TextDirection.ltr,
+                style: TextStyles.regular12.copyWith(color: Colors.white.withOpacityPercent(80), height: 1),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            const SizedBox(width: 2),
+            AppSvgIcon(path: AppIcons.mobile, size: Dimensions.ic16, color: Colors.white.withOpacityPercent(80)),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+class _UserCardStatistics extends StatelessWidget {
+  const _UserCardStatistics();
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(create: (context) => injector<ProviderStatisticsCubit>()..getStatistics(), child: const _UserCardStatisticsBody());
+  }
+}
+
+class _UserCardStatisticsBody extends StatefulWidget {
+  const _UserCardStatisticsBody();
+
+  @override
+  State<_UserCardStatisticsBody> createState() => _UserCardStatisticsBodyState();
+}
+
+class _UserCardStatisticsBodyState extends State<_UserCardStatisticsBody> {
+  final _statisticsSubscriptionObj = CompositeSubscription();
+  late final ProviderStatisticsCubit _cubit;
+
+  void _statisticsSubscriptionListener() {
+    _statisticsSubscriptionObj.add(
+      GetStatisticsSubscription.stream().listen((params) {
+        _cubit.getStatistics();
+      }),
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _cubit = context.read<ProviderStatisticsCubit>();
+    _statisticsSubscriptionListener();
+  }
+
+  @override
+  void dispose() {
+    _statisticsSubscriptionObj.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<ProviderStatisticsCubit, ProviderStatisticsState>(
+      builder: (context, state) {
+        if (state.getStatisticsState.isLoading) {
+          return const SizedBox(
+            height: 51,
+            child: Center(child: SpinKitLoadingWidget.small(color: Colors.white)),
+          );
+        }
+
+        if (state.getStatisticsState.isFailure) {
+          return SizedBox(
+            height: 51,
+            child: Center(
+              child: Bounce(
+                onTap: () => context.read<ProviderStatisticsCubit>().getStatistics(),
+                child: Text(appLocalizer.tryAnotherTime, style: TextStyles.regular12.copyWith(color: Colors.white.withOpacityPercent(80))),
+              ),
+            ),
+          );
+        }
+
+        final data = state.getStatisticsState.data ?? const StatisticsEntity.initial();
+        return SizedBox(
+          height: 51,
+          child: Row(
+            children: [
+              Expanded(
+                child: _UserCardStatItem(value: data.newOrdersCount ?? 0, label: appLocalizer.newOrders),
+              ),
+              const _UserCardStatDivider(),
+              Expanded(
+                child: _UserCardStatItem(value: data.inProgressOrdersCount ?? 0, label: appLocalizer.ordersInProgress),
+              ),
+              const _UserCardStatDivider(),
+              Expanded(
+                child: _UserCardStatItem(
+                  value: data.finishedOrdersCount ?? data.completedOrdersCount ?? 0,
+                  label: appLocalizer.finishedOrders,
                 ),
               ),
             ],
           ),
-        ),
+        );
+      },
+    );
+  }
+}
+
+class _UserCardStatItem extends StatelessWidget {
+  const _UserCardStatItem({required this.value, required this.label});
+
+  final int value;
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: Dimensions.p8),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text('$value', style: TextStyles.semiBold16.copyWith(color: Colors.white, height: 1)),
+          const SizedBox(height: Dimensions.p6),
+          Text(
+            label,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            textAlign: TextAlign.center,
+            style: TextStyles.regular12.copyWith(color: Colors.white.withOpacityPercent(80), height: 1),
+          ),
+        ],
       ),
     );
+  }
+}
+
+class _UserCardStatDivider extends StatelessWidget {
+  const _UserCardStatDivider();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(width: 1, height: 32, color: Colors.white.withOpacityPercent(16));
   }
 }

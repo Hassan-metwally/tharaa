@@ -29,6 +29,7 @@ class AppSingleDropDown<T> extends StatelessWidget {
     this.validator,
     this.isEnabled = true,
     this.hasRequiredSymbol = false,
+    this.titleStyle,
   });
 
   final ValidatorFieldController<T?> controller;
@@ -44,6 +45,7 @@ class AppSingleDropDown<T> extends StatelessWidget {
   final String? Function(T? value)? validator;
   final bool isEnabled;
   final bool hasRequiredSymbol;
+  final TextStyle? titleStyle;
 
   @override
   Widget build(BuildContext _) {
@@ -67,6 +69,7 @@ class AppSingleDropDown<T> extends StatelessWidget {
             hasRequiredSymbol: hasRequiredSymbol,
             prefixIconPath: prefixIc,
             prefixIcColor: prefixIcColor,
+            titleStyle: titleStyle,
             suffixIconPath: "",
             onTap: () async {
               FocusScope.of(context).requestFocus(FocusNode());

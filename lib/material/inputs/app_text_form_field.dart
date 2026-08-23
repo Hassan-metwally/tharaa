@@ -42,8 +42,9 @@ class AppTextFormField extends StatefulWidget {
   final int? maxLines;
   final AutovalidateMode? autovalidateMode;
   final double titlePadding;
-
+  final String? helperText;
   const AppTextFormField({
+    this.helperText,
     super.key,
     this.controller,
     this.margin = const EdgeInsets.symmetric(vertical: 8),
@@ -79,7 +80,7 @@ class AppTextFormField extends StatefulWidget {
     this.minLines,
     this.maxLines,
     this.autovalidateMode,
-    this.titlePadding = 4,
+    this.titlePadding = 8,
     this.focusNode,
     this.hasCounter = false,
   });
@@ -89,25 +90,33 @@ class AppTextFormField extends StatefulWidget {
 }
 
 class _AppTextFormFieldState extends State<AppTextFormField> {
-  bool isTextSecured = false;
-  final _focusNode = FocusNode();
+  late bool isTextSecured;
+  late final FocusNode _focusNode;
+  late final bool _ownsFocusNode;
   bool hasFocus = false;
 
   @override
   void initState() {
-    isTextSecured = widget.isTextSecured;
-    _focusNode.addListener(() {
-      if (_focusNode.hasFocus != hasFocus) {
-        hasFocus = _focusNode.hasFocus;
-        setState(() {});
-      }
-    });
     super.initState();
+    isTextSecured = widget.isTextSecured;
+    _ownsFocusNode = widget.focusNode == null;
+    _focusNode = widget.focusNode ?? FocusNode();
+    hasFocus = _focusNode.hasFocus;
+    _focusNode.addListener(_handleFocusChange);
+  }
+
+  void _handleFocusChange() {
+    if (hasFocus == _focusNode.hasFocus) return;
+    setState(() => hasFocus = _focusNode.hasFocus);
   }
 
   @override
   Widget build(BuildContext context) {
-    final labelStyle = widget.labelTextStyle ?? Theme.of(context).inputDecorationTheme.labelStyle;
+    final theme = Theme.of(context).inputDecorationTheme;
+    final labelStyle = widget.labelTextStyle ?? theme.labelStyle;
+    final inputStyle = widget.inputTextStyle ?? TextStyles.regular14.copyWith(color: AppColors.textColor, height: 1.4);
+    final isMultiline = (widget.maxLines ?? 1) > 1 || (widget.minLines ?? 1) > 1;
+
     return Padding(
       padding: widget.margin,
       child: Column(
@@ -118,31 +127,27 @@ class _AppTextFormFieldState extends State<AppTextFormField> {
           if (widget.label?.isNotEmpty == true)
             Padding(
               padding: EdgeInsets.only(bottom: widget.titlePadding),
-              child: Padding(
-                padding: EdgeInsets.only(bottom: widget.titlePadding),
-                child: RichText(
-                  text: TextSpan(
-                    text: widget.label,
-                    style: labelStyle,
-                    children: [
-                      if (widget.hasRequiredSymbol)
-                        TextSpan(
-                          text: "\t*",
-                          style: labelStyle?.copyWith(color: AppColors.error),
-                        ),
-                    ],
-                  ),
+              child: RichText(
+                text: TextSpan(
+                  text: widget.label,
+                  style: labelStyle,
+                  children: [
+                    if (widget.hasRequiredSymbol)
+                      TextSpan(
+                        text: "\t*",
+                        style: labelStyle?.copyWith(color: AppColors.error),
+                      ),
+                  ],
                 ),
               ),
             ),
           TextFormField(
-            focusNode: widget.focusNode ?? _focusNode,
+            focusNode: _focusNode,
             cursorErrorColor: AppColors.red700,
             controller: widget.controller,
             keyboardType: widget.inputType,
             maxLength: widget.maxLength,
-            style: widget.inputTextStyle ?? TextStyles.regular12,
-            // onTapOutside: (_) => FocusScope.of(context).unfocus(),
+            style: inputStyle,
             cursorColor: AppColors.primary,
             clipBehavior: widget.clipBehavior!,
             inputFormatters: widget.inputFormatters,
@@ -156,15 +161,16 @@ class _AppTextFormFieldState extends State<AppTextFormField> {
             onFieldSubmitted: widget.onFieldSubmitted,
             minLines: widget.minLines ?? 1,
             maxLines: widget.maxLines ?? 1,
+            textAlignVertical: isMultiline ? TextAlignVertical.top : TextAlignVertical.center,
             autovalidateMode: widget.autovalidateMode ?? AutovalidateMode.onUserInteraction,
             decoration: InputDecoration(
+              helperText: widget.helperText,
+              helperStyle: theme.helperStyle,
               contentPadding: widget.contentPadding,
-              floatingLabelBehavior: FloatingLabelBehavior.always,
-              labelStyle: widget.labelTextStyle,
-              floatingLabelStyle: widget.labelTextStyle,
+              floatingLabelBehavior: FloatingLabelBehavior.never,
               hintText: widget.hint,
-              hintMaxLines: widget.maxLines ?? 10,
-              errorMaxLines: widget.maxLines ?? 10,
+              hintMaxLines: widget.maxLines ?? 1,
+              errorMaxLines: theme.errorMaxLines ?? 10,
               hintStyle: widget.hintTextStyle,
               hintTextDirection: widget.textDirection,
               counter: const SizedBox.shrink(),
@@ -173,9 +179,9 @@ class _AppTextFormFieldState extends State<AppTextFormField> {
               disabledBorder: widget.disabledBorder,
               errorBorder: widget.errorBorder,
               focusedErrorBorder: widget.focusedErrorBorder,
-              prefixIcon: _getPrefixWidget,
+              prefixIcon: _prefixIcon,
               prefixIconConstraints: widget.prefixIconConstraints,
-              suffixIcon: widget.suffixIcon ?? _obsecureSuffix ?? _counterSuffix,
+              suffixIcon: widget.suffixIcon != null ? UnconstrainedBox(child: widget.suffixIcon!) : _obsecureSuffix ?? _counterSuffix,
               filled: widget.filled,
               fillColor: widget.fillColor,
             ),
@@ -190,8 +196,11 @@ class _AppTextFormFieldState extends State<AppTextFormField> {
       return InkWell(
         borderRadius: BorderRadius.circular(50),
         child: UnconstrainedBox(
-          child: GradiantWidget(
-            child: Icon(isTextSecured ? Icons.visibility_off : Icons.visibility, size: 18, weight: 50, opticalSize: 20, grade: -20),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            child: GradiantWidget(
+              child: Icon(isTextSecured ? Icons.visibility_off : Icons.visibility, size: 20, weight: 50, opticalSize: 20, grade: -20),
+            ),
           ),
         ),
         onTap: () {
@@ -205,19 +214,19 @@ class _AppTextFormFieldState extends State<AppTextFormField> {
   }
 
   Widget? get _counterSuffix {
-    if (widget.hasCounter && widget.maxLength != null) {
+    final controller = widget.controller;
+    if (widget.hasCounter && widget.maxLength != null && controller != null) {
       return ValueListenableBuilder(
-        valueListenable: widget.controller ?? TextEditingController(),
+        valueListenable: controller,
         builder: (context, value, child) {
-          final text = value.text;
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                child: Text("${widget.maxLength}/${text.length}", style: TextStyles.light12.copyWith(color: AppColors.black400)),
+          return UnconstrainedBox(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              child: Text(
+                "${value.text.length}/${widget.maxLength}",
+                style: TextStyles.regular12.copyWith(color: AppColors.black400),
               ),
-            ],
+            ),
           );
         },
       );
@@ -225,18 +234,22 @@ class _AppTextFormFieldState extends State<AppTextFormField> {
     return null;
   }
 
-  Widget? get _getPrefixWidget {
-    if (widget.prefixIcon != null) {
-      return UnconstrainedBox(
-        child: Padding(padding: const EdgeInsetsDirectional.only(start: 8.0), child: widget.prefixIcon!(hasFocus)),
-      );
-    }
-    return null;
+  Widget? get _prefixIcon {
+    if (widget.prefixIcon == null) return null;
+    return UnconstrainedBox(
+      child: Padding(
+        padding: const EdgeInsetsDirectional.only(start: 12, end: 4),
+        child: widget.prefixIcon!(hasFocus),
+      ),
+    );
   }
 
   @override
   void dispose() {
-    _focusNode.dispose();
+    _focusNode.removeListener(_handleFocusChange);
+    if (_ownsFocusNode) {
+      _focusNode.dispose();
+    }
     super.dispose();
   }
 }

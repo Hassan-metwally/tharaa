@@ -19,18 +19,10 @@ class _NotificationCardState extends State<_NotificationCard> {
 
   @override
   Widget build(BuildContext context) {
-    // ignore: unused_element
-    Color iconBGColor() {
-      if (widget.notification.type == NotificationType.adminNotification) {
-        return AppColors.primary;
-      } else if (widget.notification.type == NotificationType.wallet || widget.notification.type == NotificationType.subscription) {
-        return AppColors.success600;
-      } else {
-        return const Color(0xCCF9F9F9);
-      }
-    }
+    final bool isRead = isReadingNotification;
 
     return GestureDetector(
+      behavior: HitTestBehavior.opaque,
       onTap: () {
         BlocProvider.of<NotificationsCubit>(context).readNotification(ReadNotificationParams(id: widget.notification.id));
         if (widget.onNotificationRead != null) {
@@ -59,44 +51,89 @@ class _NotificationCardState extends State<_NotificationCard> {
           }
         }
       },
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-        margin: const EdgeInsets.only(bottom: 8),
-        decoration: BoxDecoration(
-          color: isReadingNotification ? AppColors.black50 : AppColors.white,
-          borderRadius: BorderRadius.circular(12),
-          boxShadow: [BoxShadow(color: AppColors.black500.withOpacityPercent(4), blurRadius: 8)],
-        ),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                AppImage.circle(path: isReadingNotification ? AppImages.notification : AppImages.notification2, dimension: 40),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(widget.notification.title, style: TextStyles.medium12, maxLines: 2),
-                      const SizedBox(height: 4),
-                      Text(
-                        widget.notification.body,
-                        style: TextStyles.regular10.copyWith(color: AppColors.black600),
-                        maxLines: 3,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ],
+      child: Opacity(
+        opacity: isRead ? _kReadNotificationOpacity : 1,
+        child: Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(Dimensions.p12),
+          decoration: BoxDecoration(
+            color: _kNotificationCardFill,
+            borderRadius: BorderRadius.circular(_kNotificationCardRadius),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _NotificationCardIcon(isRead: isRead),
+                  const SizedBox(width: Dimensions.p8),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          widget.notification.title,
+                          style: TextStyles.semiBold16.copyWith(
+                            color: AppColors.black900,
+                            height: 1.6,
+                            fontWeight: FontWeight.w600,
+                          ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          widget.notification.body,
+                          style: TextStyles.regular14.copyWith(
+                            color: AppColors.mutedText,
+                            height: 1.6,
+                          ),
+                          maxLines: 3,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    ),
                   ),
+                ],
+              ),
+              const SizedBox(height: Dimensions.p4),
+              Text(
+                widget.notification.createdAt.toString(),
+                textAlign: TextAlign.end,
+                style: TextStyles.regular12.copyWith(
+                  color: isRead ? AppColors.mutedText : AppColors.primary,
+                  height: 1.6,
                 ),
-              ],
-            ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [Text(widget.notification.createdAt.toString(), style: TextStyles.regular10.copyWith(color: AppColors.black800))],
-            ),
-          ],
+              ),
+            ],
+          ),
         ),
+      ),
+    );
+  }
+}
+
+class _NotificationCardIcon extends StatelessWidget {
+  const _NotificationCardIcon({required this.isRead});
+
+  final bool isRead;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: _kNotificationIconSize,
+      height: _kNotificationIconSize,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        color: isRead ? AppColors.white : AppColors.primary,
+        shape: BoxShape.circle,
+      ),
+      child: AppSvgIcon(
+        path: AppIcons.notificationBing,
+        width: _kNotificationIconGlyphSize,
+        height: _kNotificationIconGlyphSize,
+        color: isRead ? null : AppColors.white,
       ),
     );
   }

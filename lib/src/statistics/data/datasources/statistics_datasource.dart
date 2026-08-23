@@ -1,5 +1,3 @@
-import 'package:injectable/injectable.dart';
-
 import '../../../../../../core/core.dart';
 import '../models/api_statistics_model.dart';
 
@@ -7,7 +5,6 @@ abstract class StatisticsDatasource {
   Future<ApiStatisticsModel> getStatistics();
 }
 
-@Injectable(as: StatisticsDatasource)
 class StatisticsDatasourceImpl extends StatisticsDatasource {
   final DioHelper _dioHelper;
 

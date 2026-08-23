@@ -1,50 +1,90 @@
 part of '../more_page.dart';
 
-class _GroupTiles extends StatelessWidget {
-  const _GroupTiles({required this.children});
+class _MoreSection extends StatelessWidget {
+  const _MoreSection({required this.title, required this.children});
 
+  final String title;
   final List<Widget> children;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(color: AppColors.cardColor, borderRadius: BorderRadius.circular(12)),
-      margin: const EdgeInsets.symmetric(vertical: 4),
-      child: Column(spacing: 8, crossAxisAlignment: CrossAxisAlignment.start, children: [...children]),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        SizedBox(
+          height: 28,
+          child: Align(
+            alignment: AlignmentDirectional.centerStart,
+            child: Text(title, style: TextStyles.semiBold16.copyWith(color: AppColors.black900, height: 1)),
+          ),
+        ),
+        const SizedBox(height: Dimensions.p12),
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(Dimensions.p16),
+          decoration: BoxDecoration(color: _kMoreSectionFill, borderRadius: BorderRadius.circular(Dimensions.r16)),
+          child: Column(spacing: Dimensions.p16, children: children),
+        ),
+      ],
     );
   }
 }
 
-class _Tile extends StatelessWidget {
-  // ignore: unused_element_parameter
-  const _Tile({required this.icon, required this.text, required this.onTap, this.textStyle = TextStyles.regular14, this.traillingText});
+class _MoreTile extends StatelessWidget {
+  const _MoreTile({required this.icon, required this.text, required this.onTap, this.trailingText, this.showDivider = true});
 
   final String icon;
   final String text;
-  final String? traillingText;
+  final String? trailingText;
   final VoidCallback onTap;
-  final TextStyle textStyle;
+  final bool showDivider;
 
   @override
   Widget build(BuildContext context) {
     return Bounce(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.all(12),
-        decoration: BoxDecoration(
-          color: AppColors.cardColor,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: AppColors.enabledBorderColor),
-        ),
+        width: double.infinity,
+        padding: EdgeInsets.only(bottom: showDivider ? Dimensions.p12 : 0),
+        decoration: showDivider
+            ? const BoxDecoration(
+                border: Border(bottom: BorderSide(color: Colors.white)),
+              )
+            : null,
         child: Row(
-          spacing: 4,
           children: [
-            AppSvgIcon(path: icon, size: 16),
-            Expanded(child: Text(text, style: textStyle)),
-            if (traillingText != null) Text(traillingText!, style: TextStyles.regular10.copyWith(color: AppColors.black600)),
-            Icon(Icons.arrow_forward_rounded, size: 16, color: AppColors.primary),
+            AppSvgIcon(path: icon, size: Dimensions.ic24),
+            const SizedBox(width: Dimensions.p4),
+            Expanded(
+              child: Text(text, style: TextStyles.medium14.copyWith(color: AppColors.black900, height: 1)),
+            ),
+            if (trailingText != null) ...[
+              const SizedBox(width: Dimensions.p4),
+              Text(trailingText!, style: TextStyles.regular12.copyWith(color: AppColors.mutedText, height: 1)),
+            ],
+            const SizedBox(width: Dimensions.p4),
+            const _TileArrowButton(),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _TileArrowButton extends StatelessWidget {
+  const _TileArrowButton();
+
+  @override
+  Widget build(BuildContext context) {
+    final bool isRtl = Directionality.of(context) == TextDirection.rtl;
+    return Container(
+      width: 32,
+      height: 32,
+      alignment: Alignment.center,
+      decoration: const BoxDecoration(color: Colors.white, shape: BoxShape.circle),
+      child: Transform.rotate(
+        angle: isRtl ? 34.84 * math.pi / 180 : math.pi - (34.84 * math.pi / 180),
+        child: AppSvgIcon(path: AppIcons.arrowUpRight, width: Dimensions.ic16, height: Dimensions.ic16),
       ),
     );
   }

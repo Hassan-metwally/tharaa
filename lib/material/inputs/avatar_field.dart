@@ -12,6 +12,8 @@ class ProfileAvatarWidget extends StatelessWidget {
 
   final ValidatorFieldController<AttachmentEntity?> controller;
 
+  static const double _avatarSize = 72;
+
   @override
   Widget build(BuildContext context) {
     return ValidatorField<AttachmentEntity?>(
@@ -23,9 +25,9 @@ class ProfileAvatarWidget extends StatelessWidget {
         return null;
       },
       build: (context, errorMessage, hasError, value) {
-        final errorBorderColor = Theme.of(context).inputDecorationTheme.errorBorder?.borderSide.color;
-        final themeBorderColor = Theme.of(context).inputDecorationTheme.enabledBorder?.borderSide.color;
-        final Color borderColor = (hasError ? errorBorderColor : themeBorderColor) ?? AppColors.enabledBorderColor;
+        final Color errorBorderColor =
+            Theme.of(context).inputDecorationTheme.errorBorder?.borderSide.color ?? AppColors.error;
+
         return Column(
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
@@ -35,40 +37,41 @@ class ProfileAvatarWidget extends StatelessWidget {
               onTap: () async {
                 await MediaPickerBottomSheet.show(
                   context,
+                  title: appLocalizer.editProfilePicture,
+                  canDeleteImage: true,
                   onMediaPicked: (media) {
                     controller.setValue(media);
-
                     controller.validate();
                   },
                 );
               },
-              child: Stack(
-                alignment: AlignmentDirectional.bottomEnd,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   Container(
-                    height: 100,
-                    width: 100,
+                    height: _avatarSize,
+                    width: _avatarSize,
                     clipBehavior: Clip.antiAlias,
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: AppColors.cardColor,
-                      border: Border.all(color: borderColor),
+                      color: const Color(0xFFF7F8FA),
+                      border: hasError ? Border.all(color: errorBorderColor) : null,
                     ),
                     child: Builder(
                       builder: (context) {
                         if (value != null && value.path.isNotEmpty) {
-                          return AppImage.circle(path: value.path, fit: BoxFit.cover, dimension: double.infinity);
-                        } else {
-                          return AppSvgIcon(path: "");
+                          return AppImage.circle(path: value.path, fit: BoxFit.cover, dimension: _avatarSize);
                         }
+                        return AppSvgIcon(path: AppIcons.profile, width: 32, height: 32);
                       },
                     ),
                   ),
-                  Container(
-                    padding: const EdgeInsets.all(4),
-                    decoration: BoxDecoration(shape: BoxShape.circle, color: AppColors.backgroundColor),
-                    child: AppSvgIcon(path: ""),
+                  const SizedBox(height: 8),
+                  Text(
+                    appLocalizer.editPhoto,
+                    textAlign: TextAlign.center,
+                    style: TextStyles.semiBold12.copyWith(color: AppColors.primary, height: 1, fontWeight: FontWeight.w600),
                   ),
                 ],
               ),

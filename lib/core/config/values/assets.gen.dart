@@ -32,11 +32,171 @@ class $AssetsFontsGen {
 class $AssetsIconsGen {
   const $AssetsIconsGen();
 
+  /// File path: assets/icons/HomeSmile.svg
+  String get homeSmile => 'assets/icons/HomeSmile.svg';
+
+  /// File path: assets/icons/HomeSmile2.svg
+  String get homeSmile2 => 'assets/icons/HomeSmile2.svg';
+
+  /// File path: assets/icons/add.svg
+  String get add => 'assets/icons/add.svg';
+
+  /// File path: assets/icons/arrow-back.svg
+  String get arrowBack => 'assets/icons/arrow-back.svg';
+
+  /// File path: assets/icons/arrow-up-right.svg
+  String get arrowUpRight => 'assets/icons/arrow-up-right.svg';
+
+  /// File path: assets/icons/bag-1.svg
+  String get bag1 => 'assets/icons/bag-1.svg';
+
+  /// File path: assets/icons/bag-2.svg
+  String get bag2 => 'assets/icons/bag-2.svg';
+
+  /// File path: assets/icons/call-calling.svg
+  String get callCalling => 'assets/icons/call-calling.svg';
+
+  /// File path: assets/icons/camera.svg
+  String get camera => 'assets/icons/camera.svg';
+
+  /// File path: assets/icons/check-circle-solid.svg
+  String get checkCircleSolid => 'assets/icons/check-circle-solid.svg';
+
+  /// File path: assets/icons/document-text.svg
+  String get documentText => 'assets/icons/document-text.svg';
+
+  /// File path: assets/icons/document-text1.svg
+  String get documentText1 => 'assets/icons/document-text1.svg';
+
+  /// File path: assets/icons/element-equal.svg
+  String get elementEqual => 'assets/icons/element-equal.svg';
+
+  /// File path: assets/icons/exclamation-circle-solid.svg
+  String get exclamationCircleSolid =>
+      'assets/icons/exclamation-circle-solid.svg';
+
+  /// File path: assets/icons/exclamation-triangle-solid.svg
+  String get exclamationTriangleSolid =>
+      'assets/icons/exclamation-triangle-solid.svg';
+
+  /// File path: assets/icons/flame.svg
+  String get flame => 'assets/icons/flame.svg';
+
+  /// File path: assets/icons/gallery.svg
+  String get gallery => 'assets/icons/gallery.svg';
+
+  /// File path: assets/icons/gift.svg
+  String get gift => 'assets/icons/gift.svg';
+
+  /// File path: assets/icons/global.svg
+  String get global => 'assets/icons/global.svg';
+
+  /// File path: assets/icons/info-circle-solid.svg
+  String get infoCircleSolid => 'assets/icons/info-circle-solid.svg';
+
+  /// File path: assets/icons/info-circle.svg
+  String get infoCircle => 'assets/icons/info-circle.svg';
+
+  /// File path: assets/icons/location.svg
+  String get location => 'assets/icons/location.svg';
+
+  /// File path: assets/icons/logout.svg
+  String get logout => 'assets/icons/logout.svg';
+
+  /// File path: assets/icons/mobile-bulk.svg
+  String get mobileBulk => 'assets/icons/mobile-bulk.svg';
+
+  /// File path: assets/icons/mobile.svg
+  String get mobile => 'assets/icons/mobile.svg';
+
+  /// File path: assets/icons/notification-bing.svg
+  String get notificationBing => 'assets/icons/notification-bing.svg';
+
+  /// File path: assets/icons/profile-add.svg
+  String get profileAdd => 'assets/icons/profile-add.svg';
+
+  /// File path: assets/icons/profile-bulk.svg
+  String get profileBulk => 'assets/icons/profile-bulk.svg';
+
+  /// File path: assets/icons/profile-delete.svg
+  String get profileDelete => 'assets/icons/profile-delete.svg';
+
+  /// File path: assets/icons/profile.svg
+  String get profile => 'assets/icons/profile.svg';
+
+  /// File path: assets/icons/receipt-disscount.svg
+  String get receiptDisscount => 'assets/icons/receipt-disscount.svg';
+
+  /// File path: assets/icons/receipt-disscount1.svg
+  String get receiptDisscount1 => 'assets/icons/receipt-disscount1.svg';
+
+  /// File path: assets/icons/receipt-item.svg
+  String get receiptItem => 'assets/icons/receipt-item.svg';
+
+  /// File path: assets/icons/rotate-right.svg
+  String get rotateRight => 'assets/icons/rotate-right.svg';
+
+  /// File path: assets/icons/search-status.svg
+  String get searchStatus => 'assets/icons/search-status.svg';
+
+  /// File path: assets/icons/security.svg
+  String get security => 'assets/icons/security.svg';
+
+  /// File path: assets/icons/sms-tracking.svg
+  String get smsTracking => 'assets/icons/sms-tracking.svg';
+
+  /// File path: assets/icons/sms.svg
+  String get sms => 'assets/icons/sms.svg';
+
+  /// File path: assets/icons/trash.svg
+  String get trash => 'assets/icons/trash.svg';
+
   /// File path: assets/icons/user-outline.svg
   String get userOutline => 'assets/icons/user-outline.svg';
 
   /// List of all assets
-  List<String> get values => [userOutline];
+  List<String> get values => [
+    homeSmile,
+    homeSmile2,
+    add,
+    arrowBack,
+    arrowUpRight,
+    bag1,
+    bag2,
+    callCalling,
+    camera,
+    checkCircleSolid,
+    documentText,
+    documentText1,
+    elementEqual,
+    exclamationCircleSolid,
+    exclamationTriangleSolid,
+    flame,
+    gallery,
+    gift,
+    global,
+    infoCircleSolid,
+    infoCircle,
+    location,
+    logout,
+    mobileBulk,
+    mobile,
+    notificationBing,
+    profileAdd,
+    profileBulk,
+    profileDelete,
+    profile,
+    receiptDisscount,
+    receiptDisscount1,
+    receiptItem,
+    rotateRight,
+    searchStatus,
+    security,
+    smsTracking,
+    sms,
+    trash,
+    userOutline,
+  ];
 }
 
 class $AssetsIllustrationsGen {
@@ -66,8 +226,20 @@ class $AssetsImagesGen {
   /// File path: assets/images/empty_notifications.png
   String get emptyNotifications => 'assets/images/empty_notifications.png';
 
+  /// File path: assets/images/flag_saudi.svg
+  String get flagSaudi => 'assets/images/flag_saudi.svg';
+
+  /// File path: assets/images/flag_usa.svg
+  String get flagUsa => 'assets/images/flag_usa.svg';
+
+  /// File path: assets/images/login_logo.png
+  String get loginLogo => 'assets/images/login_logo.png';
+
   /// File path: assets/images/money.png
   String get money => 'assets/images/money.png';
+
+  /// File path: assets/images/more_user_card_pattern.svg
+  String get moreUserCardPattern => 'assets/images/more_user_card_pattern.svg';
 
   /// File path: assets/images/notification.png
   String get notification => 'assets/images/notification.png';
@@ -101,7 +273,11 @@ class $AssetsImagesGen {
     empty,
     emptyCart,
     emptyNotifications,
+    flagSaudi,
+    flagUsa,
+    loginLogo,
     money,
+    moreUserCardPattern,
     notification,
     notification2,
     onboardingSticker1,
@@ -120,12 +296,8 @@ class $AssetsLauncherIconGen {
   /// File path: assets/launcher_icon/app_launcher_icon.png
   String get appLauncherIcon => 'assets/launcher_icon/app_launcher_icon.png';
 
-  /// File path: assets/launcher_icon/app_launcher_icon_provider.png
-  String get appLauncherIconProvider =>
-      'assets/launcher_icon/app_launcher_icon_provider.png';
-
   /// List of all assets
-  List<String> get values => [appLauncherIcon, appLauncherIconProvider];
+  List<String> get values => [appLauncherIcon];
 }
 
 class $AssetsNativeSplashGen {

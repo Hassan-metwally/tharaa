@@ -6,6 +6,8 @@ import '../../../../material/inputs/validator_field/validator_field.dart';
 import '../../../common/domain/entity/menu/static_page_type_enum.dart';
 import '../../../common/presentation/menu/static_page/static_page_sheet.dart';
 
+const Color _kUnchecked = Color(0xFF8B9BB2);
+
 class AcceptTermsAndConditionsWidget extends StatelessWidget {
   const AcceptTermsAndConditionsWidget({super.key, required this.controller, this.canOpenTermsSheet = true});
   final ValidatorFieldController<bool> controller;
@@ -31,23 +33,32 @@ class AcceptTermsAndConditionsWidget extends StatelessWidget {
               Row(
                 children: [
                   SizedBox(
-                    height: 28,
-                    width: 28,
+                    height: 24,
+                    width: 24,
                     child: FittedBox(
                       child: Checkbox(
                         value: value,
+                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        visualDensity: VisualDensity.compact,
+                        side: const BorderSide(color: _kUnchecked, width: 1.6),
+                        fillColor: WidgetStateProperty.resolveWith((states) {
+                          if (states.contains(WidgetState.selected)) {
+                            return AppColors.primary500;
+                          }
+                          return Colors.transparent;
+                        }),
                         onChanged: (value) {
                           controller.setValue(value ?? false);
                         },
                       ),
                     ),
                   ),
-                  const SizedBox(width: 2),
+                  const SizedBox(width: 4),
                   Expanded(
                     child: Text.rich(
                       TextSpan(
-                        text: "${appLocalizer.agreeFor}\t",
-                        style: TextStyles.regular12.copyWith(color: AppColors.textColor),
+                        text: '${appLocalizer.agreeFor} ',
+                        style: TextStyles.medium14.copyWith(color: _kUnchecked, height: 1.4),
                         children: [
                           TextSpan(
                             recognizer: TapGestureRecognizer()
@@ -63,12 +74,8 @@ class AcceptTermsAndConditionsWidget extends StatelessWidget {
                                   }
                                 });
                               },
-                            text: "(${appLocalizer.termsAndConditions})",
-                            style: TextStyles.regular14.copyWith(color: AppColors.primary),
-                          ),
-                          TextSpan(
-                            text: ' *',
-                            style: TextStyles.regular15.copyWith(color: AppColors.primary),
+                            text: appLocalizer.termsAndConditions,
+                            style: TextStyles.semiBold14.copyWith(color: AppColors.primary500, height: 1.4),
                           ),
                         ],
                       ),

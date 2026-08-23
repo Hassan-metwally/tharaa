@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../../core/core.dart';
+import '../media/svg_icon.dart';
 import 'app_text_form_field.dart';
 
 class NameField extends StatelessWidget {
@@ -14,6 +15,10 @@ class NameField extends StatelessWidget {
   final bool readOnly;
   final Widget? prefix;
   final bool hasRequiredSymbol;
+  final int maxLength;
+  final EdgeInsetsGeometry margin;
+  final TextStyle? labelTextStyle;
+  final bool showPrefixIcon;
 
   const NameField({
     required this.controller,
@@ -26,6 +31,10 @@ class NameField extends StatelessWidget {
     this.lable,
     this.hint,
     this.hasRequiredSymbol = false,
+    this.maxLength = 100,
+    this.margin = const EdgeInsets.symmetric(vertical: 8),
+    this.labelTextStyle,
+    this.showPrefixIcon = true,
   });
 
   @override
@@ -34,16 +43,19 @@ class NameField extends StatelessWidget {
       ignoring: readOnly,
       child: AppTextFormField(
         controller: controller,
-        maxLength: 50,
+        maxLength: maxLength,
+        hasCounter: true,
         readOnly: readOnly,
         validator: validator ?? (name) => Validator(name).name(),
         onChanged: onChanged,
         onFieldSubmitted: onFieldSubmitted,
         hasRequiredSymbol: hasRequiredSymbol,
         label: lable ?? appLocalizer.name,
+        labelTextStyle: labelTextStyle,
         hint: hint ?? appLocalizer.nameHint,
+        margin: margin,
         inputType: TextInputType.name,
-        maxLines: 3,
+        maxLines: 1,
         minLines: 1,
         inputFormatters: [
           FilteringTextInputFormatter.singleLineFormatter,
@@ -70,26 +82,7 @@ class NameField extends StatelessWidget {
           FilteringTextInputFormatter.deny("~"),
           FilteringTextInputFormatter.deny(RegExp(r'[0-9]')),
         ],
-        prefixIcon: prefix != null
-            ? (_) {
-                return prefix!;
-              }
-            : null,
-        suffixIcon: ValueListenableBuilder(
-          valueListenable: controller,
-          builder: (context, value, child) {
-            final text = value.text;
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
-                  child: Text("${text.length}/50", style: TextStyles.light12.copyWith(color: AppColors.black400)),
-                ),
-              ],
-            );
-          },
-        ),
+        prefixIcon: showPrefixIcon ? (_) => prefix ?? AppSvgIcon(path: AppIcons.userOutline, size: 20, color: AppColors.black400) : null,
       ),
     );
   }

@@ -4,6 +4,8 @@ import 'package:responsive_framework/responsive_framework.dart';
 import '../../../src/addresses/presentation/my_addresses/my_addresses_cubit.dart';
 import '../../../src/addresses/presentation/my_addresses/my_addresses_page.dart';
 import '../../../src/cart/presentation/cart_page/cart_page.dart';
+import '../../../src/authentication/presentation/update_phone/update_phone_cubit.dart';
+import '../../../src/authentication/presentation/update_phone/update_phone_page.dart';
 import '../../../src/more/presentation/personal_profile/personal_profile_cubit.dart';
 import '../../../src/more/presentation/personal_profile/personal_profile_page.dart';
 import '../../../app.dart';
@@ -16,6 +18,9 @@ import '../../../src/common/domain/entity/menu/static_page_type_enum.dart';
 import '../../../src/common/presentation/menu/contact_us/contact_us_page.dart';
 import '../../../src/common/presentation/menu/static_page/static_page.dart';
 import '../../../src/google_maps/presentation/maps_main_page.dart';
+import '../../../src/categories/presentation/main_categories/main_categories_page.dart';
+import '../../../src/categories/presentation/sub_categories/sub_categories_page.dart';
+import '../../../src/products/presentation/products/products_page.dart';
 import '../../../src/notifications/presentation/notifications_page.dart';
 import '../../../src/wallet/presentation/_client_wallet/client_wallet_page.dart';
 import '../../../src/wallet/presentation/payment_web_view/payment_webview_page.dart';
@@ -71,11 +76,25 @@ class AppRoutesGenerator {
         final arguments = settings.arguments as NotificationsPage;
         page = arguments;
 
+      /// Categories
+      ///
+      case AppRoutes.mainCategoriesPage:
+        final arguments = settings.arguments as MainCategoriesPage? ?? const MainCategoriesPage();
+        page = arguments;
+      case AppRoutes.subCategoriesPage:
+        final arguments = settings.arguments as SubCategoriesPage;
+        page = arguments;
+      case AppRoutes.productsPage:
+        final arguments = settings.arguments as ProductsPage? ?? const ProductsPage();
+        page = arguments;
+
       /// Authentication
       ///
       case AppRoutes.otp:
         final arguments = settings.arguments as OtpPage;
         page = arguments;
+      case AppRoutes.updatePhonePage:
+        page = BlocProvider(create: (context) => UpdatePhoneCubit(), child: const UpdatePhonePage());
       // case AppRoutes.resetPassword:
       //   page = BlocProvider(create: (context) => ResetPasswordCubit(), child: const ResetPasswordPage());
       // case AppRoutes.updatePasswordPage:

@@ -16,8 +16,8 @@ class MoreRepositoryImp implements MoreRepository {
   @override
   DomainServiceType<ClientEntity> getProfileData() async {
     return await failureCollect<ClientEntity>(() async {
-      final result = await _apiHelper.get(url: ApiConstants.addToApiUrlPath("auth/profile"));
-      final data = ApiClientModel.fromJson(result['data']);
+      final result = await _apiHelper.get(url: ApiConstants.addToApiUrlPath("profile"));
+      final data = ApiClientModel.fromJson(result['data']['user']);
       return Right(data.map);
     });
   }
@@ -25,9 +25,8 @@ class MoreRepositoryImp implements MoreRepository {
   @override
   DomainServiceType<ClientEntity> updateProfileData(UpdateProfileParams params) async {
     return await failureCollect<ClientEntity>(() async {
-      final result = await _apiHelper.post(url: ApiConstants.addToApiUrlPath("auth/update-profile"), body: params.toMap);
-      final ClientEntity data = ApiClientModel.fromJson(List.from(result['data']).firstOrNull).map;
-
+      final result = await _apiHelper.post(url: ApiConstants.addToApiUrlPath("profile"), body: params.toMap);
+      final ClientEntity data = ApiClientModel.fromJson(result['data']['user']).map;
       await _secureStorage.setCachedUser(data.mapToCacheEntity);
       return Right(data);
     });

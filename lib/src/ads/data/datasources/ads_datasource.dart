@@ -1,5 +1,3 @@
-import 'package:injectable/injectable.dart';
-
 import '../../../../../../core/core.dart';
 
 import '../models/api_ad_model.dart';
@@ -8,7 +6,6 @@ abstract class AdsDatasource {
   Future<List<ApiAdModel>> getAllAds(NoParams params);
 }
 
-@Injectable(as: AdsDatasource)
 class AdsDatasourceImpl extends AdsDatasource {
   final DioHelper _dioHelper;
 

@@ -69,16 +69,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get friday => 'Friday';
 
   @override
-  String get pickImageFromGallery => 'Pick Image From Gallery';
+  String get pickImageFromGallery => 'Photo gallery';
 
   @override
-  String get pickImageFromCamera => 'Pick Image From Camera';
+  String get pickImageFromCamera => 'Camera';
 
   @override
   String get pickVideoFromCamera => 'Pick Video From Camera';
 
   @override
   String get pickVideoFromGallery => 'Pick Video From Gallery';
+
+  @override
+  String get deleteImage => 'Delete image';
 
   @override
   String get cantOpenLink => 'Cannot open link, make sure it\'s valid.';
@@ -88,6 +91,15 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get changeLanguage => 'Change Language';
+
+  @override
+  String get changeLanguageSubtitle => 'Choose the language you want to use in the app.';
+
+  @override
+  String get arabicLanguage => 'Arabic';
+
+  @override
+  String get englishLanguage => 'English';
 
   @override
   String get guestHeaderMessage => 'Please log in first';
@@ -210,6 +222,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get back => 'Back';
 
   @override
+  String get goBack => 'Go back';
+
+  @override
   String get agree => 'Agree';
 
   @override
@@ -217,6 +232,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get edit => 'Edit';
+
+  @override
+  String get editPhoto => 'Edit photo';
+
+  @override
+  String get editProfilePicture => 'Edit profile picture';
 
   @override
   String get open => 'Open';
@@ -258,7 +279,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get agree2 => 'Agree';
 
   @override
-  String get saveEdites => 'Save Edits';
+  String get saveEdites => 'Save changes';
 
   @override
   String get filter => 'Filter';
@@ -517,7 +538,29 @@ class AppLocalizationsEn extends AppLocalizations {
   String get loginWelcomeMessage => 'Welcom back in app';
 
   @override
+  String get loginHeadline => 'Ready to fill your cart? 🛒';
+
+  @override
+  String get loginSubtitle => 'Sign in and stay close to the finest fresh products, and everything you need delivered to your door.';
+
+  @override
+  String get phoneNumberExampleHint => 'Example: 0512345687';
+
+  @override
+  String get phoneNumberHelperText => 'Enter the 9-digit mobile number starting with 05';
+
+  @override
   String get registerWelcomeMessage => 'Welcome to';
+
+  @override
+  String get registerHeadline => 'Let\'s get started! ✨';
+
+  @override
+  String get registerSubtitle =>
+      'Create your account now and enjoy an easier and faster shopping experience, and discover featured products and offers.';
+
+  @override
+  String get fullName => 'Full name';
 
   @override
   String get phoneNumber => 'Phone number';
@@ -541,13 +584,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get createAccount => 'Register Now';
 
   @override
-  String get createNewAccount => 'Register new account';
+  String get createNewAccount => 'Create new account';
 
   @override
   String get name => 'Name';
 
   @override
-  String get nameHint => 'Enter your name';
+  String get nameHint => 'Example: Mohamed Ahmed Mohamed';
 
   @override
   String get accountType => 'Account type';
@@ -577,6 +620,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get termsAndConditions => 'Terms and Conditions';
 
   @override
+  String get otpHeadline => 'We\'ve confirmed it\'s you! 🔐';
+
+  @override
+  String get otpSubtitle => 'Enter the verification code sent to your mobile and we\'ll complete your login easily.';
+
+  @override
   String get otpHeaderMessage => 'Enter the activation code sent to the number';
 
   @override
@@ -586,7 +635,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get resendCode => 'Resend Code';
 
   @override
-  String get resendCodeMessage => 'Didn\'t receive the activation code?';
+  String get resendCodeMessage => 'Didn\'t receive the code?';
 
   @override
   String get resendVersionCodeOtp => 'Resend verification code';
@@ -643,13 +692,23 @@ class AppLocalizationsEn extends AppLocalizations {
   String get logOut => 'Log Out';
 
   @override
+  String get yesLogOut => 'Yes, log out';
+
+  @override
+  String get noGoBack => 'No, go back';
+
+  @override
   String get deleteAccount => 'Delete Account';
 
   @override
-  String get logoutMessage => 'Are you sure you want to##log out##from the app?';
+  String get yesDeleteAccount => 'Yes, delete account';
 
   @override
-  String get deleteAccountMessage => 'Are you sure you want to##delete your account?';
+  String get logoutMessage => 'You will be logged out of your account, and you can log back in at any time.';
+
+  @override
+  String get deleteAccountMessage =>
+      'Your account and data will be deleted permanently, and you will not be able to recover them after completing the process.';
 
   @override
   String get deleteAccountSuccessMessage => 'Your account has been successfully deleted';
@@ -661,13 +720,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get enterEmailAddress => 'Enter email address';
 
   @override
+  String get emailExampleHint => 'Example: mohamed@example.com';
+
+  @override
   String get enterYourPhoneNumber => 'Enter your##phone number';
 
   @override
   String get verifyCode => 'Verify code';
 
   @override
-  String get continueAsGuest => 'Continue as guest';
+  String get continueAsGuest => 'Skip and continue as guest';
 
   @override
   String get commercialRegistrationNumber => 'Commercial Registration Number';
@@ -709,8 +771,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get enterProviderName => 'Enter your provider name';
 
   @override
-  String get deleteAccountWarrningMessage =>
-      'In case of deleting the account, the data will be ## permanently deleted ## from the application.';
+  String get deleteAccountWarrningMessage => 'In case of deleting the account, the data will be permanently deleted from the application.';
 
   @override
   String get sendContactUsMessageSuccess => 'Your message has been successfully sent';
@@ -720,6 +781,54 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get sendMessage => 'Send message';
+
+  @override
+  String get sendTheMessage => 'Send the message';
+
+  @override
+  String get contactInformation => 'Contact information';
+
+  @override
+  String get contactNumbers => 'Contact numbers';
+
+  @override
+  String get contactNumber => 'Contact number';
+
+  @override
+  String get callNow => 'Call now';
+
+  @override
+  String get emailNow => 'Email now';
+
+  @override
+  String get writeYourMessage => 'Write your message';
+
+  @override
+  String get socialX => 'X';
+
+  @override
+  String get socialInstagram => 'Instagram';
+
+  @override
+  String get socialFacebook => 'Facebook';
+
+  @override
+  String get socialWhatsApp => 'WhatsApp';
+
+  @override
+  String get socialTikTok => 'TikTok';
+
+  @override
+  String get socialSnapchat => 'Snapchat';
+
+  @override
+  String get socialYoutube => 'YouTube';
+
+  @override
+  String get socialGooglePlay => 'Google Play';
+
+  @override
+  String get socialAppStore => 'App Store';
 
   @override
   String get messageType => 'Message type';
@@ -818,7 +927,43 @@ class AppLocalizationsEn extends AppLocalizations {
   String get personalProfileUpdateSuccessMessage => 'Your personal profile has been successfully updated';
 
   @override
+  String get changePhoneNumber => 'Change phone number';
+
+  @override
+  String get newPhoneNumber => 'New phone number';
+
+  @override
   String get myAddress => 'My address';
+
+  @override
+  String get account => 'Account';
+
+  @override
+  String get supportAndInfo => 'Support and information';
+
+  @override
+  String get policies => 'Policies';
+
+  @override
+  String get preferences => 'Preferences';
+
+  @override
+  String get accountManagement => 'Account management';
+
+  @override
+  String get discountCoupons => 'Discount coupons';
+
+  @override
+  String get whoWeAre => 'Who we are';
+
+  @override
+  String get newOrders => 'New orders';
+
+  @override
+  String get ordersInProgress => 'Orders in progress';
+
+  @override
+  String get finishedOrders => 'Finished orders';
 
   @override
   String get providerOnBoardingTitle1 => 'Your digital provider is your way to reach thousands of customers!';
@@ -840,24 +985,22 @@ class AppLocalizationsEn extends AppLocalizations {
   String get providerOnBoardingSubTitle3 => 'Guaranteed services at the best price, high quality, and fastest delivery.';
 
   @override
-  String get userOnBoardingTitle1 => 'Your comfort starts with a service that reaches your doorstep!';
+  String get userOnBoardingTitle1 => 'Food products at affordable prices for everyone';
 
   @override
-  String get userOnBoardingSubTitle1 =>
-      'Plumbing, electricity, painting, carpentry... all in one app, faster than you can imagine, anytime and anywhere.';
+  String get userOnBoardingSubTitle1 => 'Get food products at affordable prices for everyone, every day.';
 
   @override
-  String get userOnBoardingTitle2 => 'All craftsmen in your pocket!';
+  String get userOnBoardingTitle2 => 'The tastiest fresh fruits in one place';
 
   @override
-  String get userOnBoardingSubTitle2 => 'Trusted craftsmen, guaranteed work, home services anytime and anywhere.';
+  String get userOnBoardingSubTitle2 => 'Enjoy a diverse selection of fresh fruits, with high quality and an irresistible taste.';
 
   @override
-  String get userOnBoardingTitle3 => 'A price that suits you and a service that satisfies you!';
+  String get userOnBoardingTitle3 => 'Fresh vegetables daily at affordable prices';
 
   @override
-  String get userOnBoardingSubTitle3 =>
-      'Choose the service... and get the best price and a service that satisfies you before the work begins.';
+  String get userOnBoardingSubTitle3 => 'Choose from a wide variety of fresh vegetables daily, with guaranteed quality.';
 
   @override
   String get wallet => 'Wallet';
@@ -1124,6 +1267,17 @@ class AppLocalizationsEn extends AppLocalizations {
   String get mostRequestedServices => 'Most requested services';
 
   @override
+  String get mostRequestedProducts => 'Most requested products';
+
+  @override
+  String get offersList => 'Offers list';
+
+  @override
+  String discountPercent(int percent) {
+    return '$percent% off';
+  }
+
+  @override
   String get viewMore => 'View more';
 
   @override
@@ -1137,6 +1291,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get welcomeSubMessage => 'You can enjoy and discover app features on login';
+
+  @override
+  String get homeAppBarSlogan => 'Fresh, delicious, and delivered to your door! 🍎';
 
   @override
   String get highestRated => 'Highest Rated';

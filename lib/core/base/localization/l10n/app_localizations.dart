@@ -215,13 +215,13 @@ abstract class AppLocalizations {
   /// No description provided for @pickImageFromGallery.
   ///
   /// In en, this message translates to:
-  /// **'Pick Image From Gallery'**
+  /// **'Photo gallery'**
   String get pickImageFromGallery;
 
   /// No description provided for @pickImageFromCamera.
   ///
   /// In en, this message translates to:
-  /// **'Pick Image From Camera'**
+  /// **'Camera'**
   String get pickImageFromCamera;
 
   /// No description provided for @pickVideoFromCamera.
@@ -235,6 +235,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Pick Video From Gallery'**
   String get pickVideoFromGallery;
+
+  /// No description provided for @deleteImage.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete image'**
+  String get deleteImage;
 
   /// No description provided for @cantOpenLink.
   ///
@@ -253,6 +259,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Change Language'**
   String get changeLanguage;
+
+  /// No description provided for @changeLanguageSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose the language you want to use in the app.'**
+  String get changeLanguageSubtitle;
+
+  /// No description provided for @arabicLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'Arabic'**
+  String get arabicLanguage;
+
+  /// No description provided for @englishLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'English'**
+  String get englishLanguage;
 
   /// No description provided for @guestHeaderMessage.
   ///
@@ -494,6 +518,12 @@ abstract class AppLocalizations {
   /// **'Back'**
   String get back;
 
+  /// No description provided for @goBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Go back'**
+  String get goBack;
+
   /// No description provided for @agree.
   ///
   /// In en, this message translates to:
@@ -511,6 +541,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Edit'**
   String get edit;
+
+  /// No description provided for @editPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit photo'**
+  String get editPhoto;
+
+  /// No description provided for @editProfilePicture.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit profile picture'**
+  String get editProfilePicture;
 
   /// No description provided for @open.
   ///
@@ -593,7 +635,7 @@ abstract class AppLocalizations {
   /// No description provided for @saveEdites.
   ///
   /// In en, this message translates to:
-  /// **'Save Edits'**
+  /// **'Save changes'**
   String get saveEdites;
 
   /// No description provided for @filter.
@@ -1106,11 +1148,53 @@ abstract class AppLocalizations {
   /// **'Welcom back in app'**
   String get loginWelcomeMessage;
 
+  /// No description provided for @loginHeadline.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready to fill your cart? 🛒'**
+  String get loginHeadline;
+
+  /// No description provided for @loginSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in and stay close to the finest fresh products, and everything you need delivered to your door.'**
+  String get loginSubtitle;
+
+  /// No description provided for @phoneNumberExampleHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Example: 0512345687'**
+  String get phoneNumberExampleHint;
+
+  /// No description provided for @phoneNumberHelperText.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the 9-digit mobile number starting with 05'**
+  String get phoneNumberHelperText;
+
   /// No description provided for @registerWelcomeMessage.
   ///
   /// In en, this message translates to:
   /// **'Welcome to'**
   String get registerWelcomeMessage;
+
+  /// No description provided for @registerHeadline.
+  ///
+  /// In en, this message translates to:
+  /// **'Let\'s get started! ✨'**
+  String get registerHeadline;
+
+  /// No description provided for @registerSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Create your account now and enjoy an easier and faster shopping experience, and discover featured products and offers.'**
+  String get registerSubtitle;
+
+  /// No description provided for @fullName.
+  ///
+  /// In en, this message translates to:
+  /// **'Full name'**
+  String get fullName;
 
   /// No description provided for @phoneNumber.
   ///
@@ -1157,7 +1241,7 @@ abstract class AppLocalizations {
   /// No description provided for @createNewAccount.
   ///
   /// In en, this message translates to:
-  /// **'Register new account'**
+  /// **'Create new account'**
   String get createNewAccount;
 
   /// No description provided for @name.
@@ -1169,7 +1253,7 @@ abstract class AppLocalizations {
   /// No description provided for @nameHint.
   ///
   /// In en, this message translates to:
-  /// **'Enter your name'**
+  /// **'Example: Mohamed Ahmed Mohamed'**
   String get nameHint;
 
   /// No description provided for @accountType.
@@ -1226,6 +1310,18 @@ abstract class AppLocalizations {
   /// **'Terms and Conditions'**
   String get termsAndConditions;
 
+  /// No description provided for @otpHeadline.
+  ///
+  /// In en, this message translates to:
+  /// **'We\'ve confirmed it\'s you! 🔐'**
+  String get otpHeadline;
+
+  /// No description provided for @otpSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the verification code sent to your mobile and we\'ll complete your login easily.'**
+  String get otpSubtitle;
+
   /// No description provided for @otpHeaderMessage.
   ///
   /// In en, this message translates to:
@@ -1247,7 +1343,7 @@ abstract class AppLocalizations {
   /// No description provided for @resendCodeMessage.
   ///
   /// In en, this message translates to:
-  /// **'Didn\'t receive the activation code?'**
+  /// **'Didn\'t receive the code?'**
   String get resendCodeMessage;
 
   /// No description provided for @resendVersionCodeOtp.
@@ -1358,22 +1454,40 @@ abstract class AppLocalizations {
   /// **'Log Out'**
   String get logOut;
 
+  /// No description provided for @yesLogOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes, log out'**
+  String get yesLogOut;
+
+  /// No description provided for @noGoBack.
+  ///
+  /// In en, this message translates to:
+  /// **'No, go back'**
+  String get noGoBack;
+
   /// No description provided for @deleteAccount.
   ///
   /// In en, this message translates to:
   /// **'Delete Account'**
   String get deleteAccount;
 
+  /// No description provided for @yesDeleteAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes, delete account'**
+  String get yesDeleteAccount;
+
   /// No description provided for @logoutMessage.
   ///
   /// In en, this message translates to:
-  /// **'Are you sure you want to##log out##from the app?'**
+  /// **'You will be logged out of your account, and you can log back in at any time.'**
   String get logoutMessage;
 
   /// No description provided for @deleteAccountMessage.
   ///
   /// In en, this message translates to:
-  /// **'Are you sure you want to##delete your account?'**
+  /// **'Your account and data will be deleted permanently, and you will not be able to recover them after completing the process.'**
   String get deleteAccountMessage;
 
   /// No description provided for @deleteAccountSuccessMessage.
@@ -1394,6 +1508,12 @@ abstract class AppLocalizations {
   /// **'Enter email address'**
   String get enterEmailAddress;
 
+  /// No description provided for @emailExampleHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Example: mohamed@example.com'**
+  String get emailExampleHint;
+
   /// No description provided for @enterYourPhoneNumber.
   ///
   /// In en, this message translates to:
@@ -1409,7 +1529,7 @@ abstract class AppLocalizations {
   /// No description provided for @continueAsGuest.
   ///
   /// In en, this message translates to:
-  /// **'Continue as guest'**
+  /// **'Skip and continue as guest'**
   String get continueAsGuest;
 
   /// No description provided for @commercialRegistrationNumber.
@@ -1493,7 +1613,7 @@ abstract class AppLocalizations {
   /// No description provided for @deleteAccountWarrningMessage.
   ///
   /// In en, this message translates to:
-  /// **'In case of deleting the account, the data will be ## permanently deleted ## from the application.'**
+  /// **'In case of deleting the account, the data will be permanently deleted from the application.'**
   String get deleteAccountWarrningMessage;
 
   /// No description provided for @sendContactUsMessageSuccess.
@@ -1513,6 +1633,102 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Send message'**
   String get sendMessage;
+
+  /// No description provided for @sendTheMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Send the message'**
+  String get sendTheMessage;
+
+  /// No description provided for @contactInformation.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact information'**
+  String get contactInformation;
+
+  /// No description provided for @contactNumbers.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact numbers'**
+  String get contactNumbers;
+
+  /// No description provided for @contactNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact number'**
+  String get contactNumber;
+
+  /// No description provided for @callNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Call now'**
+  String get callNow;
+
+  /// No description provided for @emailNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Email now'**
+  String get emailNow;
+
+  /// No description provided for @writeYourMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Write your message'**
+  String get writeYourMessage;
+
+  /// No description provided for @socialX.
+  ///
+  /// In en, this message translates to:
+  /// **'X'**
+  String get socialX;
+
+  /// No description provided for @socialInstagram.
+  ///
+  /// In en, this message translates to:
+  /// **'Instagram'**
+  String get socialInstagram;
+
+  /// No description provided for @socialFacebook.
+  ///
+  /// In en, this message translates to:
+  /// **'Facebook'**
+  String get socialFacebook;
+
+  /// No description provided for @socialWhatsApp.
+  ///
+  /// In en, this message translates to:
+  /// **'WhatsApp'**
+  String get socialWhatsApp;
+
+  /// No description provided for @socialTikTok.
+  ///
+  /// In en, this message translates to:
+  /// **'TikTok'**
+  String get socialTikTok;
+
+  /// No description provided for @socialSnapchat.
+  ///
+  /// In en, this message translates to:
+  /// **'Snapchat'**
+  String get socialSnapchat;
+
+  /// No description provided for @socialYoutube.
+  ///
+  /// In en, this message translates to:
+  /// **'YouTube'**
+  String get socialYoutube;
+
+  /// No description provided for @socialGooglePlay.
+  ///
+  /// In en, this message translates to:
+  /// **'Google Play'**
+  String get socialGooglePlay;
+
+  /// No description provided for @socialAppStore.
+  ///
+  /// In en, this message translates to:
+  /// **'App Store'**
+  String get socialAppStore;
 
   /// No description provided for @messageType.
   ///
@@ -1706,11 +1922,83 @@ abstract class AppLocalizations {
   /// **'Your personal profile has been successfully updated'**
   String get personalProfileUpdateSuccessMessage;
 
+  /// No description provided for @changePhoneNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Change phone number'**
+  String get changePhoneNumber;
+
+  /// No description provided for @newPhoneNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'New phone number'**
+  String get newPhoneNumber;
+
   /// No description provided for @myAddress.
   ///
   /// In en, this message translates to:
   /// **'My address'**
   String get myAddress;
+
+  /// No description provided for @account.
+  ///
+  /// In en, this message translates to:
+  /// **'Account'**
+  String get account;
+
+  /// No description provided for @supportAndInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Support and information'**
+  String get supportAndInfo;
+
+  /// No description provided for @policies.
+  ///
+  /// In en, this message translates to:
+  /// **'Policies'**
+  String get policies;
+
+  /// No description provided for @preferences.
+  ///
+  /// In en, this message translates to:
+  /// **'Preferences'**
+  String get preferences;
+
+  /// No description provided for @accountManagement.
+  ///
+  /// In en, this message translates to:
+  /// **'Account management'**
+  String get accountManagement;
+
+  /// No description provided for @discountCoupons.
+  ///
+  /// In en, this message translates to:
+  /// **'Discount coupons'**
+  String get discountCoupons;
+
+  /// No description provided for @whoWeAre.
+  ///
+  /// In en, this message translates to:
+  /// **'Who we are'**
+  String get whoWeAre;
+
+  /// No description provided for @newOrders.
+  ///
+  /// In en, this message translates to:
+  /// **'New orders'**
+  String get newOrders;
+
+  /// No description provided for @ordersInProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Orders in progress'**
+  String get ordersInProgress;
+
+  /// No description provided for @finishedOrders.
+  ///
+  /// In en, this message translates to:
+  /// **'Finished orders'**
+  String get finishedOrders;
 
   /// No description provided for @providerOnBoardingTitle1.
   ///
@@ -1751,37 +2039,37 @@ abstract class AppLocalizations {
   /// No description provided for @userOnBoardingTitle1.
   ///
   /// In en, this message translates to:
-  /// **'Your comfort starts with a service that reaches your doorstep!'**
+  /// **'Food products at affordable prices for everyone'**
   String get userOnBoardingTitle1;
 
   /// No description provided for @userOnBoardingSubTitle1.
   ///
   /// In en, this message translates to:
-  /// **'Plumbing, electricity, painting, carpentry... all in one app, faster than you can imagine, anytime and anywhere.'**
+  /// **'Get food products at affordable prices for everyone, every day.'**
   String get userOnBoardingSubTitle1;
 
   /// No description provided for @userOnBoardingTitle2.
   ///
   /// In en, this message translates to:
-  /// **'All craftsmen in your pocket!'**
+  /// **'The tastiest fresh fruits in one place'**
   String get userOnBoardingTitle2;
 
   /// No description provided for @userOnBoardingSubTitle2.
   ///
   /// In en, this message translates to:
-  /// **'Trusted craftsmen, guaranteed work, home services anytime and anywhere.'**
+  /// **'Enjoy a diverse selection of fresh fruits, with high quality and an irresistible taste.'**
   String get userOnBoardingSubTitle2;
 
   /// No description provided for @userOnBoardingTitle3.
   ///
   /// In en, this message translates to:
-  /// **'A price that suits you and a service that satisfies you!'**
+  /// **'Fresh vegetables daily at affordable prices'**
   String get userOnBoardingTitle3;
 
   /// No description provided for @userOnBoardingSubTitle3.
   ///
   /// In en, this message translates to:
-  /// **'Choose the service... and get the best price and a service that satisfies you before the work begins.'**
+  /// **'Choose from a wide variety of fresh vegetables daily, with guaranteed quality.'**
   String get userOnBoardingSubTitle3;
 
   /// No description provided for @wallet.
@@ -2312,6 +2600,24 @@ abstract class AppLocalizations {
   /// **'Most requested services'**
   String get mostRequestedServices;
 
+  /// No description provided for @mostRequestedProducts.
+  ///
+  /// In en, this message translates to:
+  /// **'Most requested products'**
+  String get mostRequestedProducts;
+
+  /// No description provided for @offersList.
+  ///
+  /// In en, this message translates to:
+  /// **'Offers list'**
+  String get offersList;
+
+  /// No description provided for @discountPercent.
+  ///
+  /// In en, this message translates to:
+  /// **'{percent}% off'**
+  String discountPercent(int percent);
+
   /// No description provided for @viewMore.
   ///
   /// In en, this message translates to:
@@ -2341,6 +2647,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'You can enjoy and discover app features on login'**
   String get welcomeSubMessage;
+
+  /// No description provided for @homeAppBarSlogan.
+  ///
+  /// In en, this message translates to:
+  /// **'Fresh, delicious, and delivered to your door! 🍎'**
+  String get homeAppBarSlogan;
 
   /// No description provided for @highestRated.
   ///

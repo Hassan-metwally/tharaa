@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../core.dart';
 import 'app_theme.dart';
@@ -13,7 +14,7 @@ class LightTheme extends AppTheme {
   ThemeMode get themeMode => ThemeMode.light;
 
   @override
-  Color get backgroundColor => const Color(0xffFFFCFB);
+  Color get backgroundColor => white;
 
   @override
   Color get cardColor => Colors.white;
@@ -81,44 +82,46 @@ class LightTheme extends AppTheme {
     ),
     inputDecorationTheme: InputDecorationTheme(
       isDense: true,
-      prefixIconColor: hintColor,
-      suffixIconColor: hintColor,
-      prefixIconConstraints: const BoxConstraints(minWidth: 30, minHeight: 46),
-      suffixIconConstraints: const BoxConstraints(minWidth: 30, minHeight: 46),
-      constraints: const BoxConstraints(minHeight: 48),
-      hintStyle: TextStyles.light12.copyWith(color: hintColor),
-      labelStyle: TextStyles.light14.copyWith(color: textColor),
-      errorStyle: TextStyles.light10.copyWith(color: error),
-      contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
-      border: OutlineInputBorder(
-        borderRadius: const BorderRadius.all(Radius.circular(16)),
-        borderSide: BorderSide(color: enabledBorderColor),
+      prefixIconColor: black400,
+      suffixIconColor: black400,
+      prefixIconConstraints: const BoxConstraints(minWidth: 44, minHeight: 56),
+      suffixIconConstraints: const BoxConstraints(minWidth: 44, minHeight: 56),
+      constraints: const BoxConstraints(minHeight: 56),
+      hintStyle: TextStyles.regular14.copyWith(color: black400, height: 1.4),
+      labelStyle: TextStyles.semiBold16.copyWith(color: textColor, fontWeight: FontWeight.w700, height: 1.3),
+      helperStyle: TextStyles.regular12.copyWith(color: mutedText, height: 1.4),
+      errorStyle: TextStyles.regular12.copyWith(color: error, height: 1.4),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+      border: const OutlineInputBorder(
+        borderRadius: BorderRadius.all(Radius.circular(AppTheme.fieldRadius)),
+        borderSide: BorderSide.none,
       ),
-      disabledBorder: OutlineInputBorder(
-        borderRadius: const BorderRadius.all(Radius.circular(16)),
-        borderSide: BorderSide(color: disableBorderColor),
+      disabledBorder: const OutlineInputBorder(
+        borderRadius: BorderRadius.all(Radius.circular(AppTheme.fieldRadius)),
+        borderSide: BorderSide.none,
       ),
-      enabledBorder: OutlineInputBorder(
-        borderRadius: const BorderRadius.all(Radius.circular(16)),
-        borderSide: BorderSide(color: enabledBorderColor),
+      enabledBorder: const OutlineInputBorder(
+        borderRadius: BorderRadius.all(Radius.circular(AppTheme.fieldRadius)),
+        borderSide: BorderSide.none,
       ),
       focusedBorder: OutlineInputBorder(
-        borderRadius: const BorderRadius.all(Radius.circular(16)),
+        borderRadius: const BorderRadius.all(Radius.circular(AppTheme.fieldRadius)),
         borderSide: BorderSide(color: focusedBorderColor),
       ),
-      fillColor: Colors.white,
+      fillColor: fieldFill,
       filled: true,
       errorBorder: OutlineInputBorder(
-        borderRadius: const BorderRadius.all(Radius.circular(16)),
+        borderRadius: const BorderRadius.all(Radius.circular(AppTheme.fieldRadius)),
         borderSide: BorderSide(color: error),
       ),
       focusedErrorBorder: OutlineInputBorder(
-        borderRadius: const BorderRadius.all(Radius.circular(16)),
+        borderRadius: const BorderRadius.all(Radius.circular(AppTheme.fieldRadius)),
         borderSide: BorderSide(color: error),
       ),
+      helperMaxLines: 3,
       errorMaxLines: 10,
       floatingLabelBehavior: FloatingLabelBehavior.never,
-      floatingLabelStyle: TextStyles.light14,
+      floatingLabelStyle: TextStyles.semiBold16,
     ),
     checkboxTheme: CheckboxThemeData(
       visualDensity: VisualDensity.compact,
@@ -147,14 +150,27 @@ class LightTheme extends AppTheme {
     ),
     cardColor: cardColor,
     appBarTheme: AppBarTheme(
-      titleTextStyle: TextStyles.light16.copyWith(color: textColor),
+      titleTextStyle: TextStyles.semiBold20.copyWith(color: textColor),
       elevation: 1,
       surfaceTintColor: AppColors.backgroundColor,
       backgroundColor: AppColors.white,
+      centerTitle: true,
     ),
     actionIconTheme: ActionIconThemeData(
       backButtonIconBuilder: (context) {
-        return Icon(Icons.arrow_back, color: textColor);
+        final bool isRtl = Directionality.of(context) == TextDirection.rtl;
+        return UnconstrainedBox(
+          child: Container(
+            width: 40,
+            height: 40,
+            alignment: Alignment.center,
+            decoration: const BoxDecoration(color: Color(0xFFF7F8FA), shape: BoxShape.circle),
+            child: Transform.flip(
+              flipX: isRtl,
+              child: SvgPicture.asset(AppIcons.arrowBack, width: 22, height: 22),
+            ),
+          ),
+        );
       },
     ),
     outlinedButtonTheme: OutlinedButtonThemeData(

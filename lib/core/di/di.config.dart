@@ -30,6 +30,7 @@ import '../../src/addresses/presentation/my_addresses/my_addresses_cubit.dart'
 import '../../src/addresses/presentation/upsert_address/upsert_address_cubit.dart'
     as _i170;
 import '../../src/ads/data/datasources/ads_datasource.dart' as _i268;
+import '../../src/ads/data/datasources/ads_mock_datasource.dart' as _i991;
 import '../../src/ads/data/repositories/ads_repository_impl.dart' as _i331;
 import '../../src/ads/domain/repositories/ads_repository.dart' as _i740;
 import '../../src/ads/domain/usecases/get_all_ads_usecase.dart' as _i161;
@@ -65,6 +66,22 @@ import '../../src/cart/presentation/update_cart_delivery_fees/update_cart_delive
     as _i21;
 import '../../src/cart/presentation/upsert_cart_item/upsert_cart_item_cubit.dart'
     as _i601;
+import '../../src/categories/data/datasources/categories_datasource.dart'
+    as _i226;
+import '../../src/categories/data/datasources/categories_mock_datasource.dart'
+    as _i152;
+import '../../src/categories/data/repositories/categories_repository_impl.dart'
+    as _i1031;
+import '../../src/categories/domain/repositories/categories_repository.dart'
+    as _i406;
+import '../../src/categories/domain/usecases/get_main_categories_usecase.dart'
+    as _i574;
+import '../../src/categories/domain/usecases/get_sub_categories_usecase.dart'
+    as _i919;
+import '../../src/categories/presentation/main_categories/main_categories_cubit.dart'
+    as _i17;
+import '../../src/categories/presentation/sub_categories/sub_categories_cubit.dart'
+    as _i976;
 import '../../src/chat/data/data_source/chat_data_source.dart' as _i559;
 import '../../src/chat/data/repository/chat_repository_imp.dart' as _i394;
 import '../../src/chat/domain/repository/chat_repository.dart' as _i824;
@@ -146,6 +163,19 @@ import '../../src/notifications/domain/use_cases/mark_all_notifications_as_read_
 import '../../src/notifications/domain/use_cases/read_notification_usecase.dart'
     as _i726;
 import '../../src/notifications/presentation/notifications_cubit.dart' as _i545;
+import '../../src/products/data/datasources/products_datasource.dart' as _i617;
+import '../../src/products/data/datasources/products_mock_datasource.dart'
+    as _i31;
+import '../../src/products/data/repositories/products_repository_impl.dart'
+    as _i482;
+import '../../src/products/domain/repositories/products_repository.dart'
+    as _i417;
+import '../../src/products/domain/usecases/get_products_usecase.dart' as _i415;
+import '../../src/products/domain/usecases/show_product_details_usecase.dart'
+    as _i100;
+import '../../src/products/presentation/products/products_cubit.dart' as _i681;
+import '../../src/products/presentation/show_product_details/show_product_details_cubit.dart'
+    as _i746;
 import '../../src/rating/data/datasources/rating_datasource.dart' as _i995;
 import '../../src/rating/data/repositories/rating_repository_impl.dart'
     as _i665;
@@ -156,6 +186,8 @@ import '../../src/rating/presentation/add_rate/add_rate_cubit.dart' as _i295;
 import '../../src/rating/presentation/ratings/ratings_cubit.dart' as _i158;
 import '../../src/statistics/data/datasources/statistics_datasource.dart'
     as _i1069;
+import '../../src/statistics/data/datasources/statistics_mock_datasource.dart'
+    as _i214;
 import '../../src/statistics/data/repositories/statistics_repository_impl.dart'
     as _i550;
 import '../../src/statistics/domain/repositories/statistics_repository.dart'
@@ -207,6 +239,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i298.EnableGpsAndHandlePermissionUseCase>(
       () => _i298.EnableGpsAndHandlePermissionUseCase(),
     );
+    gh.factory<_i268.AdsDatasource>(() => _i991.AdsMockDatasource());
     gh.factory<_i177.SecureStorageDataSource>(
       () => _i177.SecureStorageDataSourceImpl(),
     );
@@ -214,10 +247,14 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i203.LanguageCacheDateSourceImp(),
     );
     gh.factory<_i984.ThemeRepository>(() => _i715.ThemeRepositoryImp());
-    gh.factory<_i351.DioHelper>(() => _i351.DioHelper(dio: gh<_i361.Dio>()));
     gh.factory<_i1069.StatisticsDatasource>(
-      () => _i1069.StatisticsDatasourceImpl(gh<_i351.DioHelper>()),
+      () => _i214.StatisticsMockDatasource(),
     );
+    gh.factory<_i740.AdsRepository>(
+      () => _i331.AdsRepositoryImpl(gh<_i268.AdsDatasource>()),
+    );
+    gh.factory<_i351.DioHelper>(() => _i351.DioHelper(dio: gh<_i361.Dio>()));
+    gh.factory<_i617.ProductsDatasource>(() => _i31.ProductsMockDatasource());
     gh.factory<_i401.MapsDataSource>(
       () => _i401.MapsDataSourceImpl(gh<_i351.DioHelper>()),
     );
@@ -230,6 +267,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i529.NotificationDataSource>(
       () => _i529.NotificationDataSourceImp(gh<_i351.DioHelper>()),
     );
+    gh.factory<_i226.CategoriesDatasource>(
+      () => _i152.CategoriesMockDatasource(),
+    );
     gh.factory<_i758.MenuCommonDatasource>(
       () => _i758.MenuCommonDatasourceImpl(gh<_i351.DioHelper>()),
     );
@@ -239,6 +279,12 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i351.SecureStorageRepository>(
       () =>
           _i526.SecureStorageRepositoryImp(gh<_i177.SecureStorageDataSource>()),
+    );
+    gh.factory<_i161.GetAllAdsUsecase>(
+      () => _i161.GetAllAdsUsecase(gh<_i740.AdsRepository>()),
+    );
+    gh.factory<_i417.ProductsRepository>(
+      () => _i482.ProductsRepositoryImpl(gh<_i617.ProductsDatasource>()),
     );
     gh.factory<_i46.WalletRepository>(
       () => _i514.WalletRepositoryImp(gh<_i351.DioHelper>()),
@@ -327,11 +373,11 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i902.VerifyOtpUseCase>(
       () => _i902.VerifyOtpUseCase(gh<_i300.AuthenticationRepository>()),
     );
+    gh.factory<_i406.CategoriesRepository>(
+      () => _i1031.CategoriesRepositoryImpl(gh<_i226.CategoriesDatasource>()),
+    );
     gh.factory<_i262.DeleteCartItemCubit>(
       () => _i262.DeleteCartItemCubit(gh<_i607.DeleteCartItemUsecase>()),
-    );
-    gh.factory<_i268.AdsDatasource>(
-      () => _i268.AdsDatasourceImpl(gh<_i351.DioHelper>()),
     );
     gh.factory<_i601.UpsertCartItemCubit>(
       () => _i601.UpsertCartItemCubit(gh<_i507.UpsertCartItemUsecase>()),
@@ -362,6 +408,12 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i1065.CommonDatasource>(
       () => _i1065.CommonDatasourceImpl(gh<_i351.DioHelper>()),
     );
+    gh.factory<_i574.GetMainCategoriesUsecase>(
+      () => _i574.GetMainCategoriesUsecase(gh<_i406.CategoriesRepository>()),
+    );
+    gh.factory<_i919.GetSubCategoriesUsecase>(
+      () => _i919.GetSubCategoriesUsecase(gh<_i406.CategoriesRepository>()),
+    );
     gh.factory<_i646.MenuCommonRepository>(
       () => _i294.MenuCommonRepositoryImp(
         gh<_i758.MenuCommonDatasource>(),
@@ -373,9 +425,6 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i768.AddressRepository>(
       () => _i711.AddressRepositoryImpl(gh<_i351.DioHelper>()),
-    );
-    gh.factory<_i740.AdsRepository>(
-      () => _i331.AdsRepositoryImpl(gh<_i268.AdsDatasource>()),
     );
     gh.factory<_i268.GetContactUsDataUseCase>(
       () => _i268.GetContactUsDataUseCase(gh<_i646.MenuCommonRepository>()),
@@ -399,6 +448,9 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i559.ChatDataSource>(),
         gh<_i351.GetCachedUserUseCase>(),
       ),
+    );
+    gh.factory<_i779.AdsCubit>(
+      () => _i779.AdsCubit(gh<_i161.GetAllAdsUsecase>()),
     );
     gh.factory<_i84.CartCubit>(
       () => _i84.CartCubit(gh<_i896.GetCartItemsUsecase>()),
@@ -427,14 +479,20 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i751.WithdrawBalanceUseCase>(
       () => _i751.WithdrawBalanceUseCase(gh<_i46.WalletRepository>()),
     );
+    gh.factory<_i17.MainCategoriesCubit>(
+      () => _i17.MainCategoriesCubit(gh<_i574.GetMainCategoriesUsecase>()),
+    );
     gh.factory<_i582.GetProfileUseCase>(
       () => _i582.GetProfileUseCase(gh<_i931.MoreRepository>()),
     );
     gh.factory<_i87.UpdateProfileUseCase>(
       () => _i87.UpdateProfileUseCase(gh<_i931.MoreRepository>()),
     );
-    gh.factory<_i161.GetAllAdsUsecase>(
-      () => _i161.GetAllAdsUsecase(gh<_i740.AdsRepository>()),
+    gh.factory<_i415.GetProductsUsecase>(
+      () => _i415.GetProductsUsecase(gh<_i417.ProductsRepository>()),
+    );
+    gh.factory<_i100.ShowProductDetailsUsecase>(
+      () => _i100.ShowProductDetailsUsecase(gh<_i417.ProductsRepository>()),
     );
     gh.factory<_i612.ClientWalletCubit>(
       () => _i612.ClientWalletCubit(
@@ -529,8 +587,18 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i904.UpdateUserLocationUseCase>(),
       ),
     );
+    gh.factory<_i976.SubCategoriesCubit>(
+      () => _i976.SubCategoriesCubit(gh<_i919.GetSubCategoriesUsecase>()),
+    );
+    gh.factory<_i746.ShowProductDetailsCubit>(
+      () =>
+          _i746.ShowProductDetailsCubit(gh<_i100.ShowProductDetailsUsecase>()),
+    );
     gh.factory<_i158.RatingsCubit>(
       () => _i158.RatingsCubit(gh<_i1024.GetRatingsUsecase>()),
+    );
+    gh.factory<_i681.ProductsCubit>(
+      () => _i681.ProductsCubit(gh<_i415.GetProductsUsecase>()),
     );
     gh.factory<_i725.GetBanksUseCase>(
       () => _i725.GetBanksUseCase(gh<_i92.CommonRepository>()),
@@ -549,9 +617,6 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i339.AddLocationUseCase>(),
         gh<_i803.UpdateAddressInAddressListuseCase>(),
       ),
-    );
-    gh.factory<_i779.AdsCubit>(
-      () => _i779.AdsCubit(gh<_i161.GetAllAdsUsecase>()),
     );
     gh.factory<_i388.GetChatsInboxUsecase>(
       () => _i388.GetChatsInboxUsecase(gh<_i34.ChatsInboxRepository>()),

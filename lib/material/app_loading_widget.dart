@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lottie/lottie.dart';
+import 'package:tharaa/material/spin_kit_loading_widget.dart';
 
 import '../core/core.dart';
 
@@ -14,7 +15,7 @@ class AppLoadingWidget extends StatelessWidget {
 
   static const String routeName = "AppLoadingOverlay";
 
-  static Future<void> overlay({bool rootNavigator = true}) async {
+  static Future<void> overlay({bool rootNavigator = true, bool useAnimatedLoading = false}) async {
     final currentRouteName = AppRouter.getCurrentRoute;
     final context = appNavigatorKey.currentContext;
 
@@ -34,8 +35,8 @@ class AppLoadingWidget extends StatelessWidget {
           canPop: false,
           child: Center(
             child: Container(
-              height: 100,
-              width: 100,
+              height: 70,
+              width: 140,
               padding: const EdgeInsets.all(12),
               alignment: Alignment.center,
               decoration: BoxDecoration(
@@ -43,7 +44,7 @@ class AppLoadingWidget extends StatelessWidget {
                 borderRadius: BorderRadius.circular(12),
                 boxShadow: [AppColors.boxShadow],
               ),
-              child: const LogoLoading(),
+              child: useAnimatedLoading ? const LogoLoading() : const DefaultLoading(),
             ),
           ),
         );
@@ -83,11 +84,8 @@ class DefaultLoading extends StatelessWidget {
     return Center(
       child: SizedBox(
         height: size,
-        width: size,
-        child: CircularProgressIndicator.adaptive(
-          valueColor: AlwaysStoppedAnimation<Color>(color ?? AppColors.primary),
-          strokeWidth: strokeWidth,
-        ),
+        width: size * 2,
+        child: SpinKitLoadingWidget(size: size, color: color),
       ),
     );
   }
@@ -98,6 +96,6 @@ class LogoLoading extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(child: LottieBuilder.asset("assets/animations/tharaa.json"));
+    return Center(child: LottieBuilder.asset("assets/animations/zehab.json"));
   }
 }

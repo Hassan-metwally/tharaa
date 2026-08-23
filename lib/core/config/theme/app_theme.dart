@@ -45,6 +45,10 @@ abstract class AppTheme {
   abstract final Color textColor;
   abstract final Color hintColor;
 
+  final Color fieldFill = const Color(0xFFF5F6F8);
+  final Color mutedText = const Color(0xFF6E829F);
+  static const double fieldRadius = 16;
+
   BoxShadow get boxShadow => BoxShadow(color: Colors.black.withOpacityPercent(8), blurRadius: 4);
 
   LinearGradient get primaryGradiant => LinearGradient(

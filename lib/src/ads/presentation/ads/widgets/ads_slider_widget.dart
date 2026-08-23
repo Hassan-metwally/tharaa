@@ -1,11 +1,21 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../../../core/core.dart';
 import '../../../../../../../material/app_fail_widget.dart';
+import '../../../../../../../material/media/app_image.dart';
 import '../../../../../../../material/shimmer/shimmer_effect_widget.dart';
 import '../../../domain/entities/ad_entity.dart';
+
+const double _kBannerHeight = 140;
+const double _kBannerRadius = 16;
+const double _kBannerItemPadding = Dimensions.p8;
+const double _kIndicatorGap = 12;
+const double _kIndicatorHeight = 4;
+const double _kIndicatorActiveWidth = 30;
+const double _kIndicatorInactiveWidth = 20;
+const double _kIndicatorSpacing = 4;
+const Color _kIndicatorInactive = Color(0xFFBCC6D3);
 
 class AdsSliderWidget extends StatefulWidget {
   const AdsSliderWidget({required this.sliders, super.key});
@@ -17,94 +27,109 @@ class AdsSliderWidget extends StatefulWidget {
 }
 
 class _AdsSliderWidgetState extends State<AdsSliderWidget> {
-  final controller = CarouselSliderController();
+  final CarouselSliderController _controller = CarouselSliderController();
   int _currentIndex = 0;
-  bool get isLast => _currentIndex == widget.sliders.length - 1;
-  int get totalCount => widget.sliders.length;
+
+  int get _totalCount => widget.sliders.length;
 
   @override
   Widget build(BuildContext context) {
-    return (widget.sliders.isEmpty)
-        ? const SizedBox()
-        : Padding(
-            padding: const EdgeInsets.only(top: 10),
-            child: Stack(
-              alignment: Alignment.bottomCenter,
-              children: [
-                CarouselSlider(
-                  carouselController: controller,
-                  options: CarouselOptions(
-                    scrollPhysics: const ClampingScrollPhysics(),
-                    autoPlay: true,
-                    viewportFraction: 1,
-                    enlargeCenterPage: true,
-                    height: 170,
-                    onPageChanged: (index, _) {
-                      _currentIndex = index;
-                      setState(() {});
-                    },
-                  ),
-                  items: List.generate(totalCount, (index) {
-                    final slider = widget.sliders[index];
-                    return Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        Container(
-                          height: 154,
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(image: NetworkImage(slider.image.path), fit: BoxFit.cover),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              // gradient: LinearGradient(
-                              //   begin: context.read<AppLanguageCubit>().isRtl ? Alignment.centerRight : Alignment.centerLeft,
-                              //   end: context.read<AppLanguageCubit>().isRtl ? Alignment.centerLeft : Alignment.centerRight,
-                              //   colors: [
-                              //     AppColors.primary500,
-                              //     AppColors.primary500.withOpacityPercent(50),
-                              //     AppColors.primary500.withOpacityPercent(1),
-                              //   ],
-                              // ),
-                            ),
-                          ),
-                        ),
-                        Positioned.directional(
-                          textDirection: context.read<AppLanguageCubit>().isRtl ? TextDirection.rtl : TextDirection.ltr,
-                          top: 30,
-                          start: 20,
-                          child: SizedBox(
-                            width: 170,
-                            child: Text(widget.sliders[_currentIndex].title, style: TextStyles.bold14.copyWith(color: AppColors.white)),
-                          ),
-                        ),
-                      ],
-                    );
-                  }),
+    if (widget.sliders.isEmpty) {
+      return const SizedBox();
+    }
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final bool hasMultipleAds = _totalCount > 1;
+        final double viewportFraction = _bannerViewportFraction(constraints.maxWidth);
+
+        return Column(
+          children: [
+            SizedBox(
+              height: _kBannerHeight,
+              width: double.infinity,
+              child: CarouselSlider.builder(
+                carouselController: _controller,
+                itemCount: _totalCount,
+                itemBuilder: (context, index, _) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: _kBannerItemPadding),
+                    child: _AdsBannerCard(ad: widget.sliders[index]),
+                  );
+                },
+                options: CarouselOptions(
+                  height: _kBannerHeight,
+                  viewportFraction: viewportFraction,
+                  disableCenter: true,
+                  autoPlay: hasMultipleAds,
+                  enableInfiniteScroll: hasMultipleAds,
+                  clipBehavior: Clip.none,
+                  scrollPhysics: const ClampingScrollPhysics(),
+                  onPageChanged: (index, _) {
+                    setState(() => _currentIndex = index);
+                  },
                 ),
-                Positioned(
-                  bottom: 20,
-                  child: Row(
-                    children: List.generate(totalCount, (index) {
-                      final bool isSelected = index == _currentIndex;
-                      return AnimatedContainer(
-                        duration: Durations.medium2,
-                        height: 6,
-                        width: isSelected ? 30 : 6,
-                        margin: const EdgeInsets.symmetric(horizontal: 4),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: isSelected ? AppColors.white : AppColors.black50,
-                        ),
-                      );
-                    }),
-                  ),
-                ),
-              ],
+              ),
             ),
-          );
+            const SizedBox(height: _kIndicatorGap),
+            _AdsPageIndicator(count: _totalCount, currentIndex: _currentIndex),
+          ],
+        );
+      },
+    );
+  }
+}
+
+double _bannerViewportFraction(double maxWidth) {
+  if (maxWidth <= 0) {
+    return 1;
+  }
+  final double pageGutter = (Dimensions.p16 - _kBannerItemPadding) * 2;
+  return ((maxWidth - pageGutter) / maxWidth).clamp(0.0, 1.0);
+}
+
+class _AdsBannerCard extends StatelessWidget {
+  const _AdsBannerCard({required this.ad});
+
+  final AdEntity ad;
+
+  @override
+  Widget build(BuildContext context) {
+    return AppImage.rounded(
+      path: ad.image.path,
+      height: _kBannerHeight,
+      width: double.infinity,
+      radius: _kBannerRadius,
+      bgColor: AppColors.black800,
+      fit: BoxFit.cover,
+    );
+  }
+}
+
+class _AdsPageIndicator extends StatelessWidget {
+  const _AdsPageIndicator({required this.count, required this.currentIndex});
+
+  final int count;
+  final int currentIndex;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: List.generate(count, (index) {
+        final bool isSelected = index == currentIndex;
+        return AnimatedContainer(
+          duration: Durations.medium2,
+          height: _kIndicatorHeight,
+          width: isSelected ? _kIndicatorActiveWidth : _kIndicatorInactiveWidth,
+          margin: EdgeInsetsDirectional.only(start: index == 0 ? 0 : _kIndicatorSpacing),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            color: isSelected ? AppColors.primary500 : _kIndicatorInactive,
+          ),
+        );
+      }),
+    );
   }
 }
 
@@ -113,16 +138,20 @@ class AdsSliderLoadingWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ShimmerWidget(
-      child: Container(
-        margin: const EdgeInsets.only(top: 10),
-        height: 160,
-        width: double.infinity,
-        decoration: BoxDecoration(
-          color: AppColors.primary100,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: AppColors.primary50, width: 5),
-        ),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: Dimensions.p16),
+      child: Column(
+        children: [
+          ShimmerWidget(
+            child: Container(
+              height: _kBannerHeight,
+              width: double.infinity,
+              decoration: BoxDecoration(color: AppColors.primary100, borderRadius: BorderRadius.circular(_kBannerRadius)),
+            ),
+          ),
+          const SizedBox(height: _kIndicatorGap),
+          const SizedBox(height: _kIndicatorHeight),
+        ],
       ),
     );
   }
@@ -135,16 +164,20 @@ class AdsSliderErrorWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 170,
-      width: double.infinity,
-      margin: const EdgeInsets.only(top: 10),
-      decoration: BoxDecoration(
-        color: AppColors.black50,
-        borderRadius: BorderRadius.circular(12),
-        // border: Border.all(color: AppColors.black50, width: 5),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: Dimensions.p16),
+      child: Column(
+        children: [
+          Container(
+            height: _kBannerHeight,
+            width: double.infinity,
+            decoration: BoxDecoration(color: AppColors.black100, borderRadius: BorderRadius.circular(_kBannerRadius)),
+            child: AppFailWidget(isMini: true, onRetry: onRetry),
+          ),
+          const SizedBox(height: _kIndicatorGap),
+          const SizedBox(height: _kIndicatorHeight),
+        ],
       ),
-      child: AppFailWidget(isMini: true, onRetry: onRetry),
     );
   }
 }

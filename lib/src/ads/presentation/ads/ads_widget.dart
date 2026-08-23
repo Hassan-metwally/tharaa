@@ -12,26 +12,23 @@ class AdsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => injector<AdsCubit>()..getAllAds(),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-        child: BlocBuilder<AdsCubit, AdsState>(
-          builder: (context, state) {
-            if (state.getAllAdsState.isLoading) {
-              return const AdsSliderLoadingWidget();
-            } else if (state.getAllAdsState.isFailure) {
-              return AdsSliderErrorWidget(
-                onRetry: () {
-                  context.read<AdsCubit>().getAllAds();
-                },
-              );
-            } else if (state.getAllAdsState.isSuccess) {
-              final ads = state.getAllAdsState.data ?? [];
-              return AdsSliderWidget(sliders: ads);
-            } else {
-              return const SizedBox();
-            }
-          },
-        ),
+      child: BlocBuilder<AdsCubit, AdsState>(
+        builder: (context, state) {
+          if (state.getAllAdsState.isLoading) {
+            return const AdsSliderLoadingWidget();
+          } else if (state.getAllAdsState.isFailure) {
+            return AdsSliderErrorWidget(
+              onRetry: () {
+                context.read<AdsCubit>().getAllAds();
+              },
+            );
+          } else if (state.getAllAdsState.isSuccess) {
+            final ads = state.getAllAdsState.data ?? [];
+            return AdsSliderWidget(sliders: ads);
+          } else {
+            return const SizedBox();
+          }
+        },
       ),
     );
   }

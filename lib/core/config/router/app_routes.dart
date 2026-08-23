@@ -36,6 +36,12 @@ class AppRoutes {
   static const faqsPage = '/FaqsPage';
   static const changeLanguage = '/ChangeLanguagePage';
 
+  /// Categories
+  ///
+  static const mainCategoriesPage = '/MainCategoriesPage';
+  static const subCategoriesPage = '/SubCategoriesPage';
+  static const productsPage = '/ProductsPage';
+
   /// More Pages
   ///
 }

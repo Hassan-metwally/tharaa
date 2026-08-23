@@ -1,5 +1,3 @@
-// ignore_for_file: unused_element, unused_element_parameter
-
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -11,78 +9,35 @@ const Duration _toastLongDuration = Duration(milliseconds: 3500);
 const Duration _showToastDuration = Duration(milliseconds: 1500);
 const Duration _reverseToastDuration = Duration(milliseconds: 440);
 
-final Widget _successPrifixWidget = AppSvgIcon(path: "");
-final Widget _errorPrifixWidget = AppSvgIcon(path: "");
+const double _toastMinHeight = 74;
+const double _toastRadius = 14;
+const double _toastHorizontalPadding = 16;
+const double _toastIconBoxSize = 24;
+const double _toastProgressHeight = 5;
+const Color _toastBackgroundColor = Color(0xFFFFFFFF);
+const Color _toastTextColor = Color(0xFF1A1A1A);
 
 class AppToasts {
   AppToasts._();
   static OverlayEntry? _overlayEntry;
 
   static void error(BuildContext context, {required String message, Duration? duration}) {
-    if (_overlayEntry?.mounted ?? false) {
-      _overlayEntry?.remove();
-    }
-
     if (message.isEmpty) {
       message = appLocalizer.unexpectedError;
     }
-
-    duration ??= _calculateDuration(message);
-
-    _overlayEntry = OverlayEntry(
-      builder: (BuildContext context) => _Toast(
-        title: message,
-        onDismiss: () {
-          dismissToast();
-        },
-        color: AppColors.red50,
-        textStyle: TextStyles.regular12.copyWith(color: AppColors.error),
-        duration: duration,
-      ),
-    );
-    Overlay.of(context).insert(_overlayEntry!);
+    _show(context, message: message, type: _ToastType.error, duration: duration);
   }
 
   static void success(BuildContext context, {required String message, Duration? duration}) {
-    if (_overlayEntry?.mounted ?? false) {
-      _overlayEntry?.remove();
-    }
-    duration ??= _calculateDuration(message);
-
-    _overlayEntry = OverlayEntry(
-      builder: (BuildContext context) => _Toast(
-        title: message,
-        onDismiss: () {
-          dismissToast();
-        },
-        textStyle: TextStyles.regular12.copyWith(color: AppColors.success900),
-        color: AppColors.success50,
-        // prefixWidget: AppSvgIcon(path: AppIcons.checkCircleIc),
-        duration: duration,
-      ),
-    );
-    Overlay.of(context).insert(_overlayEntry!);
+    _show(context, message: message, type: _ToastType.success, duration: duration);
   }
 
   static void hint(BuildContext context, {required String message, Duration? duration, Widget? suffixWidget}) {
-    if (_overlayEntry?.mounted ?? false) {
-      _overlayEntry?.remove();
-    }
-    duration ??= _calculateDuration(message);
+    _show(context, message: message, type: _ToastType.warning, duration: duration, suffixWidget: suffixWidget);
+  }
 
-    _overlayEntry = OverlayEntry(
-      builder: (BuildContext context) => _Toast(
-        title: message,
-        onDismiss: () {
-          dismissToast();
-        },
-        textStyle: TextStyles.medium14.copyWith(color: AppColors.warning700),
-        color: AppColors.warning100,
-        duration: duration,
-        suffixWidget: suffixWidget,
-      ),
-    );
-    Overlay.of(context).insert(_overlayEntry!);
+  static void info(BuildContext context, {required String message, Duration? duration}) {
+    _show(context, message: message, type: _ToastType.info, duration: duration);
   }
 
   static void dismissToast() {
@@ -90,6 +45,31 @@ class AppToasts {
       _overlayEntry?.remove();
     }
     _overlayEntry = null;
+  }
+
+  static void _show(
+    BuildContext context, {
+    required String message,
+    required _ToastType type,
+    Duration? duration,
+    Widget? suffixWidget,
+  }) {
+    if (_overlayEntry?.mounted ?? false) {
+      _overlayEntry?.remove();
+    }
+
+    duration ??= _calculateDuration(message);
+
+    _overlayEntry = OverlayEntry(
+      builder: (BuildContext context) => _Toast(
+        title: message,
+        type: type,
+        duration: duration,
+        suffixWidget: suffixWidget,
+        onDismiss: dismissToast,
+      ),
+    );
+    Overlay.of(context).insert(_overlayEntry!);
   }
 
   static Duration _calculateDuration(String text) {
@@ -111,23 +91,61 @@ class AppToasts {
   }
 }
 
+enum _ToastType {
+  success,
+  error,
+  warning,
+  info;
+
+  Color get accentColor {
+    switch (this) {
+      case _ToastType.success:
+        return const Color(0xFF0F9D58);
+      case _ToastType.error:
+        return const Color(0xFFB3251E);
+      case _ToastType.warning:
+        return const Color(0xFFF9A825);
+      case _ToastType.info:
+        return const Color(0xFF5296D5);
+    }
+  }
+
+  String get iconPath {
+    switch (this) {
+      case _ToastType.success:
+        return AppIcons.checkCircleSolid;
+      case _ToastType.error:
+        return AppIcons.exclamationCircleSolid;
+      case _ToastType.warning:
+        return AppIcons.exclamationTriangleSolid;
+      case _ToastType.info:
+        return AppIcons.infoCircleSolid;
+    }
+  }
+
+  Size get iconSize {
+    switch (this) {
+      case _ToastType.warning:
+        return const Size(21.11, 18.77);
+      case _ToastType.success:
+      case _ToastType.error:
+      case _ToastType.info:
+        return const Size(20, 20);
+    }
+  }
+}
+
 class _Toast extends StatefulWidget {
   final VoidCallback onDismiss;
-  final Color? color;
-  final Color? borderColor;
-  final TextStyle? textStyle;
+  final _ToastType type;
   final String title;
   final Widget? suffixWidget;
-  final Widget? prefixWidget;
   final Duration? duration;
 
   const _Toast({
     required this.onDismiss,
-    this.color,
-    this.borderColor,
-    this.textStyle,
+    required this.type,
     required this.title,
-    this.prefixWidget,
     this.duration,
     this.suffixWidget,
   });
@@ -164,61 +182,29 @@ class _ToastState extends State<_Toast> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
-      child: Align(
-        alignment: const Alignment(0, -.7),
-        child: Material(
-          color: Colors.transparent,
-          child: GestureDetector(
-            onVerticalDragEnd: (_) {
-              _onDismiss();
-            },
-            onHorizontalDragEnd: (_) {
-              _onDismiss();
-            },
-            child: AnimatedBuilder(
-              animation: _sizeAnimation,
-              builder: (context, child) {
-                return Transform.scale(scale: _sizeAnimation.value, child: child);
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: _toastHorizontalPadding, vertical: 8),
+        child: Align(
+          alignment: Alignment.topCenter,
+          child: Material(
+            color: Colors.transparent,
+            child: GestureDetector(
+              onVerticalDragEnd: (_) {
+                _onDismiss();
               },
-              child: Container(
-                constraints: const BoxConstraints(minWidth: 120),
-                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-                decoration: BoxDecoration(
-                  color: widget.color,
-                  // border: Border.all(
-                  // color:
-                  // widget.borderColor ?? AppColors.canvasBackgroundColor,
-                  // width: .7,
-                  // ),
-                  borderRadius: BorderRadius.circular(6),
-                ),
-                child: AnimatedBuilder(
-                  animation: _sizeAnimation,
-                  builder: (context, child) {
-                    return Transform.scale(
-                      scale: _sizeAnimation.value,
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          if (widget.prefixWidget != null) ...[widget.prefixWidget!, const SizedBox(width: 4)],
-                          Flexible(
-                            child: Text(
-                              widget.title,
-                              maxLines: 8,
-                              textAlign: TextAlign.center,
-                              style: (widget.textStyle ?? TextStyles.medium14),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                          if (widget.suffixWidget != null) ...[const SizedBox(width: 4), widget.suffixWidget!],
-                        ],
-                      ),
-                    );
-                  },
+              onHorizontalDragEnd: (_) {
+                _onDismiss();
+              },
+              child: AnimatedBuilder(
+                animation: _sizeAnimation,
+                builder: (context, child) {
+                  return Transform.scale(scale: _sizeAnimation.value, child: child);
+                },
+                child: _ToastCard(
+                  title: widget.title,
+                  type: widget.type,
+                  suffixWidget: widget.suffixWidget,
                 ),
               ),
             ),
@@ -241,5 +227,93 @@ class _ToastState extends State<_Toast> with SingleTickerProviderStateMixin {
     _animationController.reverse().then((value) {
       widget.onDismiss();
     });
+  }
+}
+
+class _ToastCard extends StatelessWidget {
+  const _ToastCard({
+    required this.title,
+    required this.type,
+    this.suffixWidget,
+  });
+
+  final String title;
+  final _ToastType type;
+  final Widget? suffixWidget;
+
+  @override
+  Widget build(BuildContext context) {
+    return ConstrainedBox(
+      constraints: const BoxConstraints(minWidth: 120, minHeight: _toastMinHeight),
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: _toastBackgroundColor,
+          borderRadius: BorderRadius.circular(_toastRadius),
+          boxShadow: [BoxShadow(color: Colors.black.withOpacityPercent(8), blurRadius: 16, offset: const Offset(0, 4))],
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(_toastRadius),
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: _toastHorizontalPadding, vertical: 16),
+                child: Row(
+                  children: [
+                    _ToastStatusIcon(type: type),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        title,
+                        maxLines: 8,
+                        textAlign: TextAlign.start,
+                        style: TextStyles.semiBold14.copyWith(
+                          color: _toastTextColor,
+                          fontWeight: FontWeight.w600,
+                          height: 1,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    if (suffixWidget != null) ...[const SizedBox(width: 8), suffixWidget!],
+                  ],
+                ),
+              ),
+              Positioned(
+                left: 0,
+                right: 0,
+                bottom: 0,
+                child: ColoredBox(
+                  color: type.accentColor,
+                  child: const SizedBox(height: _toastProgressHeight, width: double.infinity),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _ToastStatusIcon extends StatelessWidget {
+  const _ToastStatusIcon({required this.type});
+
+  final _ToastType type;
+
+  @override
+  Widget build(BuildContext context) {
+    final Size iconSize = type.iconSize;
+    return SizedBox(
+      width: _toastIconBoxSize,
+      height: _toastIconBoxSize,
+      child: Center(
+        child: AppSvgIcon(
+          path: type.iconPath,
+          width: iconSize.width,
+          height: iconSize.height,
+        ),
+      ),
+    );
   }
 }

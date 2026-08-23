@@ -1,3 +1,4 @@
+import 'package:bounce/bounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -7,8 +8,8 @@ import '../../../../../material/app_fail_widget.dart';
 import '../../../../../material/buttons/app_button.dart';
 import '../../../../../material/inputs/app_text_form_field.dart';
 import '../../../../../material/inputs/email_field.dart';
-import '../../../../../material/inputs/intel_phone/phone_field.dart';
 import '../../../../../material/inputs/name_field.dart';
+import '../../../../../material/inputs/phone_field.dart';
 import '../../../../../material/inputs/validator_field/validator_field.dart';
 import '../../../../../material/media/svg_icon.dart';
 import '../../../../../material/spin_kit_loading_widget.dart';
@@ -18,21 +19,31 @@ import '../../../domain/use_cases/menu/send_contact_us_message_use_case.dart';
 import '../../drop_downs/drop_downs/drop_down.dart';
 import 'contact_us_cubit.dart';
 
+part 'widgets/contact_us_tab_switcher.dart';
+part 'widgets/contact_us_info_tab.dart';
+part 'widgets/contact_us_send_message_tab.dart';
+
+const Color _kContactUsFill = Color(0xFFF7F8FA);
+const Color _kTabBorder = Color(0xFFD2D8E1);
+const Color _kCallNow = Color(0xFF22C55E);
+const Color _kSectionShadow = Color(0x0DB06828);
+
+enum _ContactUsTab { contactInformation, sendMessage }
+
 class ContactUsPage extends StatelessWidget {
   const ContactUsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         title: Text(appLocalizer.contactUs),
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(1),
-          child: Container(
-            color: AppColors.appbarBorderColor, // border color
-            height: 1.0,
-          ),
-        ),
+        elevation: 0,
+        scrolledUnderElevation: 0,
+        backgroundColor: Colors.white,
+        surfaceTintColor: Colors.white,
       ),
       body: BlocProvider(
         create: (context) => ContactUsCubit()..getData(),
@@ -74,6 +85,7 @@ class __ContactUsBodyState extends State<_ContactUsBody> {
   final _messageContentController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   final ValidatorFieldController<ContactUsMessageType?> messageTypeController = ValidatorFieldController();
+  _ContactUsTab _selectedTab = _ContactUsTab.sendMessage;
 
   void _onSendMessage() {
     final isValidForm = _formKey.currentState?.validate() ?? false;
@@ -92,8 +104,16 @@ class __ContactUsBodyState extends State<_ContactUsBody> {
     }
   }
 
+  void _onTabChanged(_ContactUsTab tab) {
+    if (_selectedTab == tab) return;
+    FocusScope.of(context).unfocus();
+    setState(() => _selectedTab = tab);
+  }
+
   @override
   Widget build(BuildContext context) {
+    final double bottomInset = MediaQuery.viewPaddingOf(context).bottom;
+
     return BlocListener<ContactUsCubit, ContactUsState>(
       listener: (context, state) async {
         if (state.sendMessageState.isSuccess) {
@@ -105,277 +125,61 @@ class __ContactUsBodyState extends State<_ContactUsBody> {
           AppToasts.error(context, message: state.sendMessageState.errorMessage ?? '');
         }
       },
-      child: Form(
-        key: _formKey,
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(20),
+      child: SafeArea(
+        top: false,
+        child: Form(
+          key: _formKey,
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const _HeaderText(),
-              const SizedBox(height: 12),
-              _CardWidget(
-                title: appLocalizer.sendMessage,
-                icon: "",
-                children: [
-                  NameField(
-                    controller: _nameController,
-                    prefix: AppSvgIcon(path: ""),
-                  ),
-                  EmailField(
-                    controller: _emailController,
-                    prefixIcon: AppSvgIcon(path: ""),
-                  ),
-                  PhoneField(controller: _phoneController),
-                  AppSingleDropDown(
-                    controller: messageTypeController,
-                    itemDisplay: (displayValue) => displayValue?.title,
-                    title: appLocalizer.messageType,
-                    hint: appLocalizer.selectMessageType,
-                    items: ContactUsMessageType.values,
-                    prefixIc: "",
-                  ),
-                  AppTextFormField(
-                    controller: _messageContentController,
-                    minLines: 5,
-                    maxLines: 7,
-                    prefixIcon: (isFocused) => Align(
-                      heightFactor: 6.1,
-                      alignment: Alignment.topCenter,
-                      child: AppSvgIcon(path: ""),
-                    ),
-                    label: appLocalizer.messageText,
-                    hint: appLocalizer.writeHere,
-                    validator: (text) {
-                      return Validator(text).defaultValidator;
-                    },
-                  ),
-                  const SizedBox(height: 12),
-                  BlocSelector<ContactUsCubit, ContactUsState, Async<void>>(
-                    selector: (state) => state.sendMessageState,
-                    builder: (context, state) {
-                      return AppButton(text: appLocalizer.send, isLoading: state.isLoading, onPressed: _onSendMessage);
-                    },
-                  ),
-                  const SizedBox(height: 12),
-                ],
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: Dimensions.p16),
+                child: _ContactUsTabSwitcher(selectedTab: _selectedTab, onChanged: _onTabChanged),
               ),
-              const SizedBox(height: 20),
-              if (widget.data.email.isNotEmpty ||
-                  widget.data.mobiles.isNotEmpty ||
-                  widget.data.whatsapp.isNotEmpty ||
-                  widget.data.getSocialLinks.isNotEmpty)
-                _CardWidget(
-                  title: appLocalizer.contactData,
-                  icon: "",
-                  subTitle: appLocalizer.contactWays,
-                  bgColor: const Color(0xffFAFAFA),
+              const SizedBox(height: Dimensions.p24),
+              Expanded(
+                child: IndexedStack(
+                  index: _selectedTab.index,
                   children: [
-                    if (widget.data.email.isNotEmpty)
-                      _TileWidget(
-                        icon: "",
-                        children: [
-                          GestureDetector(
-                            behavior: HitTestBehavior.opaque,
-                            onTap: () => LaunchUrlUtils.openEmailAddress(widget.data.email),
-                            child: Text(
-                              widget.data.email,
-                              style: TextStyles.light14.copyWith(
-                                color: AppColors.primary,
-                                decoration: TextDecoration.underline,
-                                decorationColor: AppColors.primary,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    if (widget.data.mobiles.isNotEmpty)
-                      _TileWidget(
-                        icon: "",
-                        hasSeperator: true,
-                        children: widget.data.mobiles.map((e) {
-                          return GestureDetector(
-                            behavior: HitTestBehavior.opaque,
-                            onTap: () => LaunchUrlUtils.openPhoneNumber(e),
-                            child: Text(
-                              e,
-                              style: TextStyles.light14.copyWith(
-                                color: AppColors.primary,
-                                decoration: TextDecoration.underline,
-                                decorationColor: AppColors.primary,
-                              ),
-                            ),
-                          );
-                        }).toList(),
-                      ),
-                    if (widget.data.whatsapp.isNotEmpty)
-                      _TileWidget(
-                        icon: "",
-                        hasSeperator: true,
-                        children: widget.data.whatsapp.map((e) {
-                          return GestureDetector(
-                            behavior: HitTestBehavior.opaque,
-                            onTap: () => LaunchUrlUtils.openInWhatsApp(e),
-                            child: Text(
-                              e,
-                              style: TextStyles.light14.copyWith(
-                                color: AppColors.primary,
-                                decoration: TextDecoration.underline,
-                                decorationColor: AppColors.primary,
-                              ),
-                            ),
-                          );
-                        }).toList(),
-                      ),
-                    const SizedBox(height: 16),
-                    Wrap(
-                      spacing: 8,
-                      runSpacing: 8,
-                      children: widget.data.getSocialLinks.map((url) {
-                        return PopularSitesLinksUtils(url).builder(context, (url, launchFun, siteWidget) {
-                          return InkWell(
-                            borderRadius: BorderRadius.circular(100),
-                            onTap: launchFun,
-                            child: Container(
-                              height: 40,
-                              width: 40,
-                              padding: const EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                color: AppColors.cardColor,
-                                shape: BoxShape.circle,
-                                border: Border.all(color: AppColors.enabledBorderColor),
-                              ),
-                              child: FittedBox(child: siteWidget),
-                            ),
-                          );
-                        });
-                      }).toList(),
+                    _ContactUsInfoTab(data: widget.data),
+                    _ContactUsSendMessageTab(
+                      nameController: _nameController,
+                      emailController: _emailController,
+                      phoneController: _phoneController,
+                      messageContentController: _messageContentController,
+                      messageTypeController: messageTypeController,
                     ),
                   ],
                 ),
-
-              const SizedBox(height: 60),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _CardWidget extends StatelessWidget {
-  const _CardWidget({required this.children, required this.title, this.subTitle, required this.icon, this.bgColor});
-  final List<Widget> children;
-  final String title;
-  final String? subTitle;
-  final String icon;
-  final Color? bgColor;
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      spacing: 12,
-      children: [
-        Row(
-          children: [
-            AppSvgIcon(path: icon),
-            const SizedBox(width: 4),
-            Expanded(child: Text(title, style: TextStyles.light12)),
-          ],
-        ),
-        Container(
-          width: double.infinity,
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-          decoration: BoxDecoration(
-            color: bgColor ?? AppColors.cardColor,
-            borderRadius: BorderRadius.circular(12),
-            border: bgColor != null ? null : Border.all(color: AppColors.enabledBorderColor),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              if (subTitle != null)
+              ),
+              if (_selectedTab == _ContactUsTab.sendMessage)
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 16, top: 8),
-                  child: Text(subTitle ?? '', style: TextStyles.light14),
+                  padding: EdgeInsets.fromLTRB(Dimensions.p16, Dimensions.p24, Dimensions.p16, bottomInset > 0 ? 8 : Dimensions.p32),
+                  child: BlocSelector<ContactUsCubit, ContactUsState, Async<void>>(
+                    selector: (state) => state.sendMessageState,
+                    builder: (context, state) {
+                      return AppButton(
+                        text: appLocalizer.sendTheMessage,
+                        isLoading: state.isLoading,
+                        onPressed: _onSendMessage,
+                        textStyle: TextStyles.semiBold18.copyWith(color: Colors.white, height: 1, fontWeight: FontWeight.w600),
+                      );
+                    },
+                  ),
                 ),
-              ...children,
             ],
           ),
         ),
-      ],
-    );
-  }
-}
-
-class _TileWidget extends StatelessWidget {
-  const _TileWidget({required this.icon, required this.children, this.hasSeperator = false});
-  final String icon;
-  final List<Widget> children;
-  final bool hasSeperator;
-
-  @override
-  Widget build(BuildContext context) {
-    // Create a new list where each item is followed by a separator
-    final List<Widget> items = [];
-    for (int i = 0; i < children.length; i++) {
-      items.add(children[i]);
-      if (i != children.length - 1 && hasSeperator) {
-        items.add(Text('-', style: TextStyles.regular14.copyWith(color: AppColors.primary900)));
-      }
-    }
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4.0),
-      child: Row(
-        spacing: 8,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            height: 20,
-            width: 20,
-            padding: const EdgeInsets.all(3),
-            decoration: BoxDecoration(
-              border: Border.all(color: AppColors.black200),
-              shape: BoxShape.circle,
-            ),
-            child: FittedBox(child: AppSvgIcon(path: icon)),
-          ),
-          Expanded(child: Wrap(runSpacing: 8, spacing: 8, children: items)),
-        ],
       ),
     );
   }
-}
-
-class _HeaderText extends StatelessWidget {
-  const _HeaderText();
 
   @override
-  Widget build(BuildContext context) {
-    final List<String> subHeaderSeqments = appLocalizer.contactHeader.split('##');
-    final String firstSection = subHeaderSeqments.firstOrNull ?? '';
-    String secondSection = '';
-    if (subHeaderSeqments.length > 1) {
-      secondSection = subHeaderSeqments[1];
-    }
-    String lastSection = '';
-    if (subHeaderSeqments.length > 2) {
-      lastSection = subHeaderSeqments[2];
-    }
-    return Text.rich(
-      TextSpan(
-        text: firstSection,
-        style: TextStyles.light14.copyWith(color: AppColors.black800),
-        children: [
-          if (secondSection.isNotEmpty)
-            TextSpan(
-              text: "\t$secondSection",
-              style: TextStyles.light14.copyWith(color: AppColors.primary),
-            ),
-          if (lastSection.isNotEmpty) TextSpan(text: '\t$lastSection'),
-        ],
-      ),
-      textAlign: TextAlign.center,
-    );
+  void dispose() {
+    _nameController.dispose();
+    _emailController.dispose();
+    _phoneController.dispose();
+    _messageContentController.dispose();
+    messageTypeController.dispose();
+    super.dispose();
   }
 }

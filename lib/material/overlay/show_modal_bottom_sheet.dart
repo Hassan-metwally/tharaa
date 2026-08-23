@@ -14,6 +14,8 @@ Future<T?> showAppModalBottomSheet<T>({
   final RouteSettings? routeSettings,
   final EdgeInsets padding = const EdgeInsets.only(left: 24, right: 24, bottom: 16),
   final Color? backgroundColor,
+  final Color? barrierColor,
+  final ShapeBorder? shape,
 }) async {
   if (FocusManager.instance.primaryFocus?.hasPrimaryFocus == true) {
     FocusScope.of(context).requestFocus(FocusNode());
@@ -27,6 +29,8 @@ Future<T?> showAppModalBottomSheet<T>({
     isDismissible: isDismissible,
     routeSettings: routeSettings,
     backgroundColor: backgroundColor,
+    barrierColor: barrierColor,
+    shape: shape,
     useSafeArea: true,
     builder: (BuildContext context) {
       return Container(

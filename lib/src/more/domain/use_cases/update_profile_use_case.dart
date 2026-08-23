@@ -22,11 +22,11 @@ class UpdateProfileUseCase extends IUseCase<ClientEntity, UpdateProfileParams> {
 class UpdateProfileParams {
   final AttachmentEntity? image;
   final String name;
-
-  const UpdateProfileParams({required this.image, required this.name});
+  final String email;
+  const UpdateProfileParams({required this.image, required this.name, required this.email});
 
   Map<String, dynamic> get toMap {
     final MultipartFile? file = image?.path.toMultipartFile;
-    return {if (file != null) 'avatar': file, 'name': name};
+    return {if (file != null) 'avatar': file, "email": email, 'name': name, "_method": "put"};
   }
 }

@@ -16,14 +16,15 @@ class CanUpdatePhoneUseCase extends IUseCase<void, CanUpdatePhoneParams> {
 }
 
 class CanUpdatePhoneParams extends Equatable {
+  final String countryCode;
   final String phone;
 
-  const CanUpdatePhoneParams({required this.phone});
+  const CanUpdatePhoneParams({required this.countryCode, required this.phone});
 
   @override
-  List<Object?> get props => [phone];
+  List<Object?> get props => [countryCode, phone];
 
   Map<String, dynamic> get toMap {
-    return {"mobile": (phone.isNotEmpty && !phone.startsWith('0')) ? '0$phone' : phone};
+    return {"country_code": countryCode, "phone": (phone.isNotEmpty && !phone.startsWith('0')) ? '0$phone' : phone};
   }
 }

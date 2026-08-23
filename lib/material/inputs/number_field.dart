@@ -46,6 +46,7 @@ class NumberField extends StatelessWidget {
       inputTextStyle: style,
       maxLines: 1,
       maxLength: maxLength,
+      hasCounter: hasCounter && maxLength != null,
       inputFormatters: intOnly == true
           ? [
               FilteringTextInputFormatter.deny("."),
@@ -62,23 +63,6 @@ class NumberField extends StatelessWidget {
               FilteringTextInputFormatter.deny(","),
               FilteringTextInputFormatter.deny(" "),
             ],
-      suffixIcon: hasCounter != false && maxLength != null
-          ? ValueListenableBuilder(
-              valueListenable: controller,
-              builder: (context, value, child) {
-                final text = value.text;
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 12),
-                      child: Text("$maxLength/${text.length}", style: TextStyles.light12.copyWith(color: AppColors.black400)),
-                    ),
-                  ],
-                );
-              },
-            )
-          : null,
     );
   }
 }

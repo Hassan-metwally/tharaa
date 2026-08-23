@@ -19,13 +19,8 @@ class StaticPage extends StatelessWidget {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text(pageType.title),
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(1),
-          child: Container(
-            color: AppColors.appbarBorderColor, // border color
-            height: 1.0,
-          ),
-        ),
+        elevation: 0,
+        scrolledUnderElevation: 0,
       ),
       body: BlocProvider(
         create: (context) => StaticPageCubit(type: pageType)..getData(),
@@ -52,27 +47,57 @@ class StaticPage extends StatelessWidget {
 
 class _StaticPageBody extends StatelessWidget {
   const _StaticPageBody({required this.data});
+
   final String data;
 
   @override
   Widget build(BuildContext context) {
+    final double bottomInset = MediaQuery.paddingOf(context).bottom;
+
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(20),
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
-          boxShadow: [BoxShadow(color: Colors.black.withOpacityPercent(2), blurRadius: 8)],
-        ),
-        padding: const EdgeInsets.all(8),
-        constraints: const BoxConstraints(minWidth: double.infinity, minHeight: 300),
-        child: Html(
-          data: data,
-          style: {
-            "body": Style(color: AppColors.primary700, fontSize: FontSize(14), fontWeight: FontWeight.w300, fontFamily: AppFonts.mainFont),
-          },
-        ),
-      ),
+      padding: EdgeInsets.fromLTRB(Dimensions.p16, Dimensions.p24, Dimensions.p16, bottomInset > 0 ? bottomInset : Dimensions.p24),
+      child: Html(data: data, style: _htmlStyles),
     );
+  }
+
+  Map<String, Style> get _htmlStyles {
+    final Style bodyStyle = Style(
+      color: AppColors.mutedText,
+      fontSize: FontSize(12),
+      fontWeight: FontWeight.w400,
+      fontFamily: AppFonts.mainFont,
+      lineHeight: LineHeight.number(1.6),
+      textAlign: TextAlign.start,
+      margin: Margins.zero,
+      padding: HtmlPaddings.zero,
+    );
+
+    final Style headingStyle = Style(
+      color: AppColors.black900,
+      fontSize: FontSize(14),
+      fontWeight: FontWeight.w500,
+      fontFamily: AppFonts.mainFont,
+      lineHeight: LineHeight.number(1.4),
+      textAlign: TextAlign.start,
+      margin: Margins.only(top: 16, bottom: 8),
+      padding: HtmlPaddings.zero,
+    );
+
+    return {
+      'html': bodyStyle,
+      'body': bodyStyle,
+      'div': bodyStyle,
+      'span': bodyStyle,
+      'li': bodyStyle,
+      'p': bodyStyle.copyWith(margin: Margins.only(bottom: 12)),
+      'h1': headingStyle,
+      'h2': headingStyle,
+      'h3': headingStyle,
+      'h4': headingStyle,
+      'h5': headingStyle,
+      'h6': headingStyle,
+      'strong': headingStyle.copyWith(display: Display.inline, margin: Margins.zero),
+      'b': headingStyle.copyWith(display: Display.inline, margin: Margins.zero),
+    };
   }
 }

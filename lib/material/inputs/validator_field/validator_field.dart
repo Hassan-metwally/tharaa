@@ -64,12 +64,12 @@ class DefaultInputFieldDesign extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final defaultInputDecoration = Theme.of(context).inputDecorationTheme;
-    final lableStyle = titleStyle ?? defaultInputDecoration.labelStyle ?? TextStyles.regular16;
+    final lableStyle = titleStyle ?? defaultInputDecoration.labelStyle ?? TextStyles.semiBold16;
     final hintStyle = this.hintStyle ?? defaultInputDecoration.hintStyle;
-    final inputStyle = this.inputStyle ?? TextStyles.light12.copyWith(color: AppColors.textColor);
-    final defaultBorderColor = defaultInputDecoration.border?.borderSide.color ?? AppColors.enabledBorderColor;
-    final errorBorderColor = defaultInputDecoration.focusedErrorBorder?.borderSide.color ?? AppColors.red700;
-    final borderColor = hasError ? errorBorderColor : defaultBorderColor;
+    final inputStyle = this.inputStyle ?? TextStyles.regular14.copyWith(color: AppColors.textColor, height: 1.4);
+    final enabledSide = defaultInputDecoration.enabledBorder?.borderSide ?? BorderSide.none;
+    final errorSide = defaultInputDecoration.errorBorder?.borderSide ?? BorderSide(color: AppColors.error);
+    final borderSide = hasError ? errorSide : enabledSide;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
       child: AnimatedSize(
@@ -83,7 +83,7 @@ class DefaultInputFieldDesign extends StatelessWidget {
           children: [
             if (title.isNotEmpty)
               Padding(
-                padding: const EdgeInsets.only(bottom: 6.0),
+                padding: const EdgeInsets.only(bottom: 8.0),
                 child: RichText(
                   text: TextSpan(
                     text: title,
@@ -110,8 +110,8 @@ class DefaultInputFieldDesign extends StatelessWidget {
                     constraints: Theme.of(context).inputDecorationTheme.constraints,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(16),
-                      border: Border.all(color: borderColor),
-                      color: Theme.of(context).inputDecorationTheme.fillColor,
+                      border: borderSide.width <= 0 ? null : Border.all(color: borderSide.color, width: borderSide.width),
+                      color: defaultInputDecoration.fillColor,
                     ),
                     padding: Theme.of(context).inputDecorationTheme.contentPadding,
                     child: Row(

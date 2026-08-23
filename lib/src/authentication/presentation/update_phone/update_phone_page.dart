@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tharaa/material/auth_states/logged_user_checker_widget.dart';
 
 import '../../../../core/core.dart';
 import '../../../../material/app_loading_widget.dart';
 import '../../../../material/buttons/app_button.dart';
-import '../../../../material/inputs/intel_phone/phone_field.dart';
-import '../../../../material/media/svg_icon.dart';
-import '../../../../material/overlay/show_modal_bottom_sheet.dart';
+import '../../../../material/inputs/phone_field.dart';
 import '../../../../material/toast/app_toast.dart';
 import '../../domain/use_case/can_update_phone_use_case.dart';
 import '../../domain/use_case/verify_otp_use_case.dart';
@@ -14,19 +13,7 @@ import '../otp/otp_page.dart';
 import 'update_phone_cubit.dart';
 
 class UpdatePhonePage extends StatefulWidget {
-  final String? phone;
-
-  const UpdatePhonePage({super.key, this.phone});
-
-  static Future<void> show(BuildContext context, {String? phone}) async {
-    return await showAppModalBottomSheet(
-      context: context,
-      child: BlocProvider(
-        create: (context) => UpdatePhoneCubit(),
-        child: UpdatePhonePage(phone: phone),
-      ),
-    );
-  }
+  const UpdatePhonePage({super.key});
 
   @override
   State<UpdatePhonePage> createState() => _UpdatePhonePageState();
@@ -36,12 +23,12 @@ class _UpdatePhonePageState extends State<UpdatePhonePage> {
   final formKey = GlobalKey<FormState>();
   final _phoneController = TextEditingController();
 
-  void onSave() {
+  void _onSavePressed() {
     final isValidForm = formKey.currentState?.validate() ?? false;
     final phoneNumber = _phoneController.text.trim();
     if (phoneNumber.isEmpty) return;
     if (isValidForm) {
-      final params = CanUpdatePhoneParams(phone: _phoneController.text.trim());
+      final params = CanUpdatePhoneParams(countryCode: "+966", phone: _phoneController.text.trim());
       context.read<UpdatePhoneCubit>().canUpdate(params);
     }
   }
@@ -55,12 +42,8 @@ class _UpdatePhonePageState extends State<UpdatePhonePage> {
 
   @override
   Widget build(BuildContext context) {
-    final List<String> subHeaderSeqments = appLocalizer.enterYourPhoneNumber.split('##');
-    final String firstSection = subHeaderSeqments.firstOrNull ?? '';
-    String secondSection = '';
-    if (subHeaderSeqments.length > 1) {
-      secondSection = subHeaderSeqments[1];
-    }
+    final double bottomInset = MediaQuery.viewPaddingOf(context).bottom;
+
     return BlocListener<UpdatePhoneCubit, Async<void>>(
       listener: (context, state) {
         if (state.isSuccess) {
@@ -73,35 +56,51 @@ class _UpdatePhonePageState extends State<UpdatePhonePage> {
           AppLoadingWidget.overlay();
         }
       },
-      child: Form(
-        key: formKey,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          spacing: 12,
-          children: [
-            AppSvgIcon(path: ""),
-            Text(appLocalizer.phoneNumber, style: TextStyles.regular16),
-            Text.rich(
-              TextSpan(
-                text: firstSection,
-                style: TextStyles.regular14.copyWith(color: AppColors.black800),
-                children: [
-                  if (secondSection.isNotEmpty)
-                    TextSpan(
-                      text: "\t$secondSection",
-                      style: TextStyles.regular14.copyWith(color: AppColors.primary),
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        resizeToAvoidBottomInset: true,
+        appBar: AppBar(title: Text(appLocalizer.changePhoneNumber)),
+        body: SafeArea(
+          top: false,
+          child: Form(
+            key: formKey,
+            child: Column(
+              children: [
+                Expanded(
+                  child: SingleChildScrollView(
+                    padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+                    child: LoggedUserCheckerWidget(
+                      loggedBuilder: (client) {
+                        return PhoneField(
+                          controller: _phoneController,
+                          margin: EdgeInsets.zero,
+                          labelText: appLocalizer.newPhoneNumber,
+                          hint: client.mobile,
+                          labelStyle: TextStyles.semiBold14.copyWith(color: AppColors.black900),
+                        );
+                      },
                     ),
-                ],
-              ),
-              textAlign: TextAlign.center,
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.fromLTRB(16, 24, 16, bottomInset > 0 ? 8 : 32),
+                  child: AppButton(
+                    text: appLocalizer.change,
+                    onPressed: _onSavePressed,
+                    textStyle: TextStyles.semiBold18.copyWith(color: Colors.white, height: 1, fontWeight: FontWeight.w600),
+                  ),
+                ),
+              ],
             ),
-            PhoneField(controller: _phoneController, hint: widget.phone),
-
-            AppButton(text: appLocalizer.sendVerificationCode, onPressed: onSave),
-            const SizedBox(height: 8),
-          ],
+          ),
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _phoneController.dispose();
+    super.dispose();
   }
 }

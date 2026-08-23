@@ -27,39 +27,36 @@ class _OnboardingPageState extends State<OnboardingPage> {
   List<_OnboardingSlide> get _slides => [
     _OnboardingSlide(
       imagePath: AppImages.userOnboarding1,
-      title: appLocalizer.providerOnBoardingTitle1,
-      subtitle: appLocalizer.providerOnBoardingSubTitle1,
+      title: appLocalizer.userOnBoardingTitle1,
+      subtitle: appLocalizer.userOnBoardingSubTitle1,
       gradientStart: const Color(0xFFDDF3F7),
       overlayStart: const Color(0xFFDDF3F7),
       stickerPath: AppImages.onboardingSticker1,
       stickerTint: const Color(0xFFDEF3F7),
-      stickerLeft: 73,
       heroWidth: 453,
       heroHeight: 400,
       heroTop: 86,
     ),
     _OnboardingSlide(
       imagePath: AppImages.userOnboarding2,
-      title: appLocalizer.providerOnBoardingTitle2,
-      subtitle: appLocalizer.providerOnBoardingSubTitle2,
+      title: appLocalizer.userOnBoardingTitle2,
+      subtitle: appLocalizer.userOnBoardingSubTitle2,
       gradientStart: const Color(0xFFFEEAFE),
       overlayStart: const Color(0xFFFEEAFE),
       stickerPath: AppImages.onboardingSticker2,
       stickerTint: const Color(0xFFF9D5F9),
-      stickerLeft: 65,
       heroWidth: 416,
       heroHeight: 385,
       heroTop: 96,
     ),
     _OnboardingSlide(
       imagePath: AppImages.userOnboarding3,
-      title: appLocalizer.providerOnBoardingTitle3,
-      subtitle: appLocalizer.providerOnBoardingSubTitle3,
+      title: appLocalizer.userOnBoardingTitle3,
+      subtitle: appLocalizer.userOnBoardingSubTitle3,
       gradientStart: const Color(0xFFF0FECF),
       overlayStart: const Color(0xFFF3FFE4),
       stickerPath: AppImages.onboardingSticker3,
       stickerTint: const Color(0xFFE7FFC7),
-      stickerLeft: 85,
       heroWidth: 423,
       heroHeight: 423,
       heroTop: 123,
@@ -170,7 +167,6 @@ class _OnboardingPageState extends State<OnboardingPage> {
                           subtitle: slide.subtitle,
                           stickerPath: slide.stickerPath,
                           stickerTint: slide.stickerTint,
-                          stickerLeft: slide.stickerLeft,
                           scale: sx,
                         ),
                       ),
@@ -203,7 +199,6 @@ class _OnboardingSlide {
     required this.overlayStart,
     required this.stickerPath,
     required this.stickerTint,
-    required this.stickerLeft,
     required this.heroWidth,
     required this.heroHeight,
     required this.heroTop,
@@ -216,7 +211,6 @@ class _OnboardingSlide {
   final Color overlayStart;
   final String stickerPath;
   final Color stickerTint;
-  final double stickerLeft;
   final double heroWidth;
   final double heroHeight;
   final double heroTop;
@@ -279,7 +273,6 @@ class _CopyBlock extends StatelessWidget {
     required this.subtitle,
     required this.stickerPath,
     required this.stickerTint,
-    required this.stickerLeft,
     required this.scale,
   });
 
@@ -287,37 +280,38 @@ class _CopyBlock extends StatelessWidget {
   final String subtitle;
   final String stickerPath;
   final Color stickerTint;
-  final double stickerLeft;
   final double scale;
 
   @override
   Widget build(BuildContext context) {
+    final TextStyle titleStyle = TextStyle(
+      fontFamily: AppFonts.mainFont,
+      fontWeight: FontWeight.w600,
+      fontSize: 34 * scale,
+      height: 1.3,
+      letterSpacing: 0,
+      color: AppColors.black900,
+    );
+
     return ConstrainedBox(
       constraints: BoxConstraints(minHeight: 182 * scale),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Stack(
-            clipBehavior: Clip.none,
-            children: [
-              Text(
-                title,
-                textAlign: TextAlign.start,
-                style: TextStyle(
-                  fontFamily: AppFonts.mainFont,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 34 * scale,
-                  height: 1.3,
-                  letterSpacing: 0,
-                  color: AppColors.black900,
+          Text.rich(
+            TextSpan(
+              children: [
+                TextSpan(text: title, style: titleStyle),
+                WidgetSpan(
+                  alignment: PlaceholderAlignment.bottom,
+                  child: Padding(
+                    padding: EdgeInsetsDirectional.only(start: 4 * scale),
+                    child: _TitleSticker(path: stickerPath, tint: stickerTint, scale: scale),
+                  ),
                 ),
-              ),
-              Positioned(
-                left: stickerLeft * scale,
-                top: 41 * scale,
-                child: _TitleSticker(path: stickerPath, tint: stickerTint, scale: scale),
-              ),
-            ],
+              ],
+            ),
+            textAlign: TextAlign.start,
           ),
           SizedBox(height: 12 * scale),
           Text(

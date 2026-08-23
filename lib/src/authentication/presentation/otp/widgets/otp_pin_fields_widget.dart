@@ -5,12 +5,11 @@ import 'package:pinput/pinput.dart';
 import '../../../../../core/core.dart';
 
 const int appOtpFieldsLength = 4;
-final Color _fieldColor = AppColors.cardColor;
-Color _focusedFieldColor = _fieldColor;
-final Color _focusBorderColor = AppColors.focusedBorderColor;
-final Color _errorBorderColor = AppColors.error;
-final Color _borderColor = AppColors.enabledBorderColor;
-final BorderRadius _borderRadius = BorderRadius.circular(16);
+
+const Color _fieldFill = Color(0xFFF7F8FA);
+const Color _placeholderColor = Color(0xFF8B9BB2);
+const Color _errorBorderColor = Color(0xFFDD302A);
+const BorderRadius _borderRadius = BorderRadius.all(Radius.circular(16));
 
 class OtpPinCodeWidget extends StatelessWidget {
   final bool hasError;
@@ -34,93 +33,47 @@ class OtpPinCodeWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const double fieldSize = 60;
-    const fieldHeight = fieldSize;
-    final textStyle = TextStyles.bold24.copyWith(color: AppColors.primary, height: 1);
+    const double fieldWidth = 50;
+    const double fieldHeight = 40;
+    final filledTextStyle = TextStyles.bold18.copyWith(color: AppColors.black900, height: 1, fontWeight: FontWeight.w600);
     final errorTextStyle = Theme.of(context).inputDecorationTheme.errorStyle?.copyWith(fontSize: 14);
+
+    PinTheme pinTheme({Color? borderColor}) {
+      return PinTheme(
+        width: fieldWidth,
+        height: fieldHeight,
+        textStyle: filledTextStyle,
+        decoration: BoxDecoration(
+          color: _fieldFill,
+          borderRadius: _borderRadius,
+          border: borderColor == null ? null : Border.all(color: borderColor),
+        ),
+      );
+    }
 
     return Directionality(
       textDirection: TextDirection.ltr,
       child: Pinput(
         controller: controller,
+        length: appOtpFieldsLength,
         readOnly: readOnly,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        separatorBuilder: (index) => SizedBox(width: index == 1 ? 24 : 12),
         onTapOutside: (_) {
           FocusScope.of(context).unfocus();
         },
         cursor: Container(
-          width: 8,
-          height: 2.3,
-          alignment: Alignment.center,
-          decoration: BoxDecoration(color: AppColors.primary400),
+          width: 1.5,
+          height: 16,
+          decoration: BoxDecoration(color: AppColors.primary500, borderRadius: BorderRadius.circular(1)),
         ),
-        preFilledWidget: Container(
-          width: 8,
-          height: 2.3,
-          alignment: Alignment.center,
-          decoration: BoxDecoration(color: AppColors.black),
-        ),
+        preFilledWidget: Text('-', style: TextStyles.regular14.copyWith(color: _placeholderColor, height: 1.5)),
         inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
-        defaultPinTheme: PinTheme(
-          width: fieldSize,
-          height: fieldHeight,
-          textStyle: textStyle,
-          decoration: BoxDecoration(
-            color: _fieldColor,
-            borderRadius: _borderRadius,
-            border: Border.all(color: _borderColor),
-          ),
-        ),
-        submittedPinTheme: PinTheme(
-          width: fieldSize,
-          height: fieldHeight,
-          textStyle: textStyle,
-          decoration: BoxDecoration(
-            color: _focusedFieldColor,
-            borderRadius: _borderRadius,
-            border: Border.all(color: _focusBorderColor),
-          ),
-        ),
-        followingPinTheme: PinTheme(
-          width: fieldSize,
-          height: fieldHeight,
-          textStyle: textStyle,
-          decoration: BoxDecoration(
-            color: _fieldColor,
-            borderRadius: _borderRadius,
-            border: Border.all(color: _borderColor),
-          ),
-        ),
-        focusedPinTheme: PinTheme(
-          width: fieldSize,
-          height: fieldHeight,
-          textStyle: textStyle,
-          decoration: BoxDecoration(
-            color: _fieldColor,
-            borderRadius: _borderRadius,
-            border: Border.all(color: _focusBorderColor),
-          ),
-        ),
-        errorPinTheme: PinTheme(
-          width: fieldSize,
-          height: fieldHeight,
-          textStyle: textStyle,
-          decoration: BoxDecoration(
-            color: _fieldColor,
-            borderRadius: _borderRadius,
-            border: Border.all(color: _errorBorderColor),
-          ),
-        ),
-        disabledPinTheme: PinTheme(
-          width: fieldSize,
-          height: fieldHeight,
-          textStyle: textStyle,
-          decoration: BoxDecoration(
-            color: _fieldColor,
-            borderRadius: _borderRadius,
-            border: Border.all(color: _borderColor),
-          ),
-        ),
+        defaultPinTheme: pinTheme(),
+        submittedPinTheme: pinTheme(),
+        followingPinTheme: pinTheme(),
+        focusedPinTheme: pinTheme(borderColor: AppColors.primary500),
+        errorPinTheme: pinTheme(borderColor: _errorBorderColor),
+        disabledPinTheme: pinTheme(),
         forceErrorState: hasError,
         errorTextStyle: errorTextStyle,
         onChanged: onChange,

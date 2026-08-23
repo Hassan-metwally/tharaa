@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:bounce/bounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -75,6 +73,7 @@ class _ClientMainPageState extends State<ClientMainPage> with ClientMainPageObse
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
+      extendBody: true,
       body: PopScope(
         canPop: false,
         onPopInvokedWithResult: (_, _) {
@@ -86,6 +85,10 @@ class _ClientMainPageState extends State<ClientMainPage> with ClientMainPageObse
             OffStage(isActive: _currentTabEnum == ClientMainPageTabsEnum.home, child: HomePage()),
             OffStage(
               isActive: _currentTabEnum == ClientMainPageTabsEnum.orders,
+              child: const GuestCheckerWidget(replaceWithDefaultGuestWidget: true, child: SizedBox()),
+            ),
+            OffStage(
+              isActive: _currentTabEnum == ClientMainPageTabsEnum.offers,
               child: const GuestCheckerWidget(replaceWithDefaultGuestWidget: true, child: SizedBox()),
             ),
             OffStage(

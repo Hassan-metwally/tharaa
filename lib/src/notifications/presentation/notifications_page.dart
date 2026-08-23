@@ -7,7 +7,7 @@ import '../../../core/core.dart';
 import '../../../core/di/di.dart';
 import '../../../material/app_empty_widget.dart';
 import '../../../material/app_fail_widget.dart';
-import '../../../material/media/app_image.dart';
+import '../../../material/media/svg_icon.dart';
 import '../../../material/spin_kit_loading_widget.dart';
 import '../../chat/domain/entities/chat_page_input.dart';
 import '../../chat/presentation/chat_page.dart';
@@ -16,6 +16,13 @@ import '../domain/use_cases/read_notification_usecase.dart';
 import 'notifications_cubit.dart';
 
 part 'widgets/notification_card.dart';
+part 'widgets/notifications_header.dart';
+
+const Color _kNotificationCardFill = Color(0xFFF7F8FA);
+const double _kNotificationCardRadius = Dimensions.r12;
+const double _kNotificationIconSize = Dimensions.ic40;
+const double _kNotificationIconGlyphSize = Dimensions.ic24;
+const double _kReadNotificationOpacity = 0.6;
 
 class NotificationsPage extends StatefulWidget {
   final Function()? onNotificationRead;
@@ -31,7 +38,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
     return BlocProvider(
       create: (context) => injector<NotificationsCubit>()..getNotifications(),
       child: NotificationsPageBody(
-        onNotificationRead: widget.onNotificationRead, // You can pass a function here if needed
+        onNotificationRead: widget.onNotificationRead,
       ),
     );
   }
@@ -50,70 +57,136 @@ class _NotificationsPageBodyState extends State<NotificationsPageBody> {
 
   @override
   void initState() {
+    super.initState();
     _scrollController.addListener(() {
       if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
         context.read<NotificationsCubit>().getMoreNotifications();
       }
     });
-    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(appLocalizer.notifications, style: TextStyles.bold16.copyWith(color: AppColors.black)),
-        centerTitle: true,
-        shadowColor: AppColors.white,
+      backgroundColor: AppColors.white,
+      body: SafeArea(
+        top: false,
+        child: Column(
+          children: [
+            const _NotificationsHeader(),
+            Expanded(
+              child: BlocBuilder<NotificationsCubit, NotificationsState>(
+                builder: (context, state) {
+                  return _NotificationsView(
+                    state: state,
+                    scrollController: _scrollController,
+                    onNotificationRead: widget.onNotificationRead,
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
       ),
-      body: BlocBuilder<NotificationsCubit, NotificationsState>(
-        builder: (context, state) {
-          if (state.getNotificationsState.isLoading) {
-            return const SpinKitLoadingWidget();
-          } else if (state.getNotificationsState.isFailure) {
-            return AppFailWidget(
-              onRetry: () {
-                BlocProvider.of<NotificationsCubit>(context).getNotifications();
-              },
-            );
-          } else if (state.getNotificationsState.isSuccess) {
-            final notifications = state.getNotificationsState.data!;
+    );
+  }
+}
 
-            return LiquidPullToRefresh(
-              color: AppColors.backgroundColor,
-              backgroundColor: AppColors.primary,
-              onRefresh: () async {
-                BlocProvider.of<NotificationsCubit>(context).getNotifications();
-              },
-              child: notifications.isEmpty
-                  ? AppEmptyWidget(text: appLocalizer.noNotifications, imagePath: AppImages.emptyNotifications)
-                  : Stack(
-                      children: [
-                        ListView.builder(
-                          controller: _scrollController,
-                          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20).copyWith(bottom: 30),
-                          itemCount: notifications.length,
-                          itemBuilder: (context, index) {
-                            final notification = state.getNotificationsState.data![index];
-                            return _NotificationCard(onNotificationRead: widget.onNotificationRead, notification: notification);
-                          },
-                        ),
-                        if (state.getNotificationsState.isPaginationLoading)
-                          Positioned(
-                            bottom: -10,
-                            right: 0,
-                            left: 0,
-                            child: const Center(
-                              child: Padding(padding: EdgeInsets.symmetric(vertical: 20), child: SpinKitLoadingWidget()),
-                            ),
-                          ),
-                      ],
-                    ),
-            );
-          }
-          return const SizedBox.shrink();
+class _NotificationsView extends StatelessWidget {
+  const _NotificationsView({
+    required this.state,
+    required this.scrollController,
+    required this.onNotificationRead,
+  });
+
+  final NotificationsState state;
+  final ScrollController scrollController;
+  final Function()? onNotificationRead;
+
+  @override
+  Widget build(BuildContext context) {
+    if (state.getNotificationsState.isLoading) {
+      return const SpinKitLoadingWidget();
+    }
+
+    if (state.getNotificationsState.isFailure) {
+      return AppFailWidget(
+        onRetry: () {
+          BlocProvider.of<NotificationsCubit>(context).getNotifications();
         },
-      ),
+      );
+    }
+
+    if (state.getNotificationsState.isSuccess) {
+      final notifications = state.getNotificationsState.data!;
+
+      return LiquidPullToRefresh(
+        color: AppColors.backgroundColor,
+        backgroundColor: AppColors.primary,
+        onRefresh: () async {
+          BlocProvider.of<NotificationsCubit>(context).getNotifications();
+        },
+        child: notifications.isEmpty
+            ? AppEmptyWidget(text: appLocalizer.noNotifications, imagePath: AppImages.emptyNotifications)
+            : _NotificationsList(
+                notifications: notifications,
+                scrollController: scrollController,
+                isPaginationLoading: state.getNotificationsState.isPaginationLoading,
+                onNotificationRead: onNotificationRead,
+              ),
+      );
+    }
+
+    return const SizedBox.shrink();
+  }
+}
+
+class _NotificationsList extends StatelessWidget {
+  const _NotificationsList({
+    required this.notifications,
+    required this.scrollController,
+    required this.isPaginationLoading,
+    required this.onNotificationRead,
+  });
+
+  final List<NotificationEntity> notifications;
+  final ScrollController scrollController;
+  final bool isPaginationLoading;
+  final Function()? onNotificationRead;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        ListView.separated(
+          controller: scrollController,
+          physics: const AlwaysScrollableScrollPhysics(),
+          padding: const EdgeInsets.fromLTRB(Dimensions.p16, Dimensions.p12, Dimensions.p16, Dimensions.p16),
+          itemCount: notifications.length,
+          separatorBuilder: (context, index) => const SizedBox(height: Dimensions.p12),
+          itemBuilder: (context, index) {
+            return _NotificationCard(
+              onNotificationRead: onNotificationRead,
+              notification: notifications[index],
+            );
+          },
+        ),
+        if (isPaginationLoading)
+          const Positioned(
+            bottom: -10,
+            right: 0,
+            left: 0,
+            child: Center(
+              child: Padding(padding: EdgeInsets.symmetric(vertical: 20), child: SpinKitLoadingWidget()),
+            ),
+          ),
+      ],
     );
   }
 }
