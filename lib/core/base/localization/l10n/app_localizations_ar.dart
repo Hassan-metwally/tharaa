@@ -951,6 +951,29 @@ class AppLocalizationsAr extends AppLocalizations {
   String get discountCoupons => 'كوبونات الخصم';
 
   @override
+  String get couponUnused => 'غير مستخدم';
+
+  @override
+  String get couponUsed => 'مستخدم';
+
+  @override
+  String get couponExpired => 'منتهي';
+
+  @override
+  String couponValidFromTo(String from, String to) {
+    return 'صالح من $from إلي $to';
+  }
+
+  @override
+  String get couponMinOrder => 'الحد الأدني للطلب';
+
+  @override
+  String get couponCopied => 'تم النسخ';
+
+  @override
+  String get discountCouponBanner => 'كوبـــون خصـــم';
+
+  @override
   String get whoWeAre => 'من نحن';
 
   @override
@@ -1374,4 +1397,87 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get electronicPayment => 'دفع إلكتروني';
+
+  @override
+  String get all => 'الكل';
+
+  @override
+  String get offersOnly => 'العروض فقط';
+
+  @override
+  String get sort => 'الترتيب';
+
+  @override
+  String get mostRequested => 'الأكثر طلباً';
+
+  @override
+  String get priceHighToLow => 'السعر من الأعلى إلى الأقل';
+
+  @override
+  String get priceLowToHigh => 'السعر من الأقل إلى الأعلى';
+
+  @override
+  String get fromHighToLow => 'من الأعلى إلى الأقل';
+
+  @override
+  String get fromLowToHigh => 'من الأقل إلى الأعلى';
+
+  @override
+  String get offersTitle => 'العروض';
+
+  @override
+  String get mostRequestedTitle => 'الأكثر طلباً';
+
+  @override
+  String get searchProductByName => 'ابحث باسم المنتج';
+
+  @override
+  String get productDetails => 'تفاصيل المنتج';
+
+  @override
+  String get offerEndsIn => 'ينتهى العرض خلال:';
+
+  @override
+  String get productPrice => 'سعر المنتج';
+
+  @override
+  String get noProductsInThisSection => 'لا توجد منتجات في هذا القسم 🥕';
+
+  @override
+  String get noProductsInThisSubsection => 'حاليًا لا توجد منتجات ضمن هذا القسم الفرعي جرب اختيار قسم آخر';
+
+  @override
+  String get searchByOrderNumber => 'ابحث برقم الطلب';
+
+  @override
+  String orderCreationDate(String date) {
+    return 'تاريخ الإنشاء: $date';
+  }
+
+  @override
+  String get orderDetails => 'تفاصيل الطلب';
+
+  @override
+  String get orderStatusNew => 'جديد';
+
+  @override
+  String get orderStatusInPreparation => 'قيد التجهيز';
+
+  @override
+  String get orderStatusReadyForDelivery => 'جاهز للتوصيل';
+
+  @override
+  String get orderStatusOnTheWay => 'فى الطريق';
+
+  @override
+  String get orderStatusDelivered => 'تم التوصيل';
+
+  @override
+  String get orderStatusCancelled => 'ملغى';
+
+  @override
+  String get noOrdersFound => 'لا توجد طلبات';
+
+  @override
+  String get noOrdersFoundSub => 'حاليًا لا توجد طلبات، جرّب تغيير الفلتر أو البحث برقم طلب آخر';
 }

@@ -59,6 +59,9 @@ class Dimensions {
   static const double p32 = 32;
   static const double p40 = 40;
   static const double p48 = 48;
+  static const double p64 = 64;
+  static const double p80 = 80;
+  static const double p96 = 96;
 
   static const EdgeInsets pageMargins = EdgeInsets.symmetric(horizontal: p20, vertical: p20);
 }

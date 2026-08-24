@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../core/core.dart';
 import 'buttons/app_button.dart';
 import 'media/app_image.dart';
+import 'media/svg_icon.dart';
 
 class AppEmptyWidget extends StatelessWidget {
   final String? text;
@@ -21,6 +22,9 @@ class AppEmptyWidget extends StatelessWidget {
   final bool enableAnimation;
   final double imageSize;
   final double spacing;
+  final double? subTextSpacing;
+  final TextStyle? textStyle;
+  final TextStyle? subTextStyle;
   final MainAxisAlignment mainAxisAlignment;
 
   const AppEmptyWidget({
@@ -41,6 +45,9 @@ class AppEmptyWidget extends StatelessWidget {
     this.enableAnimation = true,
     this.imageSize = 350,
     this.spacing = 30,
+    this.subTextSpacing,
+    this.textStyle,
+    this.subTextStyle,
     this.mainAxisAlignment = MainAxisAlignment.center,
   }) : assert(imagePath == null || icon == null, 'Cannot provide both imagePath and icon');
 
@@ -63,7 +70,7 @@ class AppEmptyWidget extends StatelessWidget {
                 _buildImageOrIcon(context, effectiveImageSize),
                 SizedBox(height: effectiveSpacing),
                 _buildText(context),
-                if (subText != null) ...[SizedBox(height: 8 * heightPercentage), _buildSubText(context)],
+                if (subText != null) ...[SizedBox(height: subTextSpacing ?? 8 * heightPercentage), _buildSubText(context)],
                 if (actionButton != null || onActionPressed != null) ...[
                   SizedBox(height: effectiveSpacing * 0.8),
                   _buildActionButton(context),
@@ -87,7 +94,12 @@ class AppEmptyWidget extends StatelessWidget {
       return Icon(icon, size: iconSize ?? size * 0.6, color: iconColor ?? AppColors.black300);
     }
 
-    return AppImage(path: imagePath ?? AppImages.empty, height: size, width: size, fit: imageFit);
+    final String path = imagePath ?? AppImages.empty;
+    if (path.toLowerCase().endsWith('.svg')) {
+      return AppSvgIcon(path: path, height: size, width: size, fit: imageFit ?? BoxFit.contain);
+    }
+
+    return AppImage(path: path, height: size, width: size, fit: imageFit);
   }
 
   Widget _buildText(BuildContext context) {
@@ -95,7 +107,7 @@ class AppEmptyWidget extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 24.0),
       child: Text(
         text ?? appLocalizer.noResultFound,
-        style: TextStyles.medium16.copyWith(color: AppColors.black500),
+        style: textStyle ?? TextStyles.medium16.copyWith(color: AppColors.black500),
         textAlign: TextAlign.center,
       ),
     );
@@ -106,7 +118,7 @@ class AppEmptyWidget extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 24.0),
       child: Text(
         subText!,
-        style: TextStyles.regular14.copyWith(color: AppColors.black300),
+        style: subTextStyle ?? TextStyles.regular14.copyWith(color: AppColors.black300),
         textAlign: TextAlign.center,
         maxLines: 3,
         overflow: TextOverflow.ellipsis,

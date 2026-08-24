@@ -341,6 +341,23 @@
   "preferences": "Preferences",
   "accountManagement": "Account management",
   "discountCoupons": "Discount coupons",
+  "couponUnused": "Unused",
+  "couponUsed": "Used",
+  "couponExpired": "Expired",
+  "couponValidFromTo": "Valid from {from} to {to}",
+  "@couponValidFromTo": {
+    "placeholders": {
+      "from": {
+        "type": "String"
+      },
+      "to": {
+        "type": "String"
+      }
+    }
+  },
+  "couponMinOrder": "Minimum order",
+  "couponCopied": "Copied",
+  "discountCouponBanner": "Discount coupon",
   "whoWeAre": "Who we are",
   "newOrders": "New orders",
   "ordersInProgress": "Orders in progress",
@@ -512,5 +529,39 @@
   "paymentMethod": "Payment Method",
   "paymentDetails": "Payment Details",
   "applePay": "Apple Pay",
-  "electronicPayment": "Electronic payment"
+  "electronicPayment": "Electronic payment",
+  "all": "All",
+  "offersOnly": "Offers only",
+  "sort": "Sort",
+  "mostRequested": "Most requested",
+  "priceHighToLow": "Price: high to low",
+  "priceLowToHigh": "Price: low to high",
+  "fromHighToLow": "High to low",
+  "fromLowToHigh": "Low to high",
+  "offersTitle": "Offers",
+  "mostRequestedTitle": "Most requested",
+  "searchProductByName": "Search by product name",
+  "productDetails": "Product details",
+  "offerEndsIn": "Offer ends in:",
+  "productPrice": "Product price",
+  "noProductsInThisSection": "No products in this section 🥕",
+  "noProductsInThisSubsection": "There are currently no products in this subsection. Try choosing another section.",
+  "searchByOrderNumber": "Search by order number",
+  "orderCreationDate": "Created: {date}",
+  "@orderCreationDate": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "orderDetails": "Order details",
+  "orderStatusNew": "New",
+  "orderStatusInPreparation": "In preparation",
+  "orderStatusReadyForDelivery": "Ready for delivery",
+  "orderStatusOnTheWay": "On the way",
+  "orderStatusDelivered": "Delivered",
+  "orderStatusCancelled": "Cancelled",
+  "noOrdersFound": "No orders found",
+  "noOrdersFoundSub": "There are currently no orders. Try changing the filter or searching by another order number."
 }

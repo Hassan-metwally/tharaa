@@ -8,6 +8,8 @@ class AppRoutes {
   static const clientWalletPage = '/clientWalletPage';
   static const cartPage = '/CartPage';
   static const myAddressesPage = '/MyAddressesPage';
+  static const showProductDetailsPage = '/ShowProductDetailsPage';
+  static const couponsPage = '/couponsPage';
 
   /// Common and static and common pages
   ///

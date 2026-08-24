@@ -11,6 +11,8 @@ import '../../../../material/media/app_image.dart';
 import '../../../../material/media/svg_icon.dart';
 import '../../../../material/shimmer/shimmer_effect_widget.dart';
 import '../../../home/presentation/widgets/home_empty_widget.dart';
+import '../../../products/domain/usecases/get_products_usecase.dart';
+import '../../../products/presentation/products/products_page.dart';
 import '../../domain/entities/category_entity.dart';
 import '../sub_categories/sub_categories_page.dart';
 import 'main_categories_cubit.dart';
@@ -52,9 +54,7 @@ class _MainCategoriesHomeBody extends StatelessWidget {
           return const _MainCategoriesHomeLoading();
         }
         if (state.getMainCategoriesState.isFailure) {
-          return _MainCategoriesHomeError(
-            onRetry: () => context.read<MainCategoriesCubit>().getMainCategories(),
-          );
+          return _MainCategoriesHomeError(onRetry: () => context.read<MainCategoriesCubit>().getMainCategories());
         }
         if (state.getMainCategoriesState.isSuccess) {
           final List<CategoryEntity> categories = state.getMainCategoriesState.data ?? [];
@@ -122,10 +122,7 @@ class _MainCategoriesHomeHeader extends StatelessWidget {
                 style: TextStyles.semiBold16.copyWith(color: AppColors.black900, height: 1, fontWeight: FontWeight.w600),
               ),
             ),
-            Text(
-              appLocalizer.viewMore,
-              style: TextStyles.medium14.copyWith(color: AppColors.mutedText, height: 1),
-            ),
+            Text(appLocalizer.viewMore, style: TextStyles.medium14.copyWith(color: AppColors.mutedText, height: 1)),
             SizedBox(
               width: _kArrowHitSize,
               height: _kArrowHitSize,
@@ -153,7 +150,10 @@ class _MainCategoryHomeItem extends StatelessWidget {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () {
-        // Navigator.of(context).pushNamed(AppRoutes.subCategoriesPage, arguments: SubCategoriesPage(categoryId: entity.id));
+        AppRouter.pushNamed(
+          AppRoutes.productsPage,
+          arguments: ProductsPage(params: GetProductsParams(mainCategory: entity)),
+        );
       },
       child: Column(
         children: [
@@ -161,10 +161,7 @@ class _MainCategoryHomeItem extends StatelessWidget {
             height: _kCategoryCardHeight,
             width: double.infinity,
             padding: const EdgeInsets.all(_kCategoryCardPadding),
-            decoration: BoxDecoration(
-              color: _kCategoryCardFill,
-              borderRadius: BorderRadius.circular(Dimensions.r16),
-            ),
+            decoration: BoxDecoration(color: _kCategoryCardFill, borderRadius: BorderRadius.circular(Dimensions.r16)),
             child: AppImage.rounded(
               path: entity.image.path,
               height: _kCategoryImageHeight,
@@ -221,19 +218,13 @@ class _MainCategoryHomeItemShimmer extends StatelessWidget {
           Container(
             height: _kCategoryCardHeight,
             width: double.infinity,
-            decoration: BoxDecoration(
-              color: AppColors.primary100,
-              borderRadius: BorderRadius.circular(Dimensions.r16),
-            ),
+            decoration: BoxDecoration(color: AppColors.primary100, borderRadius: BorderRadius.circular(Dimensions.r16)),
           ),
           const SizedBox(height: Dimensions.p4),
           Container(
             height: 14,
             width: double.infinity,
-            decoration: BoxDecoration(
-              color: AppColors.primary100,
-              borderRadius: BorderRadius.circular(Dimensions.r4),
-            ),
+            decoration: BoxDecoration(color: AppColors.primary100, borderRadius: BorderRadius.circular(Dimensions.r4)),
           ),
         ],
       ),

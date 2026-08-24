@@ -1,5 +1,3 @@
-import 'package:injectable/injectable.dart';
-
 import '../../../../core/core.dart';
 import '../../domain/usecases/update_cart_delivery_fees_usecase.dart';
 import '../../domain/usecases/upsert_cart_item_usecase.dart';
@@ -13,7 +11,6 @@ abstract class CartDatasource {
   Future<String> checkoutCart(NoParams params);
 }
 
-@Injectable(as: CartDatasource)
 class CartDatasourceImpl extends CartDatasource {
   final DioHelper _dioHelper;
   CartDatasourceImpl(this._dioHelper);

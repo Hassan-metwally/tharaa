@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:rxdart/rxdart.dart';
 
+import '../../../../core/config/router/app_routes.dart';
 import '../../../../core/core.dart';
 import '../../../../core/di/di.dart';
 import '../../../../material/app_empty_widget.dart';
@@ -14,6 +15,8 @@ import '../../../../material/overlay/show_modal_bottom_sheet.dart';
 import '../../../../material/shimmer/shimmer_effect_widget.dart';
 import '../../../../material/spin_kit_loading_widget.dart';
 import '../../../../material/toast/app_toast.dart';
+import '../../../products/domain/usecases/get_products_usecase.dart';
+import '../../../products/presentation/products/products_page.dart';
 import '../../domain/entities/category_entity.dart';
 import '../../domain/usecases/get_main_categories_usecase.dart';
 import 'main_categories_cubit.dart';

@@ -1976,6 +1976,48 @@ abstract class AppLocalizations {
   /// **'Discount coupons'**
   String get discountCoupons;
 
+  /// No description provided for @couponUnused.
+  ///
+  /// In en, this message translates to:
+  /// **'Unused'**
+  String get couponUnused;
+
+  /// No description provided for @couponUsed.
+  ///
+  /// In en, this message translates to:
+  /// **'Used'**
+  String get couponUsed;
+
+  /// No description provided for @couponExpired.
+  ///
+  /// In en, this message translates to:
+  /// **'Expired'**
+  String get couponExpired;
+
+  /// No description provided for @couponValidFromTo.
+  ///
+  /// In en, this message translates to:
+  /// **'Valid from {from} to {to}'**
+  String couponValidFromTo(String from, String to);
+
+  /// No description provided for @couponMinOrder.
+  ///
+  /// In en, this message translates to:
+  /// **'Minimum order'**
+  String get couponMinOrder;
+
+  /// No description provided for @couponCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'Copied'**
+  String get couponCopied;
+
+  /// No description provided for @discountCouponBanner.
+  ///
+  /// In en, this message translates to:
+  /// **'Discount coupon'**
+  String get discountCouponBanner;
+
   /// No description provided for @whoWeAre.
   ///
   /// In en, this message translates to:
@@ -2821,6 +2863,168 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Electronic payment'**
   String get electronicPayment;
+
+  /// No description provided for @all.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get all;
+
+  /// No description provided for @offersOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Offers only'**
+  String get offersOnly;
+
+  /// No description provided for @sort.
+  ///
+  /// In en, this message translates to:
+  /// **'Sort'**
+  String get sort;
+
+  /// No description provided for @mostRequested.
+  ///
+  /// In en, this message translates to:
+  /// **'Most requested'**
+  String get mostRequested;
+
+  /// No description provided for @priceHighToLow.
+  ///
+  /// In en, this message translates to:
+  /// **'Price: high to low'**
+  String get priceHighToLow;
+
+  /// No description provided for @priceLowToHigh.
+  ///
+  /// In en, this message translates to:
+  /// **'Price: low to high'**
+  String get priceLowToHigh;
+
+  /// No description provided for @fromHighToLow.
+  ///
+  /// In en, this message translates to:
+  /// **'High to low'**
+  String get fromHighToLow;
+
+  /// No description provided for @fromLowToHigh.
+  ///
+  /// In en, this message translates to:
+  /// **'Low to high'**
+  String get fromLowToHigh;
+
+  /// No description provided for @offersTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Offers'**
+  String get offersTitle;
+
+  /// No description provided for @mostRequestedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Most requested'**
+  String get mostRequestedTitle;
+
+  /// No description provided for @searchProductByName.
+  ///
+  /// In en, this message translates to:
+  /// **'Search by product name'**
+  String get searchProductByName;
+
+  /// No description provided for @productDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Product details'**
+  String get productDetails;
+
+  /// No description provided for @offerEndsIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Offer ends in:'**
+  String get offerEndsIn;
+
+  /// No description provided for @productPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Product price'**
+  String get productPrice;
+
+  /// No description provided for @noProductsInThisSection.
+  ///
+  /// In en, this message translates to:
+  /// **'No products in this section 🥕'**
+  String get noProductsInThisSection;
+
+  /// No description provided for @noProductsInThisSubsection.
+  ///
+  /// In en, this message translates to:
+  /// **'There are currently no products in this subsection. Try choosing another section.'**
+  String get noProductsInThisSubsection;
+
+  /// No description provided for @searchByOrderNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Search by order number'**
+  String get searchByOrderNumber;
+
+  /// No description provided for @orderCreationDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Created: {date}'**
+  String orderCreationDate(String date);
+
+  /// No description provided for @orderDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Order details'**
+  String get orderDetails;
+
+  /// No description provided for @orderStatusNew.
+  ///
+  /// In en, this message translates to:
+  /// **'New'**
+  String get orderStatusNew;
+
+  /// No description provided for @orderStatusInPreparation.
+  ///
+  /// In en, this message translates to:
+  /// **'In preparation'**
+  String get orderStatusInPreparation;
+
+  /// No description provided for @orderStatusReadyForDelivery.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready for delivery'**
+  String get orderStatusReadyForDelivery;
+
+  /// No description provided for @orderStatusOnTheWay.
+  ///
+  /// In en, this message translates to:
+  /// **'On the way'**
+  String get orderStatusOnTheWay;
+
+  /// No description provided for @orderStatusDelivered.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivered'**
+  String get orderStatusDelivered;
+
+  /// No description provided for @orderStatusCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled'**
+  String get orderStatusCancelled;
+
+  /// No description provided for @noOrdersFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No orders found'**
+  String get noOrdersFound;
+
+  /// No description provided for @noOrdersFoundSub.
+  ///
+  /// In en, this message translates to:
+  /// **'There are currently no orders. Try changing the filter or searching by another order number.'**
+  String get noOrdersFoundSub;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

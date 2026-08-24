@@ -6,6 +6,7 @@ import '../../../src/addresses/presentation/my_addresses/my_addresses_page.dart'
 import '../../../src/cart/presentation/cart_page/cart_page.dart';
 import '../../../src/authentication/presentation/update_phone/update_phone_cubit.dart';
 import '../../../src/authentication/presentation/update_phone/update_phone_page.dart';
+import '../../../src/coupons/presentation/coupons/coupons_page.dart';
 import '../../../src/more/presentation/personal_profile/personal_profile_cubit.dart';
 import '../../../src/more/presentation/personal_profile/personal_profile_page.dart';
 import '../../../app.dart';
@@ -22,6 +23,7 @@ import '../../../src/categories/presentation/main_categories/main_categories_pag
 import '../../../src/categories/presentation/sub_categories/sub_categories_page.dart';
 import '../../../src/products/presentation/products/products_page.dart';
 import '../../../src/notifications/presentation/notifications_page.dart';
+import '../../../src/products/presentation/show_product_details/show_product_details_page.dart';
 import '../../../src/wallet/presentation/_client_wallet/client_wallet_page.dart';
 import '../../../src/wallet/presentation/payment_web_view/payment_webview_page.dart';
 import '../../core.dart';
@@ -52,6 +54,20 @@ class AppRoutesGenerator {
         page = const CartPage();
       case AppRoutes.myAddressesPage:
         page = BlocProvider(create: (context) => injector<MyAddressesCubit>()..getAddresses(), child: const MyAddressesPage());
+      case AppRoutes.couponsPage:
+        page = const CouponsPage();
+      case AppRoutes.mainCategoriesPage:
+        final arguments = settings.arguments as MainCategoriesPage;
+        page = arguments;
+      case AppRoutes.subCategoriesPage:
+        final arguments = settings.arguments as SubCategoriesPage;
+        page = arguments;
+      case AppRoutes.productsPage:
+        final arguments = settings.arguments as ProductsPage;
+        page = arguments;
+      case AppRoutes.showProductDetailsPage:
+        final arguments = settings.arguments as ShowProductDetailsPage;
+        page = arguments;
 
       /// Common and static and common pages
       ///
@@ -74,18 +90,6 @@ class AppRoutesGenerator {
       ///
       case AppRoutes.notificationsPage:
         final arguments = settings.arguments as NotificationsPage;
-        page = arguments;
-
-      /// Categories
-      ///
-      case AppRoutes.mainCategoriesPage:
-        final arguments = settings.arguments as MainCategoriesPage? ?? const MainCategoriesPage();
-        page = arguments;
-      case AppRoutes.subCategoriesPage:
-        final arguments = settings.arguments as SubCategoriesPage;
-        page = arguments;
-      case AppRoutes.productsPage:
-        final arguments = settings.arguments as ProductsPage? ?? const ProductsPage();
         page = arguments;
 
       /// Authentication

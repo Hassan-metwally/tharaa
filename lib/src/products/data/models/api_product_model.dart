@@ -1,15 +1,18 @@
 import '../../../../core/core.dart';
+import '../../../categories/data/models/api_category_model.dart';
+import '../../../categories/domain/entities/category_entity.dart';
 import '../../domain/entities/product_entity.dart';
 
 class ApiProductModel {
   final int? id;
   final String? name;
   final AttachmentEntity? image;
-  final String? category;
-  final String? unit;
+  final ApiCategoryModel? category;
   final num? price;
   final num? offerPrice;
   final num? amount;
+  final num? volume;
+  final String? unit;
 
   ApiProductModel({
     required this.id,
@@ -20,18 +23,22 @@ class ApiProductModel {
     required this.price,
     this.offerPrice,
     this.amount,
+    this.volume,
   });
 
-  factory ApiProductModel.fromJson(Map<String, dynamic> json) => ApiProductModel(
-    id: json["id"],
-    name: json["name"],
-    image: AttachmentEntity.fromNetwork(url: json["image"]),
-    category: json["category"] is Map<String, dynamic> ? json["category"]["name"] : json["category"]?.toString(),
-    unit: json["unit"]?.toString(),
-    price: num.tryParse(json["price"]?.toString() ?? ''),
-    offerPrice: num.tryParse((json["offer_price"] ?? json["offerPrice"])?.toString() ?? ''),
-    amount: num.tryParse(json["amount"]?.toString() ?? ''),
-  );
+  factory ApiProductModel.fromJson(Map<String, dynamic> json) {
+    return ApiProductModel(
+      id: json["id"],
+      name: json["name"],
+      image: AttachmentEntity.fromNetwork(url: json["image"]),
+      category: json["category"] is Map<String, dynamic> ? ApiCategoryModel.fromJson(json["category"]) : null,
+      unit: json["unit"]?.toString(),
+      price: num.tryParse(json["price"]?.toString() ?? ''),
+      offerPrice: num.tryParse((json["offer_price"] ?? json["offerPrice"])?.toString() ?? ''),
+      amount: num.tryParse(json["amount"]?.toString() ?? ''),
+      volume: num.tryParse(json["volume"]?.toString() ?? ''),
+    );
+  }
 }
 
 extension ApiProductEXT on ApiProductModel {
@@ -39,10 +46,11 @@ extension ApiProductEXT on ApiProductModel {
     id: id ?? 0,
     name: name ?? '',
     image: image ?? const AttachmentEntity.empty(),
-    category: category ?? '',
+    category: category?.map ?? const CategoryEntity.initial(),
     unit: unit ?? '',
     price: price ?? 0,
     offerPrice: offerPrice,
     amount: amount,
+    volume: volume,
   );
 }

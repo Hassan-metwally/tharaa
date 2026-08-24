@@ -47,6 +47,10 @@ abstract class AppTheme {
 
   final Color fieldFill = const Color(0xFFF5F6F8);
   final Color mutedText = const Color(0xFF6E829F);
+  final Color chipText = const Color(0xFF4E5C71);
+  final Color oldPriceColor = const Color(0xFF8B9BB2);
+  final Color productCardFill = const Color(0xFFF7F8FA);
+  final Color offersCardFill = const Color(0xFFFFFFFF);
   static const double fieldRadius = 16;
 
   BoxShadow get boxShadow => BoxShadow(color: Colors.black.withOpacityPercent(8), blurRadius: 4);

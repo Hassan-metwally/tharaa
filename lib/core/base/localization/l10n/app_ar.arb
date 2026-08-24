@@ -344,6 +344,23 @@
   "preferences": "التفضيلات",
   "accountManagement": "إدارة الحساب",
   "discountCoupons": "كوبونات الخصم",
+  "couponUnused": "غير مستخدم",
+  "couponUsed": "مستخدم",
+  "couponExpired": "منتهي",
+  "couponValidFromTo": "صالح من {from} إلي {to}",
+  "@couponValidFromTo": {
+    "placeholders": {
+      "from": {
+        "type": "String"
+      },
+      "to": {
+        "type": "String"
+      }
+    }
+  },
+  "couponMinOrder": "الحد الأدني للطلب",
+  "couponCopied": "تم النسخ",
+  "discountCouponBanner": "كوبـــون خصـــم",
   "whoWeAre": "من نحن",
   "newOrders": "الطلبات الجديدة",
   "ordersInProgress": "الطلبات قيد التنفيذ",
@@ -515,5 +532,39 @@
   "paymentMethod": "طريقة الدفع",
   "paymentDetails": "تفاصيل الدفع",
   "applePay": "أبل باي",
-  "electronicPayment": "دفع إلكتروني"
+  "electronicPayment": "دفع إلكتروني",
+  "all": "الكل",
+  "offersOnly": "العروض فقط",
+  "sort": "الترتيب",
+  "mostRequested": "الأكثر طلباً",
+  "priceHighToLow": "السعر من الأعلى إلى الأقل",
+  "priceLowToHigh": "السعر من الأقل إلى الأعلى",
+  "fromHighToLow": "من الأعلى إلى الأقل",
+  "fromLowToHigh": "من الأقل إلى الأعلى",
+  "offersTitle": "العروض",
+  "mostRequestedTitle": "الأكثر طلباً",
+  "searchProductByName": "ابحث باسم المنتج",
+  "productDetails": "تفاصيل المنتج",
+  "offerEndsIn": "ينتهى العرض خلال:",
+  "productPrice": "سعر المنتج",
+  "noProductsInThisSection": "لا توجد منتجات في هذا القسم 🥕",
+  "noProductsInThisSubsection": "حاليًا لا توجد منتجات ضمن هذا القسم الفرعي جرب اختيار قسم آخر",
+  "searchByOrderNumber": "ابحث برقم الطلب",
+  "orderCreationDate": "تاريخ الإنشاء: {date}",
+  "@orderCreationDate": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "orderDetails": "تفاصيل الطلب",
+  "orderStatusNew": "جديد",
+  "orderStatusInPreparation": "قيد التجهيز",
+  "orderStatusReadyForDelivery": "جاهز للتوصيل",
+  "orderStatusOnTheWay": "فى الطريق",
+  "orderStatusDelivered": "تم التوصيل",
+  "orderStatusCancelled": "ملغى",
+  "noOrdersFound": "لا توجد طلبات",
+  "noOrdersFoundSub": "حاليًا لا توجد طلبات، جرّب تغيير الفلتر أو البحث برقم طلب آخر"
 }

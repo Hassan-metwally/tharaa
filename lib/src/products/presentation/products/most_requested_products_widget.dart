@@ -19,10 +19,10 @@ import '../../../cart/presentation/utils/cart_items_count_subscription.dart';
 import '../../../home/presentation/widgets/home_empty_widget.dart';
 import '../../domain/entities/product_entity.dart';
 import '../../domain/usecases/get_products_usecase.dart';
+import '../show_product_details/show_product_details_page.dart';
 import 'products_cubit.dart';
 import 'products_page.dart';
 
-const Color _kProductCardFill = Color(0xFFF7F8FA);
 const double _kSectionHeaderHeight = 28;
 const double _kProductCardWidth = 156;
 const double _kProductCardHeight = 223;
@@ -43,10 +43,7 @@ class MostRequestedProductsWidget extends StatelessWidget {
       create: (context) => injector<ProductsCubit>()
         ..updateParams(const GetProductsParams(page: 1, mostRequestedProductsOnly: true))
         ..getProducts(),
-      child: const Padding(
-        padding: EdgeInsets.symmetric(horizontal: Dimensions.p16),
-        child: _MostRequestedProductsBody(),
-      ),
+      child: _MostRequestedProductsBody(),
     );
   }
 }
@@ -58,6 +55,7 @@ class _MostRequestedProductsBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ProductsCubit, ProductsState>(
       builder: (context, state) {
+        
         if (state.getProductsState.isLoading) {
           return const _MostRequestedProductsLoading();
         }
@@ -99,6 +97,7 @@ class _MostRequestedProductsContent extends StatelessWidget {
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
             itemCount: products.length,
+            padding: const EdgeInsets.symmetric(horizontal: Dimensions.p16),
             separatorBuilder: (context, index) => const SizedBox(width: Dimensions.p12),
             itemBuilder: (context, index) => _MostRequestedProductCard(entity: products[index]),
           ),
@@ -116,41 +115,44 @@ class _MostRequestedProductsHeader extends StatelessWidget {
     final bool isRtl = Directionality.of(context) == TextDirection.rtl;
     const double radians = _kArrowRotationDeg * math.pi / 180;
 
-    return GestureDetector(
-      behavior: HitTestBehavior.opaque,
-      onTap: () {
-        // Navigator.of(context).pushNamed(
-        //   AppRoutes.productsPage,
-        //   arguments: const ProductsPage(params: GetProductsParams(page: 1, mostRequestedProductsOnly: true)),
-        // );
-      },
-      child: SizedBox(
-        height: _kSectionHeaderHeight,
-        child: Row(
-          children: [
-            Expanded(
-              child: Text(
-                appLocalizer.mostRequestedProducts,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyles.semiBold16.copyWith(color: AppColors.black900, height: 1, fontWeight: FontWeight.w600),
-              ),
-            ),
-            Text(
-              appLocalizer.viewMore,
-              style: TextStyles.medium14.copyWith(color: AppColors.mutedText, height: 1),
-            ),
-            SizedBox(
-              width: _kArrowHitSize,
-              height: _kArrowHitSize,
-              child: Center(
-                child: Transform.rotate(
-                  angle: isRtl ? radians : math.pi - radians,
-                  child: AppSvgIcon(path: AppIcons.arrowUpRight, width: _kArrowIconSize, height: _kArrowIconSize),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: Dimensions.p16),
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: () {
+          AppRouter.pushNamed(
+            AppRoutes.productsPage,
+            arguments: const ProductsPage(params: GetProductsParams(page: 1, mostRequestedProductsOnly: true)),
+          );
+        },
+        child: SizedBox(
+          height: _kSectionHeaderHeight,
+          child: Row(
+            children: [
+              Expanded(
+                child: Text(
+                  appLocalizer.mostRequestedProducts,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyles.semiBold16.copyWith(color: AppColors.black900, height: 1, fontWeight: FontWeight.w600),
                 ),
               ),
-            ),
-          ],
+              Text(
+                appLocalizer.viewMore,
+                style: TextStyles.medium14.copyWith(color: AppColors.mutedText, height: 1),
+              ),
+              SizedBox(
+                width: _kArrowHitSize,
+                height: _kArrowHitSize,
+                child: Center(
+                  child: Transform.rotate(
+                    angle: isRtl ? radians : math.pi - radians,
+                    child: AppSvgIcon(path: AppIcons.arrowUpRight, width: _kArrowIconSize, height: _kArrowIconSize),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -171,75 +173,83 @@ class _MostRequestedProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: _kProductCardWidth,
-      height: _kProductCardHeight,
-      padding: const EdgeInsets.all(Dimensions.p8),
-      decoration: BoxDecoration(
-        color: _kProductCardFill,
-        borderRadius: BorderRadius.circular(Dimensions.r24),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          SizedBox(
-            height: _kProductImageHeight,
-            child: Stack(
+    return GestureDetector(
+      onTap: () {
+        AppRouter.pushNamed(
+          AppRoutes.showProductDetailsPage,
+          arguments: ShowProductDetailsPage(id: entity.id),
+        );
+      },
+      child: Container(
+        width: _kProductCardWidth,
+        height: _kProductCardHeight,
+        padding: const EdgeInsets.all(Dimensions.p8),
+        decoration: BoxDecoration(
+          color: AppColors.productCardFill,
+          borderRadius: BorderRadius.circular(Dimensions.r24),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            SizedBox(
+              height: _kProductImageHeight,
+              child: Stack(
+                children: [
+                  Positioned.fill(
+                    child: AppImage.rounded(
+                      path: entity.image.path,
+                      height: _kProductImageHeight,
+                      width: double.infinity,
+                      radius: Dimensions.r16,
+                      fit: BoxFit.cover,
+                      bgColor: AppColors.productCardFill,
+                    ),
+                  ),
+                  Align(
+                    alignment: AlignmentDirectional.bottomStart,
+                    child: Padding(
+                      padding: const EdgeInsets.all(Dimensions.p8),
+                      child: _MostRequestedAddToCartButton(productId: entity.id),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: Dimensions.p8),
+            Text(
+              entity.name,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyles.medium16.copyWith(color: AppColors.black900, height: 1),
+            ),
+            Row(
               children: [
-                Positioned.fill(
-                  child: AppImage.rounded(
-                    path: entity.image.path,
-                    height: _kProductImageHeight,
-                    width: double.infinity,
-                    radius: Dimensions.r16,
-                    fit: BoxFit.cover,
-                    bgColor: _kProductCardFill,
+                Expanded(
+                  child: Text(
+                    entity.category.name,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyles.regular12.copyWith(color: AppColors.mutedText, height: 1),
                   ),
                 ),
-                Align(
-                  alignment: AlignmentDirectional.bottomStart,
-                  child: Padding(
-                    padding: const EdgeInsets.all(Dimensions.p8),
-                    child: _MostRequestedAddToCartButton(productId: entity.id),
+                if (_unitLabel.isNotEmpty)
+                  Text(
+                    _unitLabel,
+                    style: TextStyles.regular12.copyWith(color: AppColors.mutedText, height: 1),
                   ),
-                ),
               ],
             ),
-          ),
-          const SizedBox(height: Dimensions.p8),
-          Text(
-            entity.name,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyles.medium16.copyWith(color: AppColors.black900, height: 1),
-          ),
-          Row(
-            children: [
-              Expanded(
-                child: Text(
-                  entity.category,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyles.regular12.copyWith(color: AppColors.mutedText, height: 1),
-                ),
+            const Spacer(),
+            Center(
+              child: RiyalPriceText(
+                price: entity.price.toString(),
+                priceTextStyle: TextStyles.semiBold20.copyWith(color: AppColors.primary, height: 1),
+                currencyTextStyle: TextStyles.semiBold20.copyWith(color: AppColors.primary, height: 1),
+                textAlign: TextAlign.center,
               ),
-              if (_unitLabel.isNotEmpty)
-                Text(
-                  _unitLabel,
-                  style: TextStyles.regular12.copyWith(color: AppColors.mutedText, height: 1),
-                ),
-            ],
-          ),
-          const Spacer(),
-          Center(
-            child: RiyalPriceText(
-              price: entity.price.toString(),
-              priceTextStyle: TextStyles.semiBold20.copyWith(color: AppColors.primary, height: 1),
-              currencyTextStyle: TextStyles.semiBold20.copyWith(color: AppColors.primary, height: 1),
-              textAlign: TextAlign.center,
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -308,6 +318,7 @@ class _MostRequestedProductsLoading extends StatelessWidget {
           height: _kProductCardHeight,
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.symmetric(horizontal: Dimensions.p16),
             physics: const NeverScrollableScrollPhysics(),
             itemCount: _kHomeShimmerCount,
             separatorBuilder: (context, index) => const SizedBox(width: Dimensions.p12),

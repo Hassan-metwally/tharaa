@@ -954,6 +954,29 @@ class AppLocalizationsEn extends AppLocalizations {
   String get discountCoupons => 'Discount coupons';
 
   @override
+  String get couponUnused => 'Unused';
+
+  @override
+  String get couponUsed => 'Used';
+
+  @override
+  String get couponExpired => 'Expired';
+
+  @override
+  String couponValidFromTo(String from, String to) {
+    return 'Valid from $from to $to';
+  }
+
+  @override
+  String get couponMinOrder => 'Minimum order';
+
+  @override
+  String get couponCopied => 'Copied';
+
+  @override
+  String get discountCouponBanner => 'Discount coupon';
+
+  @override
   String get whoWeAre => 'Who we are';
 
   @override
@@ -1378,4 +1401,87 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get electronicPayment => 'Electronic payment';
+
+  @override
+  String get all => 'All';
+
+  @override
+  String get offersOnly => 'Offers only';
+
+  @override
+  String get sort => 'Sort';
+
+  @override
+  String get mostRequested => 'Most requested';
+
+  @override
+  String get priceHighToLow => 'Price: high to low';
+
+  @override
+  String get priceLowToHigh => 'Price: low to high';
+
+  @override
+  String get fromHighToLow => 'High to low';
+
+  @override
+  String get fromLowToHigh => 'Low to high';
+
+  @override
+  String get offersTitle => 'Offers';
+
+  @override
+  String get mostRequestedTitle => 'Most requested';
+
+  @override
+  String get searchProductByName => 'Search by product name';
+
+  @override
+  String get productDetails => 'Product details';
+
+  @override
+  String get offerEndsIn => 'Offer ends in:';
+
+  @override
+  String get productPrice => 'Product price';
+
+  @override
+  String get noProductsInThisSection => 'No products in this section 🥕';
+
+  @override
+  String get noProductsInThisSubsection => 'There are currently no products in this subsection. Try choosing another section.';
+
+  @override
+  String get searchByOrderNumber => 'Search by order number';
+
+  @override
+  String orderCreationDate(String date) {
+    return 'Created: $date';
+  }
+
+  @override
+  String get orderDetails => 'Order details';
+
+  @override
+  String get orderStatusNew => 'New';
+
+  @override
+  String get orderStatusInPreparation => 'In preparation';
+
+  @override
+  String get orderStatusReadyForDelivery => 'Ready for delivery';
+
+  @override
+  String get orderStatusOnTheWay => 'On the way';
+
+  @override
+  String get orderStatusDelivered => 'Delivered';
+
+  @override
+  String get orderStatusCancelled => 'Cancelled';
+
+  @override
+  String get noOrdersFound => 'No orders found';
+
+  @override
+  String get noOrdersFoundSub => 'There are currently no orders. Try changing the filter or searching by another order number.';
 }

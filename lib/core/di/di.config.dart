@@ -52,6 +52,7 @@ import '../../src/authentication/domain/use_case/resend_otp_use_case.dart'
 import '../../src/authentication/domain/use_case/verify_otp_use_case.dart'
     as _i902;
 import '../../src/cart/data/datasource/cart_datasource.dart' as _i690;
+import '../../src/cart/data/datasource/cart_mock_datasource.dart' as _i646;
 import '../../src/cart/data/repositories/cart_repository_impl.dart' as _i933;
 import '../../src/cart/domain/repositories/cart_repository.dart' as _i630;
 import '../../src/cart/domain/usecases/delete_cart_item_usecase.dart' as _i607;
@@ -125,6 +126,14 @@ import '../../src/common/domain/use_cases/menu/send_contact_us_message_use_case.
     as _i45;
 import '../../src/common/domain/use_cases/menu/toggle_enable_notification_use_case.dart'
     as _i1015;
+import '../../src/coupons/data/datasources/coupons_datasource.dart' as _i74;
+import '../../src/coupons/data/datasources/coupons_mock_datasource.dart'
+    as _i914;
+import '../../src/coupons/data/repositories/coupons_repository_impl.dart'
+    as _i77;
+import '../../src/coupons/domain/repositories/coupons_repository.dart' as _i542;
+import '../../src/coupons/domain/usecases/get_coupons_usecase.dart' as _i761;
+import '../../src/coupons/presentation/coupons/coupons_cubit.dart' as _i987;
 import '../../src/google_maps/data/data_sources/maps_data_source.dart' as _i401;
 import '../../src/google_maps/data/repository/maps_repository_imp.dart'
     as _i683;
@@ -165,6 +174,21 @@ import '../../src/notifications/domain/use_cases/mark_all_notifications_as_read_
 import '../../src/notifications/domain/use_cases/read_notification_usecase.dart'
     as _i726;
 import '../../src/notifications/presentation/notifications_cubit.dart' as _i545;
+import '../../src/orders/data/datasources/orders_datasource.dart' as _i239;
+import '../../src/orders/data/datasources/orders_mock_datasource.dart' as _i560;
+import '../../src/orders/data/repositories/orders_repository_impl.dart'
+    as _i833;
+import '../../src/orders/domain/repositories/orders_repository.dart' as _i247;
+import '../../src/orders/domain/usecases/get_orders_usecase.dart' as _i488;
+import '../../src/orders/domain/usecases/show_order_details_usecase.dart'
+    as _i770;
+import '../../src/orders/domain/usecases/toggle_order_status_usecase.dart'
+    as _i1047;
+import '../../src/orders/presentation/orders/orders_cubit.dart' as _i818;
+import '../../src/orders/presentation/show_order_details/show_order_details_cubit.dart'
+    as _i177;
+import '../../src/orders/presentation/toggle_order_status/toggle_order_status_cubit.dart'
+    as _i673;
 import '../../src/products/data/datasources/products_datasource.dart' as _i617;
 import '../../src/products/data/datasources/products_mock_datasource.dart'
     as _i31;
@@ -249,6 +273,7 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i203.LanguageCacheDateSourceImp(),
     );
     gh.factory<_i984.ThemeRepository>(() => _i715.ThemeRepositoryImp());
+    gh.factory<_i239.OrdersDatasource>(() => _i560.OrdersMockDatasource());
     gh.factory<_i758.MenuCommonDatasource>(
       () => _i896.MenuCommonMockDatasource(),
     );
@@ -263,6 +288,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i401.MapsDataSource>(
       () => _i401.MapsDataSourceImpl(gh<_i351.DioHelper>()),
     );
+    gh.factory<_i690.CartDatasource>(() => _i646.CartMockDatasource());
     gh.factory<_i581.StatisticsRepository>(
       () => _i550.StatisticsRepositoryImpl(gh<_i1069.StatisticsDatasource>()),
     );
@@ -275,9 +301,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i226.CategoriesDatasource>(
       () => _i152.CategoriesMockDatasource(),
     );
-    gh.factory<_i690.CartDatasource>(
-      () => _i690.CartDatasourceImpl(gh<_i351.DioHelper>()),
-    );
+    gh.factory<_i74.CouponsDatasource>(() => _i914.CouponsMockDatasource());
     gh.factory<_i351.SecureStorageRepository>(
       () =>
           _i526.SecureStorageRepositoryImp(gh<_i177.SecureStorageDataSource>()),
@@ -296,6 +320,9 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i351.DioHelper>(),
         gh<_i351.SecureStorageRepository>(),
       ),
+    );
+    gh.factory<_i247.OrdersRepository>(
+      () => _i833.OrdersRepositoryImpl(gh<_i239.OrdersDatasource>()),
     );
     gh.factory<_i300.AuthenticationRepository>(
       () => _i469.AuthenticationRepositoryImp(
@@ -378,6 +405,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i406.CategoriesRepository>(
       () => _i1031.CategoriesRepositoryImpl(gh<_i226.CategoriesDatasource>()),
     );
+    gh.factory<_i542.CouponsRepository>(
+      () => _i77.CouponsRepositoryImpl(gh<_i74.CouponsDatasource>()),
+    );
     gh.factory<_i262.DeleteCartItemCubit>(
       () => _i262.DeleteCartItemCubit(gh<_i607.DeleteCartItemUsecase>()),
     );
@@ -406,6 +436,18 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i726.ReadNotificationUseCase>(
       () => _i726.ReadNotificationUseCase(gh<_i209.NotificationRepository>()),
+    );
+    gh.factory<_i488.GetOrdersUsecase>(
+      () => _i488.GetOrdersUsecase(gh<_i247.OrdersRepository>()),
+    );
+    gh.factory<_i770.ShowOrderDetailsUsecase>(
+      () => _i770.ShowOrderDetailsUsecase(gh<_i247.OrdersRepository>()),
+    );
+    gh.factory<_i1047.ToggleOrderStatusUseCase>(
+      () => _i1047.ToggleOrderStatusUseCase(gh<_i247.OrdersRepository>()),
+    );
+    gh.factory<_i177.ShowOrderDetailsCubit>(
+      () => _i177.ShowOrderDetailsCubit(gh<_i770.ShowOrderDetailsUsecase>()),
     );
     gh.factory<_i1065.CommonDatasource>(
       () => _i1065.CommonDatasourceImpl(gh<_i351.DioHelper>()),
@@ -496,6 +538,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i100.ShowProductDetailsUsecase>(
       () => _i100.ShowProductDetailsUsecase(gh<_i417.ProductsRepository>()),
     );
+    gh.factory<_i761.GetCouponsUsecase>(
+      () => _i761.GetCouponsUsecase(gh<_i542.CouponsRepository>()),
+    );
     gh.factory<_i612.ClientWalletCubit>(
       () => _i612.ClientWalletCubit(
         gh<_i937.GetWalletHistoryUseCase>(),
@@ -522,6 +567,9 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i87.UpdateProfileUseCase>(),
       ),
     );
+    gh.factory<_i673.ToggleOrderStatusCubit>(
+      () => _i673.ToggleOrderStatusCubit(gh<_i1047.ToggleOrderStatusUseCase>()),
+    );
     gh.factory<_i532.GetMapLocationAddressUseCase>(
       () => _i532.GetMapLocationAddressUseCase(gh<_i410.MapsRepository>()),
     );
@@ -538,6 +586,9 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i21.UpdateCartDeliveryFeesCubit(
         gh<_i169.UpdateCartDeliveryFeesUsecase>(),
       ),
+    );
+    gh.factory<_i818.OrdersCubit>(
+      () => _i818.OrdersCubit(gh<_i488.GetOrdersUsecase>()),
     );
     gh.factory<_i34.ChatsInboxRepository>(
       () => _i399.ChatsInboxRepositoryImpl(gh<_i309.ChatsInboxDatasource>()),
@@ -567,6 +618,9 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i630.GetUnreadedNotificationsCountUsecase>(),
         gh<_i726.ReadNotificationUseCase>(),
       ),
+    );
+    gh.factory<_i987.CouponsCubit>(
+      () => _i987.CouponsCubit(gh<_i761.GetCouponsUsecase>()),
     );
     gh.factory<_i339.AddLocationUseCase>(
       () => _i339.AddLocationUseCase(gh<_i768.AddressRepository>()),

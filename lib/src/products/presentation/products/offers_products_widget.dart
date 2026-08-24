@@ -17,10 +17,12 @@ import '../../../cart/domain/usecases/upsert_cart_item_usecase.dart';
 import '../../../cart/presentation/upsert_cart_item/upsert_cart_item_cubit.dart';
 import '../../../cart/presentation/utils/cart_items_count_subscription.dart';
 import '../../../home/presentation/widgets/home_empty_widget.dart';
+import '../../../main_page/models/client_main_page_tabs_enum.dart';
+import '../../../main_page/observer/client_main_page_observer.dart';
 import '../../domain/entities/product_entity.dart';
 import '../../domain/usecases/get_products_usecase.dart';
+import '../show_product_details/show_product_details_page.dart';
 import 'products_cubit.dart';
-import 'products_page.dart';
 
 const Color _kOldPriceColor = Color(0xFF8B9BB2);
 const double _kSectionHeaderHeight = 28;
@@ -84,10 +86,7 @@ class _OffersSectionFrame extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ColoredBox(
-      color: AppColors.primary50,
-      child: Padding(padding: const EdgeInsets.all(Dimensions.p16), child: child),
-    );
+    return ColoredBox(color: AppColors.primary50, child: child);
   }
 }
 
@@ -107,6 +106,7 @@ class _OffersProductsContent extends StatelessWidget {
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
             itemCount: products.length,
+            padding: const EdgeInsets.only(left: Dimensions.p16, right: Dimensions.p16, bottom: Dimensions.p16),
             separatorBuilder: (context, index) => const SizedBox(width: Dimensions.p12),
             itemBuilder: (context, index) => _OfferProductCard(entity: products[index]),
           ),
@@ -124,37 +124,38 @@ class _OffersProductsHeader extends StatelessWidget {
     final bool isRtl = Directionality.of(context) == TextDirection.rtl;
     const double radians = _kArrowRotationDeg * math.pi / 180;
 
-    return GestureDetector(
-      behavior: HitTestBehavior.opaque,
-      onTap: () {
-        // Navigator.of(
-        //   context,
-        // ).pushNamed(AppRoutes.productsPage, arguments: const ProductsPage(params: GetProductsParams(page: 1, offersProductsOnly: true)));
-      },
-      child: SizedBox(
-        height: _kSectionHeaderHeight,
-        child: Row(
-          children: [
-            Expanded(
-              child: Text(
-                appLocalizer.offersList,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyles.semiBold16.copyWith(color: AppColors.black900, height: 1, fontWeight: FontWeight.w600),
-              ),
-            ),
-            Text(appLocalizer.viewMore, style: TextStyles.medium14.copyWith(color: AppColors.mutedText, height: 1)),
-            SizedBox(
-              width: _kArrowHitSize,
-              height: _kArrowHitSize,
-              child: Center(
-                child: Transform.rotate(
-                  angle: isRtl ? radians : math.pi - radians,
-                  child: AppSvgIcon(path: AppIcons.arrowUpRight, width: _kArrowIconSize, height: _kArrowIconSize),
+    return Padding(
+      padding: const EdgeInsets.only(left: Dimensions.p16, right: Dimensions.p16, top: Dimensions.p16),
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: () {
+          ClientMainPageUpdater.notifyOnChangedCallbacks(ClientMainPageTabsEnum.offers);
+        },
+        child: SizedBox(
+          height: _kSectionHeaderHeight,
+          child: Row(
+            children: [
+              Expanded(
+                child: Text(
+                  appLocalizer.offersList,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyles.semiBold16.copyWith(color: AppColors.black900, height: 1, fontWeight: FontWeight.w600),
                 ),
               ),
-            ),
-          ],
+              Text(appLocalizer.viewMore, style: TextStyles.medium14.copyWith(color: AppColors.mutedText, height: 1)),
+              SizedBox(
+                width: _kArrowHitSize,
+                height: _kArrowHitSize,
+                child: Center(
+                  child: Transform.rotate(
+                    angle: isRtl ? radians : math.pi - radians,
+                    child: AppSvgIcon(path: AppIcons.arrowUpRight, width: _kArrowIconSize, height: _kArrowIconSize),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -189,97 +190,105 @@ class _OfferProductCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final int? discountPercent = _discountPercent;
 
-    return Container(
-      width: _kProductCardWidth,
-      height: _kProductCardHeight,
-      padding: const EdgeInsets.all(Dimensions.p8),
-      decoration: BoxDecoration(color: AppColors.white, borderRadius: BorderRadius.circular(Dimensions.r24)),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          SizedBox(
-            height: _kProductImageHeight,
-            child: Stack(
-              children: [
-                Positioned.fill(
-                  child: AppImage.rounded(
-                    path: entity.image.path,
-                    height: _kProductImageHeight,
-                    width: double.infinity,
-                    radius: Dimensions.r16,
-                    fit: BoxFit.cover,
-                    bgColor: AppColors.white,
-                  ),
-                ),
-                if (discountPercent != null && discountPercent > 0)
-                  Align(
-                    alignment: AlignmentDirectional.topStart,
-                    child: Padding(
-                      padding: const EdgeInsets.all(Dimensions.p8),
-                      child: _OfferDiscountBadge(percent: discountPercent),
+    return GestureDetector(
+      onTap: () {
+        AppRouter.pushNamed(
+          AppRoutes.showProductDetailsPage,
+          arguments: ShowProductDetailsPage(id: entity.id),
+        );
+      },
+      child: Container(
+        width: _kProductCardWidth,
+        height: _kProductCardHeight,
+        padding: const EdgeInsets.all(Dimensions.p8),
+        decoration: BoxDecoration(color: AppColors.white, borderRadius: BorderRadius.circular(Dimensions.r24)),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            SizedBox(
+              height: _kProductImageHeight,
+              child: Stack(
+                children: [
+                  Positioned.fill(
+                    child: AppImage.rounded(
+                      path: entity.image.path,
+                      height: _kProductImageHeight,
+                      width: double.infinity,
+                      radius: Dimensions.r16,
+                      fit: BoxFit.cover,
+                      bgColor: AppColors.offersCardFill,
                     ),
                   ),
-                Align(
-                  alignment: AlignmentDirectional.bottomStart,
-                  child: Padding(
-                    padding: const EdgeInsets.all(Dimensions.p8),
-                    child: _OfferAddToCartButton(productId: entity.id),
+                  if (discountPercent != null && discountPercent > 0)
+                    Align(
+                      alignment: AlignmentDirectional.topStart,
+                      child: Padding(
+                        padding: const EdgeInsets.all(Dimensions.p8),
+                        child: _OfferDiscountBadge(percent: discountPercent),
+                      ),
+                    ),
+                  Align(
+                    alignment: AlignmentDirectional.bottomStart,
+                    child: Padding(
+                      padding: const EdgeInsets.all(Dimensions.p8),
+                      child: _OfferAddToCartButton(productId: entity.id),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: Dimensions.p8),
+            Text(
+              entity.name,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyles.medium16.copyWith(color: AppColors.black900, height: 1),
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    entity.category.name,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyles.regular12.copyWith(color: AppColors.mutedText, height: 1),
                   ),
                 ),
+                if (_unitLabel.isNotEmpty) Text(_unitLabel, style: TextStyles.regular12.copyWith(color: AppColors.mutedText, height: 1)),
               ],
             ),
-          ),
-          const SizedBox(height: Dimensions.p8),
-          Text(
-            entity.name,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyles.medium16.copyWith(color: AppColors.black900, height: 1),
-          ),
-          Row(
-            children: [
-              Expanded(
-                child: Text(
-                  entity.category,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyles.regular12.copyWith(color: AppColors.mutedText, height: 1),
-                ),
-              ),
-              if (_unitLabel.isNotEmpty) Text(_unitLabel, style: TextStyles.regular12.copyWith(color: AppColors.mutedText, height: 1)),
-            ],
-          ),
-          const Spacer(),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              RiyalPriceText(
-                price: _displayPrice.toString(),
-                priceTextStyle: TextStyles.semiBold20.copyWith(color: AppColors.primary, height: 1),
-                currencyTextStyle: TextStyles.semiBold20.copyWith(color: AppColors.primary, height: 1),
-              ),
-              const SizedBox(width: Dimensions.p12),
-
-              if (_hasOffer) ...[
+            const Spacer(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
                 RiyalPriceText(
-                  price: entity.price.toString(),
-                  priceTextStyle: TextStyles.medium14.copyWith(
-                    color: _kOldPriceColor,
-                    height: 1,
-                    decoration: TextDecoration.lineThrough,
-                    decorationColor: _kOldPriceColor,
-                  ),
-                  currencyTextStyle: TextStyles.medium14.copyWith(
-                    color: _kOldPriceColor,
-                    height: 1,
-                    decoration: TextDecoration.lineThrough,
-                    decorationColor: _kOldPriceColor,
-                  ),
+                  price: _displayPrice.toString(),
+                  priceTextStyle: TextStyles.semiBold20.copyWith(color: AppColors.primary, height: 1),
+                  currencyTextStyle: TextStyles.semiBold20.copyWith(color: AppColors.primary, height: 1),
                 ),
+                const SizedBox(width: Dimensions.p12),
+      
+                if (_hasOffer) ...[
+                  RiyalPriceText(
+                    price: entity.price.toString(),
+                    priceTextStyle: TextStyles.medium14.copyWith(
+                      color: _kOldPriceColor,
+                      height: 1,
+                      decoration: TextDecoration.lineThrough,
+                      decorationColor: _kOldPriceColor,
+                    ),
+                    currencyTextStyle: TextStyles.medium14.copyWith(
+                      color: _kOldPriceColor,
+                      height: 1,
+                      decoration: TextDecoration.lineThrough,
+                      decorationColor: _kOldPriceColor,
+                    ),
+                  ),
+                ],
               ],
-            ],
-          ),
-        ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -375,6 +384,7 @@ class _OffersProductsLoading extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             physics: const NeverScrollableScrollPhysics(),
             itemCount: _kHomeShimmerCount,
+            padding: const EdgeInsets.only(left: Dimensions.p16, right: Dimensions.p16, bottom: Dimensions.p16),
             separatorBuilder: (context, index) => const SizedBox(width: Dimensions.p12),
             itemBuilder: (context, index) => const _OfferProductCardShimmer(),
           ),

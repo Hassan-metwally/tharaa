@@ -72,14 +72,21 @@ class MorePage extends StatelessWidget {
                             AppRouter.pushNamed(AppRoutes.updatePhonePage);
                           },
                         ),
-                        // _MoreTile(
-                        //   icon: AppIcons.location,
-                        //   text: appLocalizer.myAddress,
-                        //   onTap: () {
-                        //     AppRouter.pushNamed(AppRoutes.myAddressesPage);
-                        //   },
-                        // ),
-                        // _MoreTile(icon: AppIcons.gift, text: appLocalizer.discountCoupons, showDivider: false, onTap: () {}),
+                        _MoreTile(
+                          icon: AppIcons.location,
+                          text: appLocalizer.myAddress,
+                          onTap: () {
+                            AppRouter.pushNamed(AppRoutes.myAddressesPage);
+                          },
+                        ),
+                        _MoreTile(
+                          icon: AppIcons.gift,
+                          text: appLocalizer.discountCoupons,
+                          showDivider: false,
+                          onTap: () {
+                            AppRouter.pushNamed(AppRoutes.couponsPage);
+                          },
+                        ),
                       ],
                     ),
                   );

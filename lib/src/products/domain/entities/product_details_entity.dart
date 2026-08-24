@@ -1,9 +1,10 @@
-import 'product_entity.dart';
 import '../../../../core/core.dart';
+import '../../../categories/domain/entities/category_entity.dart';
+import 'product_entity.dart';
 
 class ProductDetailsEntity extends ProductEntity {
   final String description;
-  final String subCategory;
+  final CategoryEntity subCategory;
   final DateTime? offerEndDate;
 
   const ProductDetailsEntity({
@@ -13,31 +14,34 @@ class ProductDetailsEntity extends ProductEntity {
     required super.category,
     required super.unit,
     required super.price,
-    super.offerPrice,
-    super.amount,
+    required super.offerPrice,
+    required this.offerEndDate,
+    required super.amount,
+    required super.volume,
     required this.description,
     required this.subCategory,
-    this.offerEndDate,
   });
 
   const ProductDetailsEntity.initial()
     : description = '',
-      subCategory = '',
+      subCategory = const CategoryEntity.initial(),
       offerEndDate = null,
       super.initial();
 
+  @override
   ProductDetailsEntity copyWith({
     int? id,
     String? name,
     AttachmentEntity? image,
-    String? category,
+    CategoryEntity? category,
     String? unit,
     num? price,
     num? offerPrice,
-    num? amount,
-    String? description,
-    String? subCategory,
     DateTime? offerEndDate,
+    num? amount,
+    num? volume,
+    String? description,
+    CategoryEntity? subCategory,
   }) {
     return ProductDetailsEntity(
       id: id ?? this.id,
@@ -47,10 +51,11 @@ class ProductDetailsEntity extends ProductEntity {
       unit: unit ?? this.unit,
       price: price ?? this.price,
       offerPrice: offerPrice ?? this.offerPrice,
+      offerEndDate: offerEndDate ?? this.offerEndDate,
       amount: amount ?? this.amount,
+      volume: volume ?? this.volume,
       description: description ?? this.description,
       subCategory: subCategory ?? this.subCategory,
-      offerEndDate: offerEndDate ?? this.offerEndDate,
     );
   }
 

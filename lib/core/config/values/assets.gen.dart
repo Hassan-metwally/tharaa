@@ -44,6 +44,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/arrow-back.svg
   String get arrowBack => 'assets/icons/arrow-back.svg';
 
+  /// File path: assets/icons/arrow-down.svg
+  String get arrowDown => 'assets/icons/arrow-down.svg';
+
   /// File path: assets/icons/arrow-up-right.svg
   String get arrowUpRight => 'assets/icons/arrow-up-right.svg';
 
@@ -53,6 +56,12 @@ class $AssetsIconsGen {
   /// File path: assets/icons/bag-2.svg
   String get bag2 => 'assets/icons/bag-2.svg';
 
+  /// File path: assets/icons/calendar-bulk.svg
+  String get calendarBulk => 'assets/icons/calendar-bulk.svg';
+
+  /// File path: assets/icons/calendar.svg
+  String get calendar => 'assets/icons/calendar.svg';
+
   /// File path: assets/icons/call-calling.svg
   String get callCalling => 'assets/icons/call-calling.svg';
 
@@ -61,6 +70,9 @@ class $AssetsIconsGen {
 
   /// File path: assets/icons/check-circle-solid.svg
   String get checkCircleSolid => 'assets/icons/check-circle-solid.svg';
+
+  /// File path: assets/icons/copy.svg
+  String get copy => 'assets/icons/copy.svg';
 
   /// File path: assets/icons/document-text.svg
   String get documentText => 'assets/icons/document-text.svg';
@@ -102,6 +114,9 @@ class $AssetsIconsGen {
 
   /// File path: assets/icons/logout.svg
   String get logout => 'assets/icons/logout.svg';
+
+  /// File path: assets/icons/minus.svg
+  String get minus => 'assets/icons/minus.svg';
 
   /// File path: assets/icons/mobile-bulk.svg
   String get mobileBulk => 'assets/icons/mobile-bulk.svg';
@@ -148,6 +163,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/sms.svg
   String get sms => 'assets/icons/sms.svg';
 
+  /// File path: assets/icons/timer.svg
+  String get timer => 'assets/icons/timer.svg';
+
   /// File path: assets/icons/trash.svg
   String get trash => 'assets/icons/trash.svg';
 
@@ -160,12 +178,16 @@ class $AssetsIconsGen {
     homeSmile2,
     add,
     arrowBack,
+    arrowDown,
     arrowUpRight,
     bag1,
     bag2,
+    calendarBulk,
+    calendar,
     callCalling,
     camera,
     checkCircleSolid,
+    copy,
     documentText,
     documentText1,
     elementEqual,
@@ -179,6 +201,7 @@ class $AssetsIconsGen {
     infoCircle,
     location,
     logout,
+    minus,
     mobileBulk,
     mobile,
     notificationBing,
@@ -194,6 +217,7 @@ class $AssetsIconsGen {
     security,
     smsTracking,
     sms,
+    timer,
     trash,
     userOutline,
   ];
@@ -225,6 +249,9 @@ class $AssetsImagesGen {
 
   /// File path: assets/images/empty_notifications.png
   String get emptyNotifications => 'assets/images/empty_notifications.png';
+
+  /// File path: assets/images/empty_products.svg
+  String get emptyProducts => 'assets/images/empty_products.svg';
 
   /// File path: assets/images/flag_saudi.svg
   String get flagSaudi => 'assets/images/flag_saudi.svg';
@@ -273,6 +300,7 @@ class $AssetsImagesGen {
     empty,
     emptyCart,
     emptyNotifications,
+    emptyProducts,
     flagSaudi,
     flagUsa,
     loginLogo,

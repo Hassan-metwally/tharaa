@@ -69,12 +69,11 @@ class _HomeAppBarActions extends StatelessWidget {
       child: BlocBuilder<AppAuthenticationBloc, AppAuthenticationState>(
         builder: (context, state) {
           return Row(
-            textDirection: TextDirection.ltr,
             mainAxisSize: MainAxisSize.min,
             spacing: _kHomeAppBarActionsPadding,
             children: [
-              if (state is! GuestState) const _HomeNotificationAction(),
               const _HomeSearchAction(),
+              if (state is! GuestState) const _HomeNotificationAction(),
             ],
           );
         },

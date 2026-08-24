@@ -10,7 +10,10 @@ class _MainCategoryCard extends StatelessWidget {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () {
-        // AppRouter.pushNamed('', arguments: ShowCategoryDetailsPage(id: entity.id));
+        AppRouter.pushNamed(
+          AppRoutes.productsPage,
+          arguments: ProductsPage(params: GetProductsParams(mainCategory: entity)),
+        );
       },
       child: Column(
         children: [
@@ -18,10 +21,7 @@ class _MainCategoryCard extends StatelessWidget {
             height: _kCategoryCardHeight,
             width: double.infinity,
             padding: const EdgeInsets.all(_kCategoryCardPadding),
-            decoration: BoxDecoration(
-              color: _kCategoryCardFill,
-              borderRadius: BorderRadius.circular(Dimensions.r16),
-            ),
+            decoration: BoxDecoration(color: _kCategoryCardFill, borderRadius: BorderRadius.circular(Dimensions.r16)),
             child: AppImage.rounded(
               path: entity.image.path,
               height: _kCategoryImageHeight,
@@ -56,19 +56,13 @@ class _MainCategoryCardShimmer extends StatelessWidget {
           Container(
             height: _kCategoryCardHeight,
             width: double.infinity,
-            decoration: BoxDecoration(
-              color: AppColors.primary100,
-              borderRadius: BorderRadius.circular(Dimensions.r16),
-            ),
+            decoration: BoxDecoration(color: AppColors.primary100, borderRadius: BorderRadius.circular(Dimensions.r16)),
           ),
           const SizedBox(height: Dimensions.p4),
           Container(
             height: 14,
             width: double.infinity,
-            decoration: BoxDecoration(
-              color: AppColors.primary100,
-              borderRadius: BorderRadius.circular(Dimensions.r4),
-            ),
+            decoration: BoxDecoration(color: AppColors.primary100, borderRadius: BorderRadius.circular(Dimensions.r4)),
           ),
         ],
       ),

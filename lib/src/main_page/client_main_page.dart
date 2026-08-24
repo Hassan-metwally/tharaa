@@ -1,15 +1,19 @@
 import 'package:bounce/bounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:tharaa/src/orders/presentation/orders/orders_page.dart';
 
 import '../../core/core.dart';
 import '../../material/auth_states/guest_checker_widget.dart';
 import '../../material/auth_states/unauthenticated_bottom_sheet.dart';
 import '../../material/media/svg_icon.dart';
 import '../../material/offstage.dart';
+import '../cart/presentation/cart_page/cart_page.dart';
 import '../notifications/helpers/firebase/firebase_helper.dart';
 import '../home/presentation/home_page.dart';
 import '../more/presentation/more_page/more_page.dart';
+import '../products/domain/usecases/get_products_usecase.dart';
+import '../products/presentation/products/products_page.dart';
 import 'models/client_main_page_tabs_enum.dart';
 import 'observer/client_main_page_observer.dart';
 
@@ -85,15 +89,18 @@ class _ClientMainPageState extends State<ClientMainPage> with ClientMainPageObse
             OffStage(isActive: _currentTabEnum == ClientMainPageTabsEnum.home, child: HomePage()),
             OffStage(
               isActive: _currentTabEnum == ClientMainPageTabsEnum.orders,
-              child: const GuestCheckerWidget(replaceWithDefaultGuestWidget: true, child: SizedBox()),
+              child: const GuestCheckerWidget(replaceWithDefaultGuestWidget: true, child: OrdersPage()),
             ),
             OffStage(
               isActive: _currentTabEnum == ClientMainPageTabsEnum.offers,
-              child: const GuestCheckerWidget(replaceWithDefaultGuestWidget: true, child: SizedBox()),
+              child: const GuestCheckerWidget(
+                replaceWithDefaultGuestWidget: true,
+                child: ProductsPage(params: GetProductsParams(offersProductsOnly: true)),
+              ),
             ),
             OffStage(
               isActive: _currentTabEnum == ClientMainPageTabsEnum.cart,
-              child: const GuestCheckerWidget(replaceWithDefaultGuestWidget: true, child: SizedBox()),
+              child: const GuestCheckerWidget(replaceWithDefaultGuestWidget: true, child: CartPage()),
             ),
             OffStage(isActive: _currentTabEnum == ClientMainPageTabsEnum.more, child: const MorePage()),
           ],
