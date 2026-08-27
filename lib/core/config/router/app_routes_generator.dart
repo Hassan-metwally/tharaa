@@ -22,6 +22,7 @@ import '../../../src/google_maps/presentation/maps_main_page.dart';
 import '../../../src/categories/presentation/main_categories/main_categories_page.dart';
 import '../../../src/categories/presentation/sub_categories/sub_categories_page.dart';
 import '../../../src/products/presentation/products/products_page.dart';
+import '../../../src/products/presentation/products/search_products_page.dart';
 import '../../../src/notifications/presentation/notifications_page.dart';
 import '../../../src/products/presentation/show_product_details/show_product_details_page.dart';
 import '../../../src/wallet/presentation/_client_wallet/client_wallet_page.dart';
@@ -64,6 +65,9 @@ class AppRoutesGenerator {
         page = arguments;
       case AppRoutes.productsPage:
         final arguments = settings.arguments as ProductsPage;
+        page = arguments;
+      case AppRoutes.searchProductsPage:
+        final arguments = settings.arguments as SearchProductsPage;
         page = arguments;
       case AppRoutes.showProductDetailsPage:
         final arguments = settings.arguments as ShowProductDetailsPage;

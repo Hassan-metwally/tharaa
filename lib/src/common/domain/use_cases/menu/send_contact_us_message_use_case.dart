@@ -75,7 +75,7 @@ enum ContactUsMessageType {
       case ContactUsMessageType.complaint:
         return "complaint";
       case ContactUsMessageType.other:
-        return "another";
+        return "other";
     }
   }
 }

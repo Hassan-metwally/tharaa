@@ -2840,6 +2840,48 @@ abstract class AppLocalizations {
   /// **'Complete Order'**
   String get completeOrder;
 
+  /// No description provided for @addProducts.
+  ///
+  /// In en, this message translates to:
+  /// **'Add products'**
+  String get addProducts;
+
+  /// No description provided for @emptyCartTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your cart is empty 🛒'**
+  String get emptyCartTitle;
+
+  /// No description provided for @emptyCartSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'You haven\'t chosen what you like yet! Browse our products, add everything you need to your cart, and start shopping.'**
+  String get emptyCartSubtitle;
+
+  /// No description provided for @paymentSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment summary'**
+  String get paymentSummary;
+
+  /// No description provided for @cartTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Cart total'**
+  String get cartTotal;
+
+  /// No description provided for @grandTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Grand total'**
+  String get grandTotal;
+
+  /// No description provided for @productNoLongerAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Sorry, this product is no longer available and cannot be purchased'**
+  String get productNoLongerAvailable;
+
   /// No description provided for @paymentMethod.
   ///
   /// In en, this message translates to:
@@ -2929,6 +2971,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Search by product name'**
   String get searchProductByName;
+
+  /// No description provided for @searchTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Search'**
+  String get searchTitle;
+
+  /// No description provided for @whatAreYouLookingFor.
+  ///
+  /// In en, this message translates to:
+  /// **'What are you looking for? 🔍'**
+  String get whatAreYouLookingFor;
+
+  /// No description provided for @searchIdleSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Search for your favorite products and discover a variety that suits your needs.'**
+  String get searchIdleSubtitle;
+
+  /// No description provided for @noSearchResults.
+  ///
+  /// In en, this message translates to:
+  /// **'No results found 🔍'**
+  String get noSearchResults;
+
+  /// No description provided for @noSearchResultsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Try searching with another word or make sure the product name is spelled correctly.'**
+  String get noSearchResultsSubtitle;
+
+  /// No description provided for @searchResults.
+  ///
+  /// In en, this message translates to:
+  /// **'Search results'**
+  String get searchResults;
 
   /// No description provided for @productDetails.
   ///

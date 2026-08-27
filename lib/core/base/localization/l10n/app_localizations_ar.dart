@@ -1387,6 +1387,27 @@ class AppLocalizationsAr extends AppLocalizations {
   String get completeOrder => 'إكمال الطلب';
 
   @override
+  String get addProducts => 'أضف منتجات';
+
+  @override
+  String get emptyCartTitle => 'سلتك فاضية 🛒';
+
+  @override
+  String get emptyCartSubtitle => 'لسه ما اخترت اللي تحبه! تصفّح منتجاتنا وأضف كل احتياجاتك لسلتك وابدأ تسوقك.';
+
+  @override
+  String get paymentSummary => 'ملخص الدفع';
+
+  @override
+  String get cartTotal => 'مجموع السلة';
+
+  @override
+  String get grandTotal => 'المبلغ الإجمالي';
+
+  @override
+  String get productNoLongerAvailable => 'عذرًا، هذا المنتج لم يعد متوفرًا وتم إيقاف إمكانية شرائه';
+
+  @override
   String get paymentMethod => 'طريقة الدفع';
 
   @override
@@ -1430,6 +1451,24 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get searchProductByName => 'ابحث باسم المنتج';
+
+  @override
+  String get searchTitle => 'البحث';
+
+  @override
+  String get whatAreYouLookingFor => 'وش تدور عليه؟ 🔍';
+
+  @override
+  String get searchIdleSubtitle => 'ابحث عن منتجاتك المفضلة واكتشف تشكيلة متنوعة تناسب احتياجاتك.';
+
+  @override
+  String get noSearchResults => 'ما لقينا نتائج 🔍';
+
+  @override
+  String get noSearchResultsSubtitle => 'جرّب تبحث بكلمة ثانية أو تأكد من كتابة اسم المنتج بشكل صحيح.';
+
+  @override
+  String get searchResults => 'نتائج البحث';
 
   @override
   String get productDetails => 'تفاصيل المنتج';

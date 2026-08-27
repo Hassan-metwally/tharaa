@@ -1391,6 +1391,28 @@ class AppLocalizationsEn extends AppLocalizations {
   String get completeOrder => 'Complete Order';
 
   @override
+  String get addProducts => 'Add products';
+
+  @override
+  String get emptyCartTitle => 'Your cart is empty 🛒';
+
+  @override
+  String get emptyCartSubtitle =>
+      'You haven\'t chosen what you like yet! Browse our products, add everything you need to your cart, and start shopping.';
+
+  @override
+  String get paymentSummary => 'Payment summary';
+
+  @override
+  String get cartTotal => 'Cart total';
+
+  @override
+  String get grandTotal => 'Grand total';
+
+  @override
+  String get productNoLongerAvailable => 'Sorry, this product is no longer available and cannot be purchased';
+
+  @override
   String get paymentMethod => 'Payment Method';
 
   @override
@@ -1434,6 +1456,24 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get searchProductByName => 'Search by product name';
+
+  @override
+  String get searchTitle => 'Search';
+
+  @override
+  String get whatAreYouLookingFor => 'What are you looking for? 🔍';
+
+  @override
+  String get searchIdleSubtitle => 'Search for your favorite products and discover a variety that suits your needs.';
+
+  @override
+  String get noSearchResults => 'No results found 🔍';
+
+  @override
+  String get noSearchResultsSubtitle => 'Try searching with another word or make sure the product name is spelled correctly.';
+
+  @override
+  String get searchResults => 'Search results';
 
   @override
   String get productDetails => 'Product details';

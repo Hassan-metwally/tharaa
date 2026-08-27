@@ -43,6 +43,7 @@ class AppRoutes {
   static const mainCategoriesPage = '/MainCategoriesPage';
   static const subCategoriesPage = '/SubCategoriesPage';
   static const productsPage = '/ProductsPage';
+  static const searchProductsPage = '/SearchProductsPage';
 
   /// More Pages
   ///

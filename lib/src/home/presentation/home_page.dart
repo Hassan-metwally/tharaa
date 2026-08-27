@@ -9,6 +9,7 @@ import '../../ads/presentation/ads/ads_widget.dart';
 import '../../categories/presentation/main_categories/main_categories_home_widget.dart';
 import '../../products/presentation/products/most_requested_products_widget.dart';
 import '../../products/presentation/products/offers_products_widget.dart';
+import '../../products/presentation/products/search_products_page.dart';
 import '../../notifications/presentation/notifications_cubit.dart';
 import '../../notifications/presentation/notifications_page.dart';
 

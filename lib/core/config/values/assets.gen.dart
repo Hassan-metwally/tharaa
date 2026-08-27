@@ -253,6 +253,9 @@ class $AssetsImagesGen {
   /// File path: assets/images/empty_products.svg
   String get emptyProducts => 'assets/images/empty_products.svg';
 
+  /// File path: assets/images/empty_search.svg
+  String get emptySearch => 'assets/images/empty_search.svg';
+
   /// File path: assets/images/flag_saudi.svg
   String get flagSaudi => 'assets/images/flag_saudi.svg';
 
@@ -301,6 +304,7 @@ class $AssetsImagesGen {
     emptyCart,
     emptyNotifications,
     emptyProducts,
+    emptySearch,
     flagSaudi,
     flagUsa,
     loginLogo,

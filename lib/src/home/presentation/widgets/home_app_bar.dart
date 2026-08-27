@@ -118,7 +118,16 @@ class _HomeSearchAction extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return _HomeAppBarActionButton(icon: AppIcons.searchStatus, onTap: () {});
+    return _HomeAppBarActionButton(
+      icon: AppIcons.searchStatus,
+      onTap: () {
+        Navigator.pushNamed(
+          context,
+          AppRoutes.searchProductsPage,
+          arguments: const SearchProductsPage(),
+        );
+      },
+    );
   }
 }
 

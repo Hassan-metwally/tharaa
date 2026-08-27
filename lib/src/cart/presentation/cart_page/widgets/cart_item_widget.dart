@@ -11,6 +11,8 @@ class _CartItemWidget extends StatefulWidget {
 class __CartItemWidgetState extends State<_CartItemWidget> {
   Timer? _debounceTimer;
 
+  bool get _isUnavailable => widget.item.availableQuantity != null && widget.item.availableQuantity! <= 0;
+
   void _onQuantityChanged(BuildContext context, CartItemEntity updatedItem) async {
     _debounceTimer?.cancel();
     _debounceTimer = null;
@@ -20,6 +22,12 @@ class __CartItemWidgetState extends State<_CartItemWidget> {
       );
       context.read<UpsertCartItemCubit>().upsertCartItem();
     });
+  }
+
+  @override
+  void dispose() {
+    _debounceTimer?.cancel();
+    super.dispose();
   }
 
   @override
@@ -47,67 +55,120 @@ class __CartItemWidgetState extends State<_CartItemWidget> {
           },
         ),
       ],
-      child: Container(
-        padding: EdgeInsets.all(8),
-        decoration: BoxDecoration(color: AppColors.white, borderRadius: BorderRadius.all(Radius.circular(12))),
-        child: Row(
-          children: [
-            AppImage.rounded(path: widget.item.productImage.path, width: 70, height: 60, fit: BoxFit.cover, radius: 6),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Text(widget.item.productName, style: TextStyles.regular14.copyWith(color: AppColors.black900)),
-                      ),
-
-                      BlocBuilder<DeleteCartItemCubit, DeleteCartItemState>(
-                        builder: (context, state) {
-                          if (state.deleteItemsState.isLoading) return const SpinKitLoadingWidget(size: 8);
-                          return GestureDetector(
-                            onTap: () {
-                              context.read<DeleteCartItemCubit>().deleteCartItem(widget.item.productId);
-                              CartItemsCountSubscription.pushUpdate(NoParams());
-                            },
-                            child: AppSvgIcon(path: ""),
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 11),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      UpdateCartItemQuantityWidget(
-                        iconSize: 16,
-                        radius: 4,
-                        textStyle: TextStyles.regular14.copyWith(color: AppColors.black900),
-                        padding: EdgeInsets.symmetric(vertical: 4, horizontal: 6),
-                        availableQuantity: widget.item.availableQuantity,
-                        cartQuantity: widget.item.cartQuantity,
-                        onQuantityChanged: (quantity) {
-                          final updatedItem = widget.item.copyWith(cartQuantity: quantity);
-                          _onQuantityChanged(context, updatedItem);
-                        },
-                      ),
-                      RiyalPriceText(
-                        price: widget.item.price.toString(),
-                        priceTextStyle: TextStyles.medium14.copyWith(color: AppColors.black800),
-                        currencyTextStyle: TextStyles.medium14.copyWith(color: AppColors.primary),
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
+      child: Column(
+        children: [
+          _CartItemCard(
+            item: widget.item,
+            onQuantityChanged: (quantity) {
+              final updatedItem = widget.item.copyWith(cartQuantity: quantity);
+              _onQuantityChanged(context, updatedItem);
+            },
+          ),
+          if (_isUnavailable) ...[const SizedBox(height: Dimensions.p16), const _CartUnavailableNotice()],
+        ],
       ),
+    );
+  }
+}
+
+class _CartItemCard extends StatelessWidget {
+  const _CartItemCard({required this.item, required this.onQuantityChanged});
+
+  final CartItemEntity item;
+  final ValueChanged<int> onQuantityChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: _kCartItemHeight,
+      padding: const EdgeInsetsDirectional.only(start: Dimensions.p8, end: Dimensions.p12, top: Dimensions.p8, bottom: Dimensions.p8),
+      decoration: BoxDecoration(color: AppColors.productCardFill, borderRadius: BorderRadius.circular(Dimensions.r24)),
+      child: Row(
+        children: [
+          AppImage.rounded(
+            path: item.productImage.path,
+            width: _kCartItemImageWidth,
+            height: _kCartItemHeight - Dimensions.p16,
+            fit: BoxFit.cover,
+            radius: Dimensions.r16,
+          ),
+          const SizedBox(width: Dimensions.p8),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        item.productName,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyles.medium16.copyWith(color: AppColors.black900, height: 1),
+                      ),
+                    ),
+                    const SizedBox(width: Dimensions.p8),
+                    BlocBuilder<DeleteCartItemCubit, DeleteCartItemState>(
+                      builder: (context, state) {
+                        if (state.deleteItemsState.isLoading) {
+                          return const SizedBox(width: Dimensions.ic20, height: Dimensions.ic20, child: SpinKitLoadingWidget(size: 12));
+                        }
+                        return GestureDetector(
+                          onTap: () {
+                            context.read<DeleteCartItemCubit>().deleteCartItem(item.productId);
+                            CartItemsCountSubscription.pushUpdate(NoParams());
+                          },
+                          child: AppSvgIcon(path: AppIcons.trash, width: Dimensions.ic20, height: Dimensions.ic20),
+                        );
+                      },
+                    ),
+                  ],
+                ),
+                const Spacer(),
+                Row(
+                  children: [
+                    Expanded(
+                      child: RiyalPriceText(
+                        price: item.price.toString(),
+                        priceTextStyle: TextStyles.semiBold20.copyWith(color: AppColors.primary, height: 1, fontWeight: FontWeight.w600),
+                        currencyTextStyle: TextStyles.semiBold16.copyWith(color: AppColors.primary, height: 1),
+                      ),
+                    ),
+                    const SizedBox(width: Dimensions.p12),
+                    UpdateCartItemQuantityWidget(
+                      availableQuantity: item.availableQuantity,
+                      cartQuantity: item.cartQuantity,
+                      onQuantityChanged: onQuantityChanged,
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _CartUnavailableNotice extends StatelessWidget {
+  const _CartUnavailableNotice();
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        AppSvgIcon(path: AppIcons.infoCircleSolid, width: Dimensions.ic14, height: Dimensions.ic14, color: AppColors.warning500),
+        const SizedBox(width: Dimensions.p4 / 2),
+        Flexible(
+          child: Text(
+            appLocalizer.productNoLongerAvailable,
+            textAlign: TextAlign.center,
+            style: TextStyles.regular12.copyWith(color: AppColors.warning500, height: 1),
+          ),
+        ),
+      ],
     );
   }
 }

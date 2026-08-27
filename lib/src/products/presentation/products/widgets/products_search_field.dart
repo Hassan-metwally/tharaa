@@ -8,10 +8,11 @@ const Color _kSearchFill = Color(0xFFF7F8FA);
 const Color _kSearchHint = Color(0xFF8B9BB2);
 
 class ProductsSearchField extends StatelessWidget {
-  const ProductsSearchField({super.key, required this.controller, required this.onChanged});
+  const ProductsSearchField({super.key, required this.controller, required this.onChanged, this.focusNode});
 
   final TextEditingController controller;
   final ValueChanged<String> onChanged;
+  final FocusNode? focusNode;
 
   static final OutlineInputBorder _border = OutlineInputBorder(
     borderRadius: BorderRadius.circular(Dimensions.r16),
@@ -22,6 +23,7 @@ class ProductsSearchField extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppTextFormField(
       controller: controller,
+      focusNode: focusNode,
       onChanged: onChanged,
       hint: appLocalizer.searchProductByName,
       hintTextStyle: TextStyles.regular14.copyWith(color: _kSearchHint, height: 1),
