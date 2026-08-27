@@ -408,6 +408,27 @@ class AppLocalizationsAr extends AppLocalizations {
   String get addAddress => 'إضافة عنوان';
 
   @override
+  String get addAddressPageTitle => 'إضافة العنوان';
+
+  @override
+  String get editAddress => 'تعديل العنوان';
+
+  @override
+  String get saveAddress => 'حفظ العنوان';
+
+  @override
+  String get setAsDefaultAddress => 'تعيين كعنوان افتراضي';
+
+  @override
+  String get addressNameHint => 'مثال: المنزل';
+
+  @override
+  String get addressDetailsHint => 'مثال: الدور الثاني، شقة 5، بجوار مسجد الحي';
+
+  @override
+  String get defaultAddress => 'الافتراضي';
+
+  @override
   String get locationOnMap => 'الموقع على الخريطة';
 
   @override

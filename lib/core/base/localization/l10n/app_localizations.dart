@@ -890,6 +890,48 @@ abstract class AppLocalizations {
   /// **'Add address'**
   String get addAddress;
 
+  /// No description provided for @addAddressPageTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add address'**
+  String get addAddressPageTitle;
+
+  /// No description provided for @editAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit address'**
+  String get editAddress;
+
+  /// No description provided for @saveAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Save address'**
+  String get saveAddress;
+
+  /// No description provided for @setAsDefaultAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Set as default address'**
+  String get setAsDefaultAddress;
+
+  /// No description provided for @addressNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Home'**
+  String get addressNameHint;
+
+  /// No description provided for @addressDetailsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. 2nd floor, Apt 5, near the neighborhood mosque'**
+  String get addressDetailsHint;
+
+  /// No description provided for @defaultAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Default'**
+  String get defaultAddress;
+
   /// No description provided for @locationOnMap.
   ///
   /// In en, this message translates to:

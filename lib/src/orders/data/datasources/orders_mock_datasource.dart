@@ -2,6 +2,7 @@ import 'package:injectable/injectable.dart';
 
 import '../../../../../../core/core.dart';
 import '../../../common/domain/enums/orders/order_status_enum.dart';
+import '../../domain/usecases/add_order_usecase.dart';
 import '../../domain/usecases/get_orders_usecase.dart';
 import '../../domain/usecases/toggle_order_status_usecase.dart';
 import '../models/api_order_details_model.dart';
@@ -121,6 +122,18 @@ class OrdersMockDatasource extends OrdersDatasource {
     return ApiPaginatedData(
       items: pagedItems,
       pageInfo: PageInfo(currentPage: page, lastPage: lastPage, totalPages: lastPage, countPerPage: perPage, totalItemsCount: items.length),
+    );
+  }
+
+
+  @override
+  Future<ApiOrderModel> addOrder(UpsertOrderParams params) async {
+    await Future<void>.delayed(_delay);
+    return ApiOrderModel(
+      id: 10251,
+      name: 'Order 10251',
+      image: const AttachmentEntity.empty(),
+      orderNumber: '#ORD-10251',
     );
   }
 }

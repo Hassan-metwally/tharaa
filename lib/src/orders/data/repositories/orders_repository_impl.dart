@@ -8,6 +8,7 @@ import '../../domain/entities/order_details_entity.dart';
 import '../../domain/entities/order_entity.dart';
 import '../../domain/repositories/orders_repository.dart';
 
+import '../../domain/usecases/add_order_usecase.dart';
 import '../../domain/usecases/get_orders_usecase.dart';
 
 import '../../domain/usecases/toggle_order_status_usecase.dart';
@@ -23,6 +24,15 @@ class OrdersRepositoryImpl extends OrdersRepository {
   final OrdersDatasource _dataSource;
 
   OrdersRepositoryImpl(this._dataSource);
+
+
+  @override
+  DomainServiceType<OrderEntity> addOrder(UpsertOrderParams params) async {
+    return await failureCollect(() async {
+      final result = await _dataSource.addOrder(params);
+      return Right(result.map);
+    });
+  }
 
   @override
   DomainServiceType<OrderDetailsEntity> showOrderDetails(int id) async {

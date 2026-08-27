@@ -1,28 +1,33 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../common/domain/entity/city_entity.dart';
-
 class LocationEntity extends Equatable {
   final int id;
-  final String district;
-  final String building;
+  final String title;
+  final String description;
   final double lat;
   final double lng;
   final String address;
-  final CityEntity? city;
+  final bool isDefault;
 
   const LocationEntity({
     required this.id,
-    required this.district,
-    required this.building,
+    required this.title,
+    required this.description,
     required this.lat,
     required this.lng,
     required this.address,
-    this.city,
+    this.isDefault = false,
   });
 
-  factory LocationEntity.initial() => const LocationEntity(id: 0, district: '', building: '', lat: 0, lng: 0, address: '');
+  factory LocationEntity.initial() => const LocationEntity(
+    id: 0,
+    title: '',
+    description: '',
+    lat: 0,
+    lng: 0,
+    address: '',
+  );
 
   @override
-  List<Object?> get props => [id, building, district, lat, lng, address, city];
+  List<Object?> get props => [id, title, description, lat, lng, address, isDefault];
 }

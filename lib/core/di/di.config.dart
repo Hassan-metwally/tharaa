@@ -13,6 +13,9 @@ import 'package:dio/dio.dart' as _i361;
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 
+import '../../src/addresses/data/datasources/address_datasource.dart' as _i788;
+import '../../src/addresses/data/datasources/address_mock_datasource.dart'
+    as _i812;
 import '../../src/addresses/data/repositories/address_repository_impl.dart'
     as _i711;
 import '../../src/addresses/domain/repositories/address_repository.dart'
@@ -280,6 +283,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i1069.StatisticsDatasource>(
       () => _i214.StatisticsMockDatasource(),
     );
+    gh.factory<_i788.AddressDatasource>(() => _i812.AddressMockDatasource());
     gh.factory<_i740.AdsRepository>(
       () => _i331.AdsRepositoryImpl(gh<_i268.AdsDatasource>()),
     );
@@ -353,6 +357,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i351.SetTokenUseCase>(
       () => _i351.SetTokenUseCase(gh<_i351.SecureStorageRepository>()),
     );
+    gh.factory<_i768.AddressRepository>(
+      () => _i711.AddressRepositoryImpl(gh<_i788.AddressDatasource>()),
+    );
     gh.factory<_i209.NotificationRepository>(
       () =>
           _i1047.NotificationRepositoryImp(gh<_i529.NotificationDataSource>()),
@@ -411,6 +418,20 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i262.DeleteCartItemCubit>(
       () => _i262.DeleteCartItemCubit(gh<_i607.DeleteCartItemUsecase>()),
     );
+    gh.factory<_i339.AddLocationUseCase>(
+      () => _i339.AddLocationUseCase(gh<_i768.AddressRepository>()),
+    );
+    gh.factory<_i837.DeleteLocationUseCase>(
+      () => _i837.DeleteLocationUseCase(gh<_i768.AddressRepository>()),
+    );
+    gh.factory<_i814.GetAddressesUseCase>(
+      () => _i814.GetAddressesUseCase(gh<_i768.AddressRepository>()),
+    );
+    gh.factory<_i803.UpdateAddressInAddressListuseCase>(
+      () => _i803.UpdateAddressInAddressListuseCase(
+        gh<_i768.AddressRepository>(),
+      ),
+    );
     gh.factory<_i601.UpsertCartItemCubit>(
       () => _i601.UpsertCartItemCubit(gh<_i507.UpsertCartItemUsecase>()),
     );
@@ -467,9 +488,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i995.RatingDatasource>(
       () => _i995.RatingDatasourceImpl(gh<_i351.DioHelper>()),
     );
-    gh.factory<_i768.AddressRepository>(
-      () => _i711.AddressRepositoryImpl(gh<_i351.DioHelper>()),
-    );
     gh.factory<_i268.GetContactUsDataUseCase>(
       () => _i268.GetContactUsDataUseCase(gh<_i646.MenuCommonRepository>()),
     );
@@ -486,6 +504,12 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i482.RatingRepository>(
       () => _i665.RatingRepositoryImpl(gh<_i995.RatingDatasource>()),
+    );
+    gh.factory<_i170.UpsertAddressCubit>(
+      () => _i170.UpsertAddressCubit(
+        gh<_i339.AddLocationUseCase>(),
+        gh<_i803.UpdateAddressInAddressListuseCase>(),
+      ),
     );
     gh.factory<_i824.ChatRepository>(
       () => _i394.ChatRepositoryImp(
@@ -587,6 +611,12 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i169.UpdateCartDeliveryFeesUsecase>(),
       ),
     );
+    gh.factory<_i583.MyAddressesCubit>(
+      () => _i583.MyAddressesCubit(
+        gh<_i814.GetAddressesUseCase>(),
+        gh<_i837.DeleteLocationUseCase>(),
+      ),
+    );
     gh.factory<_i818.OrdersCubit>(
       () => _i818.OrdersCubit(gh<_i488.GetOrdersUsecase>()),
     );
@@ -622,20 +652,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i987.CouponsCubit>(
       () => _i987.CouponsCubit(gh<_i761.GetCouponsUsecase>()),
     );
-    gh.factory<_i339.AddLocationUseCase>(
-      () => _i339.AddLocationUseCase(gh<_i768.AddressRepository>()),
-    );
-    gh.factory<_i837.DeleteLocationUseCase>(
-      () => _i837.DeleteLocationUseCase(gh<_i768.AddressRepository>()),
-    );
-    gh.factory<_i814.GetAddressesUseCase>(
-      () => _i814.GetAddressesUseCase(gh<_i768.AddressRepository>()),
-    );
-    gh.factory<_i803.UpdateAddressInAddressListuseCase>(
-      () => _i803.UpdateAddressInAddressListuseCase(
-        gh<_i768.AddressRepository>(),
-      ),
-    );
     gh.lazySingleton<_i194.GetCurrentLocationUseCase>(
       () => _i194.GetCurrentLocationUseCase(
         gh<_i298.EnableGpsAndHandlePermissionUseCase>(),
@@ -668,20 +684,8 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i1006.ChangeLanguageUseCase>(
       () => _i1006.ChangeLanguageUseCase(gh<_i92.CommonRepository>()),
     );
-    gh.factory<_i170.UpsertAddressCubit>(
-      () => _i170.UpsertAddressCubit(
-        gh<_i339.AddLocationUseCase>(),
-        gh<_i803.UpdateAddressInAddressListuseCase>(),
-      ),
-    );
     gh.factory<_i388.GetChatsInboxUsecase>(
       () => _i388.GetChatsInboxUsecase(gh<_i34.ChatsInboxRepository>()),
-    );
-    gh.factory<_i583.MyAddressesCubit>(
-      () => _i583.MyAddressesCubit(
-        gh<_i814.GetAddressesUseCase>(),
-        gh<_i837.DeleteLocationUseCase>(),
-      ),
     );
     gh.factory<_i295.AddRateCubit>(
       () => _i295.AddRateCubit(gh<_i303.AddRateUsecase>()),

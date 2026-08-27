@@ -1,7 +1,17 @@
-part of '../my_addresses_page.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class _RemoveAddressBottomSheet extends StatelessWidget {
-  const _RemoveAddressBottomSheet(this.location, this.onLocationRemoved);
+import '../../../../core/core.dart';
+import '../../../../core/di/di.dart';
+import '../../../../material/buttons/app_button.dart';
+import '../../../../material/media/svg_icon.dart';
+import '../../../../material/overlay/show_modal_bottom_sheet.dart';
+import '../../../../material/toast/app_toast.dart';
+import '../../domain/usecases/delete_location_use_case.dart';
+import '../my_addresses/my_addresses_cubit.dart';
+
+class RemoveAddressBottomSheet extends StatelessWidget {
+  const RemoveAddressBottomSheet(this.location, this.onLocationRemoved, {super.key});
 
   final DeleteLocationParams location;
   final void Function() onLocationRemoved;
@@ -12,7 +22,7 @@ class _RemoveAddressBottomSheet extends StatelessWidget {
     required void Function() onLocationRemoved,
   }) async => await showAppModalBottomSheet(
     context: context,
-    child: BlocProvider.value(value: injector<MyAddressesCubit>(), child: _RemoveAddressBottomSheet(location, onLocationRemoved)),
+    child: BlocProvider.value(value: injector<MyAddressesCubit>(), child: RemoveAddressBottomSheet(location, onLocationRemoved)),
   );
 
   @override

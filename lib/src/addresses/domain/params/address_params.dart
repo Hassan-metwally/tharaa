@@ -11,6 +11,7 @@ class AddressParams extends Equatable {
   final double lat;
   final double lng;
   final String address;
+  final bool isDefault;
 
   const AddressParams({
     this.id,
@@ -20,6 +21,7 @@ class AddressParams extends Equatable {
     required this.lat,
     required this.lng,
     required this.address,
+    this.isDefault = false,
   });
 
   factory AddressParams.initial() => AddressParams(
@@ -39,6 +41,7 @@ class AddressParams extends Equatable {
     double? lat,
     double? lng,
     String? address,
+    bool? isDefault,
   }) {
     return AddressParams(
       id: id ?? this.id,
@@ -48,17 +51,19 @@ class AddressParams extends Equatable {
       lat: lat ?? this.lat,
       lng: lng ?? this.lng,
       address: address ?? this.address,
+      isDefault: isDefault ?? this.isDefault,
     );
   }
 
   factory AddressParams.fromEntity(LocationEntity entity) => AddressParams(
     id: entity.id,
     formKey: GlobalKey<FormState>(),
-    building: TextEditingController(text: entity.building),
-    district: TextEditingController(text: entity.district),
+    building: TextEditingController(text: entity.title),
+    district: TextEditingController(text: entity.description),
     lat: entity.lat,
     lng: entity.lng,
     address: entity.address,
+    isDefault: entity.isDefault,
   );
 
   Map<String, dynamic> toMap() {
@@ -68,10 +73,11 @@ class AddressParams extends Equatable {
       'lat': lat,
       'lng': lng,
       'address': address,
+      'is_default': isDefault,
       if (id != null) '_method': 'PUT',
     };
   }
 
   @override
-  List<Object?> get props => [building, lat, lng, address, district, id];
+  List<Object?> get props => [building, lat, lng, address, district, id, isDefault];
 }

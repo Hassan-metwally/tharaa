@@ -7,27 +7,27 @@ import '../../domain/params/address_params.dart';
 import '../../domain/repositories/address_repository.dart';
 import '../../domain/usecases/delete_location_use_case.dart';
 import '../../domain/usecases/get_addresses_use_case.dart';
+import '../datasources/address_datasource.dart';
 import '../models/api_location_model.dart';
 
 @Injectable(as: AddressRepository)
 class AddressRepositoryImpl extends AddressRepository {
-  final DioHelper _dioHelper;
+  final AddressDatasource _dataSource;
 
-  AddressRepositoryImpl(this._dioHelper);
+  AddressRepositoryImpl(this._dataSource);
 
   @override
   DomainServiceType<LocationEntity> addLocation(AddressParams params) async {
     return await failureCollect(() async {
-      final response = await _dioHelper.post(url: ApiConstants.addToApiUrlPath('addresses'), body: params.toMap());
-      final location = ApiLocationModel.fromJson(response['data']['address']).map;
-      return Right(location);
+      final location = await _dataSource.addLocation(params);
+      return Right(location.map);
     });
   }
 
   @override
   DomainServiceType<void> deleteLocation(DeleteLocationParams params) async {
     return await failureCollect(() async {
-      await _dioHelper.delete(url: ApiConstants.addToApiUrlPath('addresses/${params.id}'));
+      await _dataSource.deleteLocation(params);
       return const Right(null);
     });
   }
@@ -35,20 +35,14 @@ class AddressRepositoryImpl extends AddressRepository {
   @override
   DomainServiceType<PaginatedData<LocationEntity>> getAddresses(GetAddressesParams params) async {
     return await failureCollect(() async {
-      final response = await _dioHelper.get(url: ApiConstants.addToApiUrlPath('addresses'), queryParameters: params.toMap());
-      final apiPaginatedData = ApiPaginatedData.fromJson(
-        response['data'],
-        getData: (data) => data.map((element) => ApiLocationModel.fromJson(element)).toList(),
-      );
-      final data = apiPaginatedData.map((e) => e.map);
-      return Right(data);
+      final apiPaginatedData = await _dataSource.getAddresses(params);
+      return Right(apiPaginatedData.map((e) => e.map));
     });
   }
 
   @override
   DomainServiceType<LocationEntity> updateAdressInAdressList(AddressParams params) async {
-    final response = await _dioHelper.post(url: ApiConstants.addToApiUrlPath('addresses/${params.id}'), body: params.toMap());
-    final location = ApiLocationModel.fromJson(response['data']['address']).map;
-    return Right(location);
+    final location = await _dataSource.updateAddress(params);
+    return Right(location.map);
   }
 }

@@ -7,118 +7,88 @@ class AddressTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 2),
-      padding: const EdgeInsets.all(8),
-      decoration: BoxDecoration(
-        color: AppColors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [BoxShadow(color: AppColors.black.withAlpha(25), blurRadius: 4, offset: const Offset(0, 0.6))],
-      ),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Expanded(
-                child: Text(appLocalizer.addressDetails, style: TextStyles.regular14.copyWith(color: AppColors.black900)),
-              ),
-              Row(
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: () => UpssertAddressBottomSheet.show(context, address: entity),
+      onLongPress: () {
+        RemoveAddressBottomSheet.show(
+          context,
+          location: DeleteLocationParams(id: entity.id),
+          onLocationRemoved: () {
+            context.read<MyAddressesCubit>().getAddresses();
+          },
+        );
+      },
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.symmetric(horizontal: Dimensions.p16, vertical: Dimensions.p8),
+        decoration: BoxDecoration(color: _kAddressCardFill, borderRadius: BorderRadius.circular(Dimensions.r16)),
+        child: Row(
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  GestureDetector(
-                    behavior: HitTestBehavior.opaque,
-                    onTap: () {
-                      UpssertAddressBottomSheet.show(context, address: entity);
-                    },
-                    child: AppSvgIcon(path: ""),
+                  Align(
+                    alignment: AlignmentDirectional.centerStart,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Flexible(
+                          child: Text(
+                            entity.title,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyles.medium12.copyWith(color: AppColors.black900, height: 1),
+                          ),
+                        ),
+                        if (entity.isDefault) ...[const SizedBox(width: Dimensions.p4), const _DefaultAddressBadge()],
+                      ],
+                    ),
                   ),
-                  const SizedBox(width: 14),
-                  GestureDetector(
-                    behavior: HitTestBehavior.opaque,
-                    onTap: () {
-                      _RemoveAddressBottomSheet.show(
-                        context,
-                        location: DeleteLocationParams(id: entity.id),
-                        onLocationRemoved: () {
-                          context.read<MyAddressesCubit>().getAddresses();
-                        },
-                      );
-                    },
-                    child: AppSvgIcon(path: ""),
-                  ),
+                  const SizedBox(height: Dimensions.p8),
+                  Text(entity.description, style: TextStyles.regular12.copyWith(color: _kAddressDescriptionColor, height: 1)),
                 ],
               ),
-            ],
-          ),
-          Divider(height: 12, color: AppColors.black50),
-
-          const SizedBox(height: 12),
-          Row(
-            children: [
-              AppSvgIcon(path: ""),
-              const SizedBox(width: 8),
-              Text(appLocalizer.district, style: TextStyles.regular14.copyWith(color: AppColors.black700)),
-              SizedBox(width: 16),
-              Expanded(
-                child: Text(
-                  entity.district,
-                  style: TextStyles.regular14.copyWith(color: AppColors.black900),
-                  textAlign: TextAlign.end,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: 12),
-          Row(
-            children: [
-              AppSvgIcon(path: ""),
-              const SizedBox(width: 8),
-              Text(appLocalizer.building, style: TextStyles.regular14.copyWith(color: AppColors.black700)),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Text(
-                  entity.building,
-                  style: TextStyles.medium14.copyWith(color: AppColors.black900),
-                  textAlign: TextAlign.end,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          Row(
-            children: [
-              AppSvgIcon(path: ""),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Text(appLocalizer.locationOnMap, style: TextStyles.regular14.copyWith(color: AppColors.black700)),
-              ),
-              SizedBox(width: 8),
-              AppSvgIcon(path: ""),
-            ],
-          ),
-          SizedBox(height: 8),
-          GestureDetector(
-            onTap: () {
-              AppRouter.pushNamed(
-                AppRoutes.mapsMainPage,
-                arguments: MapsMainPage(
-                  onlyPreviewAddress: true,
-                  initialMapAddress: MapAddressEntity(address: entity.address, lat: entity.lat, lng: entity.lng),
-                ),
-              );
-            },
-            child: AppImage.rounded(
-              fit: BoxFit.cover,
-              radius: 8,
-              height: 140,
-              width: double.infinity,
-              path: GoogleMapsConstants.getStaticMapImage(lat: entity.lat, long: entity.lng),
             ),
-          ),
-        ],
+            const SizedBox(width: Dimensions.p4),
+            const _AddressArrowButton(),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _DefaultAddressBadge extends StatelessWidget {
+  const _DefaultAddressBadge();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: Dimensions.p8, vertical: Dimensions.p4),
+      decoration: BoxDecoration(color: AppColors.success50, borderRadius: BorderRadius.circular(Dimensions.r16)),
+      child: Text(appLocalizer.defaultAddress, style: TextStyles.medium10.copyWith(color: AppColors.success500, height: 1)),
+    );
+  }
+}
+
+class _AddressArrowButton extends StatelessWidget {
+  const _AddressArrowButton();
+
+  @override
+  Widget build(BuildContext context) {
+    final bool isRtl = Directionality.of(context) == TextDirection.rtl;
+    const double radians = _kAddressArrowRotationDeg * math.pi / 180;
+
+    return Container(
+      width: _kAddressArrowSize,
+      height: _kAddressArrowSize,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(color: AppColors.white, shape: BoxShape.circle),
+      child: Transform.rotate(
+        angle: isRtl ? radians : math.pi - radians,
+        child: AppSvgIcon(path: AppIcons.arrowUpRight, width: _kAddressArrowIconSize, height: _kAddressArrowIconSize),
       ),
     );
   }

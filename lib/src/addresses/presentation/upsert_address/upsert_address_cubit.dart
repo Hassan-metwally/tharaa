@@ -37,6 +37,15 @@ class UpsertAddressCubit extends Cubit<UpsertAddressState> {
     }
   }
 
+  void setAsDefaultAddress() async {
+    if (state.params.id == null) return;
+    emit(state.copyWith(params: state.params.copyWith(isDefault: true), upsertAddressState: const Async.loading()));
+    (await _updateLocationUseCase(state.params)).fold(
+      (failure) => emit(state.copyWith(upsertAddressState: Async.failure(failure))),
+      (_) => emit(state.copyWith(upsertAddressState: const Async.successWithoutData(), params: state.params)),
+    );
+  }
+
   void updateParams(AddressParams params) {
     emit(state.copyWith(params: params));
   }

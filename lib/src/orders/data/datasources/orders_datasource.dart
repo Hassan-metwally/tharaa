@@ -1,5 +1,6 @@
 import '../../../../../../core/core.dart';
 
+import '../../domain/usecases/add_order_usecase.dart';
 import '../../domain/usecases/get_orders_usecase.dart';
 
 import '../../domain/usecases/toggle_order_status_usecase.dart';
@@ -14,6 +15,8 @@ abstract class OrdersDatasource {
   Future<ApiPaginatedData<ApiOrderModel>> getOrders(GetOrdersParams params);
 
   Future<String> toggleOrderStatus(ToggleOrderStatusParams params);
+
+  Future<ApiOrderModel> addOrder(UpsertOrderParams params);
 }
 
 class OrdersDatasourceImpl extends OrdersDatasource {
@@ -62,6 +65,17 @@ class OrdersDatasourceImpl extends OrdersDatasource {
           final response = await _dioHelper.post(url: "ApiConstants.addToApiUrlPath('/ads/${params.id}/favorite')");
           return response['message'];
       }
+    } catch (_) {
+      rethrow;
+    }
+  }
+
+
+  @override
+  Future<ApiOrderModel> addOrder(UpsertOrderParams params) async {
+    try {
+      final response = await _dioHelper.post(url: "ApiConstants.appRoleApi('/order')", body: params.toMap);
+      return ApiOrderModel.fromJson(response['data']);
     } catch (_) {
       rethrow;
     }

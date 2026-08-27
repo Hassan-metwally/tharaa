@@ -409,6 +409,27 @@ class AppLocalizationsEn extends AppLocalizations {
   String get addAddress => 'Add address';
 
   @override
+  String get addAddressPageTitle => 'Add address';
+
+  @override
+  String get editAddress => 'Edit address';
+
+  @override
+  String get saveAddress => 'Save address';
+
+  @override
+  String get setAsDefaultAddress => 'Set as default address';
+
+  @override
+  String get addressNameHint => 'e.g. Home';
+
+  @override
+  String get addressDetailsHint => 'e.g. 2nd floor, Apt 5, near the neighborhood mosque';
+
+  @override
+  String get defaultAddress => 'Default';
+
+  @override
   String get locationOnMap => 'Location on map';
 
   @override
