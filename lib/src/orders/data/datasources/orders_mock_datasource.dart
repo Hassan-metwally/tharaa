@@ -1,11 +1,13 @@
 import 'package:injectable/injectable.dart';
 
 import '../../../../../../core/core.dart';
+import '../../../addresses/data/models/api_location_model.dart';
 import '../../../common/domain/enums/orders/order_status_enum.dart';
 import '../../domain/usecases/add_order_usecase.dart';
 import '../../domain/usecases/get_orders_usecase.dart';
 import '../../domain/usecases/toggle_order_status_usecase.dart';
 import '../models/api_order_details_model.dart';
+import '../models/api_order_item_model.dart';
 import '../models/api_order_model.dart';
 import 'orders_datasource.dart';
 
@@ -13,67 +15,73 @@ import 'orders_datasource.dart';
 class OrdersMockDatasource extends OrdersDatasource {
   static const _delay = Duration(milliseconds: 400);
 
+  static AttachmentEntity _marketImage(String photoId) => AttachmentEntity.fromNetwork(
+    url: 'https://images.unsplash.com/photo-$photoId?auto=format&fit=crop&w=400&h=400&q=80',
+  );
+
+  static final ApiLocationModel _riyadhAddress = ApiLocationModel(
+    id: 1,
+    title: 'Home',
+    description: 'مدينة الرياض شارع الأمير',
+    lat: '24.7136',
+    lng: '46.6753',
+    address: 'مدينة الرياض شارع الأمير',
+  );
+
+  static final List<ApiOrderItemModel> _oliveOilItems = [
+    ApiOrderItemModel(
+      id: 21,
+      name: 'زيت زيتون جاردن من الصالحية - زيت زيتون اصلي',
+      image: _marketImage('1474979266404-7eaacbcd87c5'),
+      quantity: 5,
+      unitLabel: '5*1 كجم',
+      price: 20,
+    ),
+    ApiOrderItemModel(
+      id: 22,
+      name: 'زيت زيتون جاردن من الصالحية - زيت زيتون اصلي',
+      image: _marketImage('1474979266404-7eaacbcd87c5'),
+      quantity: 5,
+      unitLabel: '5*1 كجم',
+      price: 20,
+    ),
+    ApiOrderItemModel(
+      id: 23,
+      name: 'زيت زيتون جاردن من الصالحية - زيت زيتون اصلي',
+      image: _marketImage('1474979266404-7eaacbcd87c5'),
+      quantity: 5,
+      unitLabel: '5*1 كجم',
+      price: 20,
+    ),
+  ];
+
+  static ApiOrderDetailsModel _sampleOrder({required int id, required String status, String? cancelReason}) {
+    return ApiOrderDetailsModel(
+      id: id,
+      name: 'Order $id',
+      image: const AttachmentEntity.empty(),
+      orderNumber: '#ORD-$id',
+      createdAt: DateTime(2026, 8, 16),
+      total: 488,
+      status: status,
+      description: '',
+      address: _riyadhAddress,
+      items: _oliveOilItems,
+      paymentMethod: 'electronic',
+      productsPrice: 502,
+      deliveryPrice: 106,
+      vatAmount: 106,
+      cancelReason: cancelReason,
+    );
+  }
+
   static final List<ApiOrderDetailsModel> _orders = [
-    ApiOrderDetailsModel(
-      id: 10245,
-      name: 'Order 10245',
-      image: const AttachmentEntity.empty(),
-      orderNumber: '#ORD-10245',
-      createdAt: DateTime(2026, 8, 16),
-      total: 488,
-      status: 'new',
-      description: '',
-    ),
-    ApiOrderDetailsModel(
-      id: 10246,
-      name: 'Order 10246',
-      image: const AttachmentEntity.empty(),
-      orderNumber: '#ORD-10246',
-      createdAt: DateTime(2026, 8, 16),
-      total: 488,
-      status: 'in_progress',
-      description: '',
-    ),
-    ApiOrderDetailsModel(
-      id: 10247,
-      name: 'Order 10247',
-      image: const AttachmentEntity.empty(),
-      orderNumber: '#ORD-10247',
-      createdAt: DateTime(2026, 8, 16),
-      total: 488,
-      status: 'ready_for_delivery',
-      description: '',
-    ),
-    ApiOrderDetailsModel(
-      id: 10248,
-      name: 'Order 10248',
-      image: const AttachmentEntity.empty(),
-      orderNumber: '#ORD-10248',
-      createdAt: DateTime(2026, 8, 15),
-      total: 256,
-      status: 'on_the_way',
-      description: '',
-    ),
-    ApiOrderDetailsModel(
-      id: 10249,
-      name: 'Order 10249',
-      image: const AttachmentEntity.empty(),
-      orderNumber: '#ORD-10249',
-      createdAt: DateTime(2026, 8, 14),
-      total: 320,
-      status: 'delivered',
-      description: '',
-    ),
-    ApiOrderDetailsModel(
-      id: 10250,
-      name: 'Order 10250',
-      image: const AttachmentEntity.empty(),
-      orderNumber: '#ORD-10250',
-      createdAt: DateTime(2026, 8, 12),
-      total: 150,
-      status: 'cancelled',
-      description: '',
-    ),
+    _sampleOrder(id: 10245, status: 'new'),
+    _sampleOrder(id: 10246, status: 'in_progress'),
+    _sampleOrder(id: 10247, status: 'ready_for_delivery'),
+    _sampleOrder(id: 10248, status: 'on_the_way'),
+    _sampleOrder(id: 10249, status: 'delivered'),
+    _sampleOrder(id: 10250, status: 'cancelled', cancelReason: 'Customer requested cancellation'),
   ];
 
   @override
@@ -124,7 +132,6 @@ class OrdersMockDatasource extends OrdersDatasource {
       pageInfo: PageInfo(currentPage: page, lastPage: lastPage, totalPages: lastPage, countPerPage: perPage, totalItemsCount: items.length),
     );
   }
-
 
   @override
   Future<ApiOrderModel> addOrder(UpsertOrderParams params) async {

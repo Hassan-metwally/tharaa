@@ -11,7 +11,7 @@ class DioHelper {
   final Map<String, String> _headers = <String, String>{
     'Content-Type': 'application/json',
     'Accept': 'application/json',
-    "api-key": ApiConstants.apiKey,
+    // "api-key": ApiConstants.apiKey,
   };
 
   void _init() {

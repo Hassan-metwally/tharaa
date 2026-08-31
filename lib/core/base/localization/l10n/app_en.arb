@@ -330,6 +330,10 @@
   "chooseRate": "Choose your rating",
   "yourComment": "Your comment",
   "successfullyRated": "Successfully rated",
+  "rateYourExperience": "Rate your experience",
+  "addYourComment": "Add your comment",
+  "writeYourComment": "Write your comment",
+  "sendRating": "Send rating",
   "contactUs": "Contact Us",
   "settings": "Settings",
   "notifications": "Notifications",
@@ -583,5 +587,23 @@
   "orderStatusDelivered": "Delivered",
   "orderStatusCancelled": "Cancelled",
   "noOrdersFound": "No orders found",
-  "noOrdersFoundSub": "There are currently no orders. Try changing the filter or searching by another order number."
+  "noOrdersFoundSub": "There are currently no orders. Try changing the filter or searching by another order number.",
+  "deliveryAddress": "Delivery address",
+  "orderedProducts": "Ordered products",
+  "priceDetails": "Price details",
+  "productsPriceExcludingTax": "Products total excluding tax",
+  "cancelOrder": "Cancel order",
+  "trackOrder": "Track order",
+  "reorder": "Reorder",
+  "cancellationReason": "Cancellation reason",
+  "taxInvoice": "Tax invoice",
+  "rateOrder": "Rate order",
+  "quantityCount": "Quantity: {count}",
+  "@quantityCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
 }

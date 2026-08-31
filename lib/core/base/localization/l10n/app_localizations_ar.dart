@@ -918,6 +918,18 @@ class AppLocalizationsAr extends AppLocalizations {
   String get successfullyRated => 'تم التقييم بنجاح';
 
   @override
+  String get rateYourExperience => 'قيم تجربتك';
+
+  @override
+  String get addYourComment => 'أضف تعليقك';
+
+  @override
+  String get writeYourComment => 'اكتب تعليقك';
+
+  @override
+  String get sendRating => 'إرسال التقييم';
+
+  @override
   String get contactUs => 'تواصل معنا';
 
   @override
@@ -1540,4 +1552,39 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get noOrdersFoundSub => 'حاليًا لا توجد طلبات، جرّب تغيير الفلتر أو البحث برقم طلب آخر';
+
+  @override
+  String get deliveryAddress => 'عنوان التوصيل';
+
+  @override
+  String get orderedProducts => 'المنتجات المطلوبة';
+
+  @override
+  String get priceDetails => 'تفاصيل السعر';
+
+  @override
+  String get productsPriceExcludingTax => 'إجمالي المنتجات بدون ضريبة';
+
+  @override
+  String get cancelOrder => 'إلغاء الطلب';
+
+  @override
+  String get trackOrder => 'تتبع الطلب';
+
+  @override
+  String get reorder => 'إعادة الطلب';
+
+  @override
+  String get cancellationReason => 'سبب الإلغاء';
+
+  @override
+  String get taxInvoice => 'الفاتورة الضريبية';
+
+  @override
+  String get rateOrder => 'تقييم الطلب';
+
+  @override
+  String quantityCount(int count) {
+    return 'الكمية: $count';
+  }
 }

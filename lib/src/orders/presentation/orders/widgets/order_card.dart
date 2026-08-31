@@ -29,7 +29,7 @@ class _OrderCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // AppRouter.pushNamed('', arguments: ShowOrderDetailsPage(id: entity.id));
+        AppRouter.pushNamed(AppRoutes.showOrderDetailsPage, arguments: ShowOrderDetailsPage(id: entity.id));
       },
       child: Container(
         width: double.infinity,

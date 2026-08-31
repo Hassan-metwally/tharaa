@@ -1,10 +1,19 @@
 import '../../../../core/core.dart';
+import '../../../addresses/data/models/api_location_model.dart';
 import '../../../common/domain/enums/orders/order_status_enum.dart';
 import '../../domain/entities/order_details_entity.dart';
+import 'api_order_item_model.dart';
 import 'api_order_model.dart';
 
 class ApiOrderDetailsModel extends ApiOrderModel {
   final String? description;
+  final ApiLocationModel? address;
+  final List<ApiOrderItemModel>? items;
+  final String? paymentMethod;
+  final num? productsPrice;
+  final num? deliveryPrice;
+  final num? vatAmount;
+  final String? cancelReason;
 
   ApiOrderDetailsModel({
     required super.id,
@@ -15,18 +24,41 @@ class ApiOrderDetailsModel extends ApiOrderModel {
     super.total,
     super.status,
     required this.description,
+    this.address,
+    this.items,
+    this.paymentMethod,
+    this.productsPrice,
+    this.deliveryPrice,
+    this.vatAmount,
+    this.cancelReason,
   });
 
-  factory ApiOrderDetailsModel.fromJson(Map<String, dynamic> json) => ApiOrderDetailsModel(
-    id: json['id'],
-    name: json['name']?.toString(),
-    image: AttachmentEntity.fromNetwork(url: json['image']?.toString() ?? ''),
-    orderNumber: (json['order_number'] ?? json['orderNumber'] ?? json['number'])?.toString(),
-    createdAt: ApiOrderModel.parseOrderDate(json['created_at'] ?? json['createdAt'] ?? json['date']),
-    total: ApiOrderModel.parseOrderNum(json['total'] ?? json['total_price'] ?? json['price']),
-    status: (json['status'] ?? json['order_status'])?.toString(),
-    description: json['description']?.toString(),
-  );
+  factory ApiOrderDetailsModel.fromJson(Map<String, dynamic> json) {
+    final dynamic itemsJson = json['items'] ?? json['products'];
+    final List<ApiOrderItemModel>? parsedItems = itemsJson is List
+        ? itemsJson.map((item) => ApiOrderItemModel.fromJson(item as Map<String, dynamic>)).toList()
+        : null;
+
+    final dynamic addressJson = json['address'] ?? json['location'];
+
+    return ApiOrderDetailsModel(
+      id: json['id'],
+      name: json['name']?.toString(),
+      image: AttachmentEntity.fromNetwork(url: json['image']?.toString() ?? ''),
+      orderNumber: (json['order_number'] ?? json['orderNumber'] ?? json['number'])?.toString(),
+      createdAt: ApiOrderModel.parseOrderDate(json['created_at'] ?? json['createdAt'] ?? json['date']),
+      total: ApiOrderModel.parseOrderNum(json['total'] ?? json['total_price'] ?? json['price']),
+      status: (json['status'] ?? json['order_status'])?.toString(),
+      description: json['description']?.toString(),
+      address: addressJson is Map<String, dynamic> ? ApiLocationModel.fromJson(addressJson) : null,
+      items: parsedItems,
+      paymentMethod: (json['payment_method'] ?? json['paymentMethod'])?.toString(),
+      productsPrice: ApiOrderModel.parseOrderNum(json['products_price'] ?? json['productsPrice']),
+      deliveryPrice: ApiOrderModel.parseOrderNum(json['delivery_price'] ?? json['deliveryPrice']),
+      vatAmount: ApiOrderModel.parseOrderNum(json['vat'] ?? json['tax_amount'] ?? json['vatAmount']),
+      cancelReason: (json['cancel_reason'] ?? json['cancelReason'])?.toString(),
+    );
+  }
 }
 
 extension ApiOrderDetailsEXT on ApiOrderDetailsModel {
@@ -42,6 +74,13 @@ extension ApiOrderDetailsEXT on ApiOrderDetailsModel {
       total: total ?? 0,
       status: OrderStatusEnum.fromJson(status ?? ''),
       description: description ?? '',
+      address: address?.map,
+      items: items?.map((item) => item.map).toList() ?? const [],
+      paymentMethod: paymentMethod ?? '',
+      productsPrice: productsPrice ?? 0,
+      deliveryPrice: deliveryPrice ?? 0,
+      vatAmount: vatAmount ?? 0,
+      cancelReason: cancelReason ?? '',
     );
   }
 }

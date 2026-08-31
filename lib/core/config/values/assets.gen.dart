@@ -163,6 +163,12 @@ class $AssetsIconsGen {
   /// File path: assets/icons/sms.svg
   String get sms => 'assets/icons/sms.svg';
 
+  /// File path: assets/icons/star-empty.svg
+  String get starEmpty => 'assets/icons/star-empty.svg';
+
+  /// File path: assets/icons/star-filled.svg
+  String get starFilled => 'assets/icons/star-filled.svg';
+
   /// File path: assets/icons/timer.svg
   String get timer => 'assets/icons/timer.svg';
 
@@ -217,6 +223,8 @@ class $AssetsIconsGen {
     security,
     smsTracking,
     sms,
+    starEmpty,
+    starFilled,
     timer,
     trash,
     userOutline,
@@ -234,8 +242,16 @@ class $AssetsIllustrationsGen {
   String get profileDeleteIllustration =>
       'assets/illustrations/profile-delete-illustration.svg';
 
+  /// File path: assets/illustrations/rate-order-illustration.svg
+  String get rateOrderIllustration =>
+      'assets/illustrations/rate-order-illustration.svg';
+
   /// List of all assets
-  List<String> get values => [logoutIllustration, profileDeleteIllustration];
+  List<String> get values => [
+    logoutIllustration,
+    profileDeleteIllustration,
+    rateOrderIllustration,
+  ];
 }
 
 class $AssetsImagesGen {

@@ -921,6 +921,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get successfullyRated => 'Successfully rated';
 
   @override
+  String get rateYourExperience => 'Rate your experience';
+
+  @override
+  String get addYourComment => 'Add your comment';
+
+  @override
+  String get writeYourComment => 'Write your comment';
+
+  @override
+  String get sendRating => 'Send rating';
+
+  @override
   String get contactUs => 'Contact Us';
 
   @override
@@ -1545,4 +1557,39 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get noOrdersFoundSub => 'There are currently no orders. Try changing the filter or searching by another order number.';
+
+  @override
+  String get deliveryAddress => 'Delivery address';
+
+  @override
+  String get orderedProducts => 'Ordered products';
+
+  @override
+  String get priceDetails => 'Price details';
+
+  @override
+  String get productsPriceExcludingTax => 'Products total excluding tax';
+
+  @override
+  String get cancelOrder => 'Cancel order';
+
+  @override
+  String get trackOrder => 'Track order';
+
+  @override
+  String get reorder => 'Reorder';
+
+  @override
+  String get cancellationReason => 'Cancellation reason';
+
+  @override
+  String get taxInvoice => 'Tax invoice';
+
+  @override
+  String get rateOrder => 'Rate order';
+
+  @override
+  String quantityCount(int count) {
+    return 'Quantity: $count';
+  }
 }

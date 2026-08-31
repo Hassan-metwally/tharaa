@@ -333,6 +333,10 @@
   "chooseRate": "اختر تقييمك",
   "yourComment": "تعليقك",
   "successfullyRated": "تم التقييم بنجاح",
+  "rateYourExperience": "قيم تجربتك",
+  "addYourComment": "أضف تعليقك",
+  "writeYourComment": "اكتب تعليقك",
+  "sendRating": "إرسال التقييم",
   "contactUs": "تواصل معنا",
   "settings": "الإعدادات",
   "notifications": "الإشعارات",
@@ -586,5 +590,23 @@
   "orderStatusDelivered": "تم التوصيل",
   "orderStatusCancelled": "ملغى",
   "noOrdersFound": "لا توجد طلبات",
-  "noOrdersFoundSub": "حاليًا لا توجد طلبات، جرّب تغيير الفلتر أو البحث برقم طلب آخر"
+  "noOrdersFoundSub": "حاليًا لا توجد طلبات، جرّب تغيير الفلتر أو البحث برقم طلب آخر",
+  "deliveryAddress": "عنوان التوصيل",
+  "orderedProducts": "المنتجات المطلوبة",
+  "priceDetails": "تفاصيل السعر",
+  "productsPriceExcludingTax": "إجمالي المنتجات بدون ضريبة",
+  "cancelOrder": "إلغاء الطلب",
+  "trackOrder": "تتبع الطلب",
+  "reorder": "إعادة الطلب",
+  "cancellationReason": "سبب الإلغاء",
+  "taxInvoice": "الفاتورة الضريبية",
+  "rateOrder": "تقييم الطلب",
+  "quantityCount": "الكمية: {count}",
+  "@quantityCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
 }

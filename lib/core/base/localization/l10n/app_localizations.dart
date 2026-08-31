@@ -1910,6 +1910,30 @@ abstract class AppLocalizations {
   /// **'Successfully rated'**
   String get successfullyRated;
 
+  /// No description provided for @rateYourExperience.
+  ///
+  /// In en, this message translates to:
+  /// **'Rate your experience'**
+  String get rateYourExperience;
+
+  /// No description provided for @addYourComment.
+  ///
+  /// In en, this message translates to:
+  /// **'Add your comment'**
+  String get addYourComment;
+
+  /// No description provided for @writeYourComment.
+  ///
+  /// In en, this message translates to:
+  /// **'Write your comment'**
+  String get writeYourComment;
+
+  /// No description provided for @sendRating.
+  ///
+  /// In en, this message translates to:
+  /// **'Send rating'**
+  String get sendRating;
+
   /// No description provided for @contactUs.
   ///
   /// In en, this message translates to:
@@ -3145,6 +3169,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'There are currently no orders. Try changing the filter or searching by another order number.'**
   String get noOrdersFoundSub;
+
+  /// No description provided for @deliveryAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery address'**
+  String get deliveryAddress;
+
+  /// No description provided for @orderedProducts.
+  ///
+  /// In en, this message translates to:
+  /// **'Ordered products'**
+  String get orderedProducts;
+
+  /// No description provided for @priceDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Price details'**
+  String get priceDetails;
+
+  /// No description provided for @productsPriceExcludingTax.
+  ///
+  /// In en, this message translates to:
+  /// **'Products total excluding tax'**
+  String get productsPriceExcludingTax;
+
+  /// No description provided for @cancelOrder.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel order'**
+  String get cancelOrder;
+
+  /// No description provided for @trackOrder.
+  ///
+  /// In en, this message translates to:
+  /// **'Track order'**
+  String get trackOrder;
+
+  /// No description provided for @reorder.
+  ///
+  /// In en, this message translates to:
+  /// **'Reorder'**
+  String get reorder;
+
+  /// No description provided for @cancellationReason.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancellation reason'**
+  String get cancellationReason;
+
+  /// No description provided for @taxInvoice.
+  ///
+  /// In en, this message translates to:
+  /// **'Tax invoice'**
+  String get taxInvoice;
+
+  /// No description provided for @rateOrder.
+  ///
+  /// In en, this message translates to:
+  /// **'Rate order'**
+  String get rateOrder;
+
+  /// No description provided for @quantityCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Quantity: {count}'**
+  String quantityCount(int count);
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
