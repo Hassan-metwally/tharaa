@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -5,9 +7,24 @@ import 'core/di/di.dart';
 import 'core/utils/pusher/pusher_handler.dart';
 import 'src/notifications/helpers/firebase/firebase_helper.dart';
 
+/// Staging Traefik currently serves its default self-signed cert
+/// (`CN=TRAEFIK DEFAULT CERT`) instead of a valid certificate.
+class _DevApiHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    final client = super.createHttpClient(context);
+    client.badCertificateCallback = (X509Certificate cert, String host, int port) {
+      return host.endsWith('dev-moltaqa.cloud');
+    };
+    return client;
+  }
+}
+
 Future<void> initializeAppConfig() async {
   // Ensure that the Flutter engine is properly initialized.
   WidgetsFlutterBinding.ensureInitialized();
+
+  HttpOverrides.global = _DevApiHttpOverrides();
 
   // Lock the app orientation to portrait mode only.
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);

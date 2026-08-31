@@ -1010,6 +1010,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get discountCouponBanner => 'Discount coupon';
 
   @override
+  String get noCouponsFound => 'No coupons yet';
+
+  @override
+  String get noCouponsFoundSub => 'You don\'t have any discount coupons at the moment. Coupons assigned to your account will appear here.';
+
+  @override
   String get whoWeAre => 'Who we are';
 
   @override

@@ -1,11 +1,10 @@
-import 'package:injectable/injectable.dart';
 
 import '../../../authentication/data/models/api_user_model.dart';
 import '../../domain/entity/menu/static_page_type_enum.dart';
 import '../../domain/use_cases/menu/send_contact_us_message_use_case.dart';
 import 'menu_common_datasource.dart';
 
-@Injectable(as: MenuCommonDatasource)
+// @Injectable(as: MenuCommonDatasource)
 class MenuCommonMockDatasource extends MenuCommonDatasource {
   static const _delay = Duration(milliseconds: 400);
 

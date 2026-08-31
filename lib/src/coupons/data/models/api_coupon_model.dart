@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart' as intel;
+
 import '../../../../core/core.dart';
 import '../../domain/entities/coupon_entity.dart';
 
@@ -25,14 +27,17 @@ class ApiCouponModel {
   });
 
   factory ApiCouponModel.fromJson(Map<String, dynamic> json) {
+    final DateTime? validFrom = _parseDate(json['starts_at'] ?? json['valid_from'] ?? json['start_date'] ?? json['from_date']);
+    final DateTime? validTo = _parseDate(json['ends_at'] ?? json['valid_to'] ?? json['end_date'] ?? json['expiry_date'] ?? json['to_date']);
+
     return ApiCouponModel(
       id: json['id'],
       name: json['name']?.toString(),
       code: (json['code'] ?? json['coupon_code'])?.toString(),
       discountLabel: _parseDiscountLabel(json),
-      status: (json['status'] ?? json['coupon_status'])?.toString(),
-      validFrom: _parseDate(json['valid_from'] ?? json['start_date'] ?? json['from_date']),
-      validTo: _parseDate(json['valid_to'] ?? json['end_date'] ?? json['expiry_date'] ?? json['to_date']),
+      status: _resolveStatus(json, validTo),
+      validFrom: validFrom,
+      validTo: validTo,
       minOrderAmount: _parseNum(json['min_order_amount'] ?? json['min_order'] ?? json['minimum_order']),
       image: AttachmentEntity.fromNetwork(url: json['image']?.toString() ?? ''),
     );
@@ -40,7 +45,19 @@ class ApiCouponModel {
 
   static DateTime? _parseDate(dynamic value) {
     if (value == null) return null;
-    return DateTime.tryParse(value.toString());
+    final String text = value.toString().trim();
+    if (text.isEmpty) return null;
+
+    final DateTime? iso = DateTime.tryParse(text);
+    if (iso != null) return iso;
+
+    for (final String pattern in ['yyyy-MM-dd HH:mm:ss', 'yyyy-MM-dd HH:mm']) {
+      try {
+        return intel.DateFormat(pattern).parse(text);
+      } catch (_) {}
+    }
+
+    return null;
   }
 
   static num? _parseNum(dynamic value) {
@@ -62,6 +79,22 @@ class ApiCouponModel {
     if (percent == null) return label?.toString();
     final String value = percent % 1 == 0 ? percent.toInt().toString() : percent.toString();
     return '$value% OFF';
+  }
+
+  static String _resolveStatus(Map<String, dynamic> json, DateTime? validTo) {
+    final dynamic status = json['status'] ?? json['coupon_status'];
+    if (status != null) {
+      return status.toString();
+    }
+
+    final bool isUsed = json['is_used'] == true;
+    if (isUsed) return 'used';
+
+    final bool isActive = json['is_active'] != false;
+    final bool isExpired = !isActive || (validTo != null && validTo.isBefore(DateTime.now()));
+    if (isExpired) return 'expired';
+
+    return 'unused';
   }
 }
 

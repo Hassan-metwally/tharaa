@@ -108,8 +108,6 @@ import '../../src/chats_inbox/domain/usecases/get_chats_inbox_usecase.dart'
 import '../../src/chats_inbox/presentation/chats_inbox_cubit.dart' as _i659;
 import '../../src/common/data/datasources/common_datasource.dart' as _i1065;
 import '../../src/common/data/datasources/menu_common_datasource.dart' as _i758;
-import '../../src/common/data/datasources/menu_common_mock_datasource.dart'
-    as _i896;
 import '../../src/common/data/repository/common_repository_imp.dart' as _i867;
 import '../../src/common/data/repository/menu_common_repository_imp.dart'
     as _i294;
@@ -130,8 +128,6 @@ import '../../src/common/domain/use_cases/menu/send_contact_us_message_use_case.
 import '../../src/common/domain/use_cases/menu/toggle_enable_notification_use_case.dart'
     as _i1015;
 import '../../src/coupons/data/datasources/coupons_datasource.dart' as _i74;
-import '../../src/coupons/data/datasources/coupons_mock_datasource.dart'
-    as _i914;
 import '../../src/coupons/data/repositories/coupons_repository_impl.dart'
     as _i77;
 import '../../src/coupons/domain/repositories/coupons_repository.dart' as _i542;
@@ -182,11 +178,13 @@ import '../../src/orders/data/datasources/orders_mock_datasource.dart' as _i560;
 import '../../src/orders/data/repositories/orders_repository_impl.dart'
     as _i833;
 import '../../src/orders/domain/repositories/orders_repository.dart' as _i247;
+import '../../src/orders/domain/usecases/add_order_usecase.dart' as _i496;
 import '../../src/orders/domain/usecases/get_orders_usecase.dart' as _i488;
 import '../../src/orders/domain/usecases/show_order_details_usecase.dart'
     as _i770;
 import '../../src/orders/domain/usecases/toggle_order_status_usecase.dart'
     as _i1047;
+import '../../src/orders/presentation/add_order/add_order_cubit.dart' as _i383;
 import '../../src/orders/presentation/orders/orders_cubit.dart' as _i818;
 import '../../src/orders/presentation/show_order_details/show_order_details_cubit.dart'
     as _i177;
@@ -215,18 +213,14 @@ import '../../src/rating/presentation/add_rate/add_rate_cubit.dart' as _i295;
 import '../../src/rating/presentation/ratings/ratings_cubit.dart' as _i158;
 import '../../src/statistics/data/datasources/statistics_datasource.dart'
     as _i1069;
-import '../../src/statistics/data/datasources/statistics_mock_datasource.dart'
-    as _i214;
 import '../../src/statistics/data/repositories/statistics_repository_impl.dart'
     as _i550;
 import '../../src/statistics/domain/repositories/statistics_repository.dart'
     as _i581;
 import '../../src/statistics/domain/usecases/get_statistics_usecase.dart'
     as _i844;
-import '../../src/statistics/presentation/driver_statistics/driver_statistics_cubit.dart'
-    as _i38;
-import '../../src/statistics/presentation/provider_statistics/provider_statistics_cubit.dart'
-    as _i876;
+import '../../src/statistics/presentation/statistics/statistics_cubit.dart'
+    as _i303;
 import '../../src/wallet/data/repository/wallet_repository_imp.dart' as _i514;
 import '../../src/wallet/domain/repository/wallet_repository.dart' as _i46;
 import '../../src/wallet/domain/use_case/charage_wallet_use_case.dart' as _i125;
@@ -277,17 +271,14 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i984.ThemeRepository>(() => _i715.ThemeRepositoryImp());
     gh.factory<_i239.OrdersDatasource>(() => _i560.OrdersMockDatasource());
-    gh.factory<_i758.MenuCommonDatasource>(
-      () => _i896.MenuCommonMockDatasource(),
-    );
-    gh.factory<_i1069.StatisticsDatasource>(
-      () => _i214.StatisticsMockDatasource(),
-    );
     gh.factory<_i788.AddressDatasource>(() => _i812.AddressMockDatasource());
     gh.factory<_i740.AdsRepository>(
       () => _i331.AdsRepositoryImpl(gh<_i268.AdsDatasource>()),
     );
     gh.factory<_i351.DioHelper>(() => _i351.DioHelper(dio: gh<_i361.Dio>()));
+    gh.factory<_i1069.StatisticsDatasource>(
+      () => _i1069.StatisticsDatasourceImpl(gh<_i351.DioHelper>()),
+    );
     gh.factory<_i617.ProductsDatasource>(() => _i31.ProductsMockDatasource());
     gh.factory<_i401.MapsDataSource>(
       () => _i401.MapsDataSourceImpl(gh<_i351.DioHelper>()),
@@ -305,7 +296,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i226.CategoriesDatasource>(
       () => _i152.CategoriesMockDatasource(),
     );
-    gh.factory<_i74.CouponsDatasource>(() => _i914.CouponsMockDatasource());
+    gh.factory<_i758.MenuCommonDatasource>(
+      () => _i758.MenuCommonDatasourceImpl(gh<_i351.DioHelper>()),
+    );
     gh.factory<_i351.SecureStorageRepository>(
       () =>
           _i526.SecureStorageRepositoryImp(gh<_i177.SecureStorageDataSource>()),
@@ -412,9 +405,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i406.CategoriesRepository>(
       () => _i1031.CategoriesRepositoryImpl(gh<_i226.CategoriesDatasource>()),
     );
-    gh.factory<_i542.CouponsRepository>(
-      () => _i77.CouponsRepositoryImpl(gh<_i74.CouponsDatasource>()),
-    );
     gh.factory<_i262.DeleteCartItemCubit>(
       () => _i262.DeleteCartItemCubit(gh<_i607.DeleteCartItemUsecase>()),
     );
@@ -458,6 +448,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i726.ReadNotificationUseCase>(
       () => _i726.ReadNotificationUseCase(gh<_i209.NotificationRepository>()),
     );
+    gh.factory<_i496.AddOrderUsecase>(
+      () => _i496.AddOrderUsecase(gh<_i247.OrdersRepository>()),
+    );
     gh.factory<_i488.GetOrdersUsecase>(
       () => _i488.GetOrdersUsecase(gh<_i247.OrdersRepository>()),
     );
@@ -484,6 +477,9 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i758.MenuCommonDatasource>(),
         gh<_i351.SecureStorageRepository>(),
       ),
+    );
+    gh.factory<_i74.CouponsDatasource>(
+      () => _i74.CouponsDatasourceImpl(gh<_i351.DioHelper>()),
     );
     gh.factory<_i995.RatingDatasource>(
       () => _i995.RatingDatasourceImpl(gh<_i351.DioHelper>()),
@@ -550,6 +546,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i17.MainCategoriesCubit>(
       () => _i17.MainCategoriesCubit(gh<_i574.GetMainCategoriesUsecase>()),
     );
+    gh.factory<_i383.AddOrderCubit>(
+      () => _i383.AddOrderCubit(gh<_i496.AddOrderUsecase>()),
+    );
     gh.factory<_i582.GetProfileUseCase>(
       () => _i582.GetProfileUseCase(gh<_i931.MoreRepository>()),
     );
@@ -561,9 +560,6 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i100.ShowProductDetailsUsecase>(
       () => _i100.ShowProductDetailsUsecase(gh<_i417.ProductsRepository>()),
-    );
-    gh.factory<_i761.GetCouponsUsecase>(
-      () => _i761.GetCouponsUsecase(gh<_i542.CouponsRepository>()),
     );
     gh.factory<_i612.ClientWalletCubit>(
       () => _i612.ClientWalletCubit(
@@ -629,11 +625,8 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i92.CommonRepository>(
       () => _i867.CommonRepositoryImp(gh<_i1065.CommonDatasource>()),
     );
-    gh.factory<_i38.DriverStatisticsCubit>(
-      () => _i38.DriverStatisticsCubit(gh<_i844.GetStatisticsUsecase>()),
-    );
-    gh.factory<_i876.ProviderStatisticsCubit>(
-      () => _i876.ProviderStatisticsCubit(gh<_i844.GetStatisticsUsecase>()),
+    gh.factory<_i303.StatisticsCubit>(
+      () => _i303.StatisticsCubit(gh<_i844.GetStatisticsUsecase>()),
     );
     gh.factory<_i303.AddRateUsecase>(
       () => _i303.AddRateUsecase(gh<_i482.RatingRepository>()),
@@ -649,8 +642,8 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i726.ReadNotificationUseCase>(),
       ),
     );
-    gh.factory<_i987.CouponsCubit>(
-      () => _i987.CouponsCubit(gh<_i761.GetCouponsUsecase>()),
+    gh.factory<_i542.CouponsRepository>(
+      () => _i77.CouponsRepositoryImpl(gh<_i74.CouponsDatasource>()),
     );
     gh.lazySingleton<_i194.GetCurrentLocationUseCase>(
       () => _i194.GetCurrentLocationUseCase(
@@ -687,11 +680,17 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i388.GetChatsInboxUsecase>(
       () => _i388.GetChatsInboxUsecase(gh<_i34.ChatsInboxRepository>()),
     );
+    gh.factory<_i761.GetCouponsUsecase>(
+      () => _i761.GetCouponsUsecase(gh<_i542.CouponsRepository>()),
+    );
     gh.factory<_i295.AddRateCubit>(
       () => _i295.AddRateCubit(gh<_i303.AddRateUsecase>()),
     );
     gh.factory<_i659.ChatsLogCubit>(
       () => _i659.ChatsLogCubit(gh<_i388.GetChatsInboxUsecase>()),
+    );
+    gh.factory<_i987.CouponsCubit>(
+      () => _i987.CouponsCubit(gh<_i761.GetCouponsUsecase>()),
     );
     return this;
   }

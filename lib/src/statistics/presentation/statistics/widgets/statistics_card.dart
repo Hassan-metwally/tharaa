@@ -1,4 +1,4 @@
-part of 'driver_statistics_widget.dart';
+part of 'statistics_widget.dart';
 
 class _StatisticsCard extends StatelessWidget {
   final String title;

@@ -18,8 +18,8 @@ import '../../../authentication/presentation/delete_account/delete_account_botto
 import '../../../authentication/presentation/logout/logout_bottom_sheet.dart';
 import '../../../common/domain/entity/menu/static_page_type_enum.dart';
 import '../../../statistics/domain/entities/statistics_entity.dart';
-import '../../../statistics/presentation/provider_statistics/provider_statistics_cubit.dart';
-import '../../../statistics/presentation/provider_statistics/utils/get_provider_statistics_subscription.dart';
+import '../../../statistics/presentation/statistics/statistics_cubit.dart';
+import '../../../statistics/presentation/statistics/utils/get_provider_statistics_subscription.dart';
 import 'more_cubit.dart';
 
 part 'widgets/user_card.dart';
@@ -67,7 +67,6 @@ class MorePage extends StatelessWidget {
                         _MoreTile(
                           icon: AppIcons.mobileBulk,
                           text: appLocalizer.changePhoneNumber,
-                          showDivider: false,
                           onTap: () {
                             AppRouter.pushNamed(AppRoutes.updatePhonePage);
                           },

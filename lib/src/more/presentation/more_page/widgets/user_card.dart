@@ -156,7 +156,7 @@ class _UserCardStatistics extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(create: (context) => injector<ProviderStatisticsCubit>()..getStatistics(), child: const _UserCardStatisticsBody());
+    return BlocProvider(create: (context) => injector<StatisticsCubit>()..getStatistics(), child: const _UserCardStatisticsBody());
   }
 }
 
@@ -169,7 +169,7 @@ class _UserCardStatisticsBody extends StatefulWidget {
 
 class _UserCardStatisticsBodyState extends State<_UserCardStatisticsBody> {
   final _statisticsSubscriptionObj = CompositeSubscription();
-  late final ProviderStatisticsCubit _cubit;
+  late final StatisticsCubit _cubit;
 
   void _statisticsSubscriptionListener() {
     _statisticsSubscriptionObj.add(
@@ -182,7 +182,7 @@ class _UserCardStatisticsBodyState extends State<_UserCardStatisticsBody> {
   @override
   void initState() {
     super.initState();
-    _cubit = context.read<ProviderStatisticsCubit>();
+    _cubit = context.read<StatisticsCubit>();
     _statisticsSubscriptionListener();
   }
 
@@ -194,7 +194,7 @@ class _UserCardStatisticsBodyState extends State<_UserCardStatisticsBody> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ProviderStatisticsCubit, ProviderStatisticsState>(
+    return BlocBuilder<StatisticsCubit, StatisticsState>(
       builder: (context, state) {
         if (state.getStatisticsState.isLoading) {
           return const SizedBox(
@@ -208,7 +208,7 @@ class _UserCardStatisticsBodyState extends State<_UserCardStatisticsBody> {
             height: 51,
             child: Center(
               child: Bounce(
-                onTap: () => context.read<ProviderStatisticsCubit>().getStatistics(),
+                onTap: () => context.read<StatisticsCubit>().getStatistics(),
                 child: Text(appLocalizer.tryAnotherTime, style: TextStyles.regular12.copyWith(color: Colors.white.withOpacityPercent(80))),
               ),
             ),

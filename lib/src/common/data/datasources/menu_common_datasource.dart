@@ -1,3 +1,5 @@
+import 'package:injectable/injectable.dart';
+
 import '../../../../core/core.dart';
 import '../../../authentication/data/models/api_user_model.dart';
 import '../../domain/entity/menu/static_page_type_enum.dart';
@@ -10,6 +12,7 @@ abstract class MenuCommonDatasource {
   Future<ApiUserModel> toggleNotificationEnable();
 }
 
+@Injectable(as: MenuCommonDatasource)
 class MenuCommonDatasourceImpl extends MenuCommonDatasource {
   final DioHelper _dioHelper;
 

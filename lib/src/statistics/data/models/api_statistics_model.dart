@@ -15,13 +15,18 @@ class ApiStatisticsModel {
     required this.remainingOrdersCount,
   });
 
-  factory ApiStatisticsModel.fromJson(Map<String, dynamic> json) => ApiStatisticsModel(
-    newOrdersCount: json["new_orders_count"],
-    inProgressOrdersCount: json["in_progress_orders_count"],
-    finishedOrdersCount: json["finished_orders_count"],
-    completedOrdersCount: json["completed_orders_count"],
-    remainingOrdersCount: json["remaining_orders_count"],
-  );
+  factory ApiStatisticsModel.fromJson(Map<String, dynamic> json) {
+    final newOrdersCount = json["new_orders_count"];
+    final processingOrdersCount = json["processing_orders_count"] ?? json["in_progress_orders_count"];
+    final completedOrdersCount = json["completed_orders_count"] ?? json["finished_orders_count"];
+    return ApiStatisticsModel(
+      newOrdersCount: newOrdersCount,
+      inProgressOrdersCount: processingOrdersCount,
+      finishedOrdersCount: completedOrdersCount,
+      completedOrdersCount: completedOrdersCount,
+      remainingOrdersCount: json["remaining_orders_count"] ?? processingOrdersCount,
+    );
+  }
 }
 
 extension ApiStatisticsEXT on ApiStatisticsModel {

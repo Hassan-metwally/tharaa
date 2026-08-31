@@ -1,11 +1,9 @@
-import 'package:injectable/injectable.dart';
-
 import '../../../../core/core.dart';
 import '../../domain/usecases/get_coupons_usecase.dart';
 import '../models/api_coupon_model.dart';
 import 'coupons_datasource.dart';
 
-@Injectable(as: CouponsDatasource)
+// @Injectable(as: CouponsDatasource)
 class CouponsMockDatasource extends CouponsDatasource {
   static const _delay = Duration(milliseconds: 400);
   static final DateTime _validFrom = DateTime(2025, 8);

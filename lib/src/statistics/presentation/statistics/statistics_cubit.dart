@@ -2,16 +2,16 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../../../../core/core.dart';
+import '../../../../../../core/core.dart';
 import '../../domain/entities/statistics_entity.dart';
 import '../../domain/usecases/get_statistics_usecase.dart';
 
-part 'driver_statistics_state.dart';
+part 'statistics_state.dart';
 
 @injectable
-class DriverStatisticsCubit extends Cubit<DriverStatisticsState> {
+class StatisticsCubit extends Cubit<StatisticsState> {
   final GetStatisticsUsecase _getStatisticsUsecase;
-  DriverStatisticsCubit(this._getStatisticsUsecase) : super(DriverStatisticsState.initial());
+  StatisticsCubit(this._getStatisticsUsecase) : super(StatisticsState.initial());
 
   Future<void> getStatistics() async {
     emit(state.copyWith(getStatisticsState: const Async.loading()));
@@ -23,7 +23,7 @@ class DriverStatisticsCubit extends Cubit<DriverStatisticsState> {
   }
 
   @override
-  void emit(DriverStatisticsState state) {
+  void emit(StatisticsState state) {
     if (!isClosed) {
       super.emit(state);
     }

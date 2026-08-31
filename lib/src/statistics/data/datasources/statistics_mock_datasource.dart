@@ -1,9 +1,7 @@
-import 'package:injectable/injectable.dart';
-
 import '../models/api_statistics_model.dart';
 import 'statistics_datasource.dart';
 
-@Injectable(as: StatisticsDatasource)
+// @Injectable(as: StatisticsDatasource)
 class StatisticsMockDatasource extends StatisticsDatasource {
   @override
   Future<ApiStatisticsModel> getStatistics() async {

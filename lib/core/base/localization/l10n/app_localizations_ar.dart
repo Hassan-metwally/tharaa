@@ -1007,6 +1007,12 @@ class AppLocalizationsAr extends AppLocalizations {
   String get discountCouponBanner => 'كوبـــون خصـــم';
 
   @override
+  String get noCouponsFound => 'لا توجد كوبونات بعد';
+
+  @override
+  String get noCouponsFoundSub => 'ليس لديك كوبونات خصم حاليًا. ستظهر هنا الكوبونات المخصصة لحسابك.';
+
+  @override
   String get whoWeAre => 'من نحن';
 
   @override

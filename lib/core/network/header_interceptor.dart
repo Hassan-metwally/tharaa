@@ -5,6 +5,9 @@ class HeaderInterceptor extends Interceptor {
 
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
+    debugPrint(
+      '======= DioError ==> type: ${err.type}, message: ${err.message}, error: ${err.error}',
+    );
     handler.next(err);
   }
 

@@ -56,7 +56,7 @@ Future<T> apiExecptionCollecter<T>({required Future<Response?> Function() task})
     } else if (data is String) {
       errorMessage = data;
     } else {
-      errorMessage = e.message;
+      errorMessage = e.message ?? e.error?.toString();
     }
 
     if (errorMessage?.isEmpty ?? false) {

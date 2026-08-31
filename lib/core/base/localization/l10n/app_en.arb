@@ -369,6 +369,8 @@
   "couponMinOrder": "Minimum order",
   "couponCopied": "Copied",
   "discountCouponBanner": "Discount coupon",
+  "noCouponsFound": "No coupons yet",
+  "noCouponsFoundSub": "You don't have any discount coupons at the moment. Coupons assigned to your account will appear here.",
   "whoWeAre": "Who we are",
   "newOrders": "New orders",
   "ordersInProgress": "Orders in progress",

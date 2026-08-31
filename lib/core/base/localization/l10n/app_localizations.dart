@@ -2084,6 +2084,18 @@ abstract class AppLocalizations {
   /// **'Discount coupon'**
   String get discountCouponBanner;
 
+  /// No description provided for @noCouponsFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No coupons yet'**
+  String get noCouponsFound;
+
+  /// No description provided for @noCouponsFoundSub.
+  ///
+  /// In en, this message translates to:
+  /// **'You don\'t have any discount coupons at the moment. Coupons assigned to your account will appear here.'**
+  String get noCouponsFoundSub;
+
   /// No description provided for @whoWeAre.
   ///
   /// In en, this message translates to:

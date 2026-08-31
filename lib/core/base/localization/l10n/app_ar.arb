@@ -372,6 +372,8 @@
   "couponMinOrder": "الحد الأدني للطلب",
   "couponCopied": "تم النسخ",
   "discountCouponBanner": "كوبـــون خصـــم",
+  "noCouponsFound": "لا توجد كوبونات بعد",
+  "noCouponsFoundSub": "ليس لديك كوبونات خصم حاليًا. ستظهر هنا الكوبونات المخصصة لحسابك.",
   "whoWeAre": "من نحن",
   "newOrders": "الطلبات الجديدة",
   "ordersInProgress": "الطلبات قيد التنفيذ",

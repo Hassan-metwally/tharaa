@@ -7,17 +7,17 @@ import '../../../../../../../core/di/di.dart';
 import '../../../../../../../material/app_fail_widget.dart';
 import '../../../../../../../material/media/svg_icon.dart';
 import '../../../../../../../material/spin_kit_loading_widget.dart';
-import '../provider_statistics_cubit.dart';
+import '../statistics_cubit.dart';
 import '../utils/get_provider_statistics_subscription.dart';
 
 part 'statistics_card.dart';
 
-class ProviderStatisticsWidget extends StatelessWidget {
-  const ProviderStatisticsWidget({super.key});
+class StatisticsWidget extends StatelessWidget {
+  const StatisticsWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(create: (context) => injector<ProviderStatisticsCubit>()..getStatistics(), child: const _StatisticsBody());
+    return BlocProvider(create: (context) => injector<StatisticsCubit>()..getStatistics(), child: const _StatisticsBody());
   }
 }
 
@@ -30,7 +30,7 @@ class _StatisticsBody extends StatefulWidget {
 
 class _StatisticsBodyState extends State<_StatisticsBody> {
   final _statisticsSubscriptionObj = CompositeSubscription();
-  late final ProviderStatisticsCubit _cubit;
+  late final StatisticsCubit _cubit;
 
   void _statisticsSubsriptionListener() {
     _statisticsSubscriptionObj.add(
@@ -43,7 +43,7 @@ class _StatisticsBodyState extends State<_StatisticsBody> {
   @override
   void initState() {
     super.initState();
-    _cubit = context.read<ProviderStatisticsCubit>();
+    _cubit = context.read<StatisticsCubit>();
     _statisticsSubsriptionListener();
   }
 
@@ -57,7 +57,7 @@ class _StatisticsBodyState extends State<_StatisticsBody> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ProviderStatisticsCubit, ProviderStatisticsState>(
+    return BlocBuilder<StatisticsCubit, StatisticsState>(
       builder: (context, state) {
         if (state.getStatisticsState.isLoading) {
           return SizedBox(
@@ -65,7 +65,7 @@ class _StatisticsBodyState extends State<_StatisticsBody> {
             child: Center(child: SpinKitLoadingWidget(color: AppColors.white)),
           );
         } else if (state.getStatisticsState.isFailure) {
-          return SizedBox(height: 50, child: AppFailWidget.mini(onRetry: () => context.read<ProviderStatisticsCubit>().getStatistics()));
+          return SizedBox(height: 50, child: AppFailWidget.mini(onRetry: () => context.read<StatisticsCubit>().getStatistics()));
         } else if (state.getStatisticsState.isSuccess) {
           final data = state.getStatisticsState.data!;
           return SizedBox(

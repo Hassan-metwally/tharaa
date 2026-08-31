@@ -90,7 +90,18 @@ class _CouponsBodyState extends State<_CouponsBody> {
               backgroundColor: AppColors.primary,
               onRefresh: _cubit.getCoupons,
               child: data.isEmpty
-                  ? const AppEmptyWidget()
+                  ? AppEmptyWidget(
+                      // heightPercentage: 0.48,
+                      text: appLocalizer.noCouponsFound,
+                      subText: appLocalizer.noCouponsFoundSub,
+                      imagePath: AppImages.emptyCart,
+                      imageFit: BoxFit.contain,
+                      imageSize: 200 / 0.7,
+                      spacing: Dimensions.p32 / 0.7,
+                      subTextSpacing: Dimensions.p16,
+                      textStyle: TextStyles.semiBold22.copyWith(color: AppColors.black),
+                      subTextStyle: TextStyles.regular14.copyWith(color: AppColors.mutedText),
+                    )
                   : Stack(
                       children: [
                         ListView.separated(

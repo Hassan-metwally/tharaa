@@ -1,3 +1,5 @@
+import 'package:injectable/injectable.dart';
+
 import '../../../../../../core/core.dart';
 import '../models/api_statistics_model.dart';
 
@@ -5,6 +7,7 @@ abstract class StatisticsDatasource {
   Future<ApiStatisticsModel> getStatistics();
 }
 
+@Injectable(as: StatisticsDatasource)
 class StatisticsDatasourceImpl extends StatisticsDatasource {
   final DioHelper _dioHelper;
 
@@ -13,9 +16,8 @@ class StatisticsDatasourceImpl extends StatisticsDatasource {
   @override
   Future<ApiStatisticsModel> getStatistics() async {
     try {
-      final response = await _dioHelper.get(url: ApiConstants.addToApiUrlPath('/statistics'));
-      final data = ApiStatisticsModel.fromJson(response['data']['data']);
-      return data;
+      final response = await _dioHelper.get(url: ApiConstants.addToApiUrlPath('profile'));
+      return ApiStatisticsModel.fromJson(response['data']);
     } catch (_) {
       rethrow;
     }
