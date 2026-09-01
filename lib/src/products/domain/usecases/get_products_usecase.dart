@@ -19,44 +19,75 @@ class GetProductsUsecase extends IUseCase<PaginatedData<ProductEntity>, GetProdu
   }
 }
 
+enum ProductsSortEnum {
+  mostRequested('most_requested'),
+  priceDesc('price_desc'),
+  priceAsc('price_asc');
+
+  final String apiValue;
+  const ProductsSortEnum(this.apiValue);
+}
+
 class GetProductsParams extends Equatable {
   final int? page;
   final String? search;
   final bool? offersProductsOnly;
-  final bool? mostRequestedProductsOnly;
   final CategoryEntity? mainCategory;
   final CategoryEntity? subCategory;
-  const GetProductsParams({this.page, this.search, this.offersProductsOnly, this.mostRequestedProductsOnly, this.mainCategory, this.subCategory});
+  final ProductsSortEnum? sort;
+
+  const GetProductsParams({
+    this.page,
+    this.search,
+    this.offersProductsOnly,
+    this.mainCategory,
+    this.subCategory,
+    this.sort,
+  });
 
   const GetProductsParams.initial() : this();
+
+  bool get isDedicatedOffersList =>
+      offersProductsOnly == true && sort == null && mainCategory == null && subCategory == null;
 
   GetProductsParams copyWith({
     int? page,
     String? search,
     bool? offersProductsOnly,
-    bool? mostRequestedProductsOnly,
     CategoryEntity? mainCategory,
     CategoryEntity? subCategory,
+    ProductsSortEnum? sort,
   }) {
     return GetProductsParams(
       page: page ?? this.page,
       search: search ?? this.search,
       offersProductsOnly: offersProductsOnly ?? this.offersProductsOnly,
-      mostRequestedProductsOnly: mostRequestedProductsOnly ?? this.mostRequestedProductsOnly,
       mainCategory: mainCategory ?? this.mainCategory,
       subCategory: subCategory ?? this.subCategory,
+      sort: sort ?? this.sort,
     );
   }
 
-  Map<String, dynamic> get toMap => {
-    'page': page,
-    if (offersProductsOnly != null && offersProductsOnly!) 'offersProductsOnly': offersProductsOnly,
-    if (mostRequestedProductsOnly != null && mostRequestedProductsOnly!) 'mostRequestedProductsOnly': mostRequestedProductsOnly,
-    if (mainCategory != null) 'categoyId': mainCategory?.id,
-    if (subCategory != null) 'subCategoryId': subCategory?.id,
-    if (search != null) 'name': search,
-  };
+  Map<String, dynamic> get toMap {
+    if (isDedicatedOffersList) {
+      return {
+        'page': page,
+        if (search != null && search!.isNotEmpty) 'name': search,
+      };
+    }
+
+    return {
+      'page': page,
+      if (search != null && search!.isNotEmpty) 'name': search,
+      if (mainCategory != null) 'category_id': mainCategory!.id,
+      if (subCategory != null) 'sub_category_id': subCategory!.id,
+      if (sort != null) 'sort': sort!.apiValue,
+      if (offersProductsOnly == true) 'has_offer': 1,
+    };
+  }
 
   @override
-  List<Object?> get props => [page, search, offersProductsOnly, mostRequestedProductsOnly, mainCategory, subCategory];
+  List<Object?> get props => [page, search, offersProductsOnly, mainCategory, subCategory, sort];
 }
+
+

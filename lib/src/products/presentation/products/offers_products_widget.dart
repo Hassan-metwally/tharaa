@@ -1,5 +1,3 @@
-import 'dart:math' as math;
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -31,9 +29,7 @@ const double _kProductCardHeight = 223;
 const double _kProductImageHeight = 120;
 const double _kAddButtonSize = 38;
 const double _kAddIconSize = 24;
-const double _kArrowHitSize = 28;
-const double _kArrowIconSize = 20;
-const double _kArrowRotationDeg = 48.31;
+const double _kArrowIconSize = 24;
 const double _kFlameIconSize = 14;
 const int _kHomeShimmerCount = 3;
 
@@ -121,9 +117,6 @@ class _OffersProductsHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool isRtl = Directionality.of(context) == TextDirection.rtl;
-    const double radians = _kArrowRotationDeg * math.pi / 180;
-
     return Padding(
       padding: const EdgeInsets.only(left: Dimensions.p16, right: Dimensions.p16, top: Dimensions.p16),
       child: GestureDetector(
@@ -144,16 +137,8 @@ class _OffersProductsHeader extends StatelessWidget {
                 ),
               ),
               Text(appLocalizer.viewMore, style: TextStyles.medium14.copyWith(color: AppColors.mutedText, height: 1)),
-              SizedBox(
-                width: _kArrowHitSize,
-                height: _kArrowHitSize,
-                child: Center(
-                  child: Transform.rotate(
-                    angle: isRtl ? radians : math.pi - radians,
-                    child: AppSvgIcon(path: AppIcons.arrowUpRight, width: _kArrowIconSize, height: _kArrowIconSize),
-                  ),
-                ),
-              ),
+              SizedBox(width: 2),
+              AppSvgIcon(path: AppIcons.arrowLeft, width: _kArrowIconSize, height: _kArrowIconSize),
             ],
           ),
         ),

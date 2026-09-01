@@ -54,7 +54,7 @@ class _MockProduct {
   _MockProduct({required this.details, this.isMostRequested = false});
 }
 
-@Injectable(as: ProductsDatasource)
+// @Injectable(as: ProductsDatasource)
 class ProductsMockDatasource extends ProductsDatasource {
   static const _delay = Duration(milliseconds: 400);
 
@@ -421,14 +421,41 @@ class ProductsMockDatasource extends ProductsDatasource {
     await Future<void>.delayed(_delay);
 
     Iterable<_MockProduct> items = _products;
-    if (params.offersProductsOnly == true) {
+    if (params.isDedicatedOffersList || params.offersProductsOnly == true) {
       items = items.where((product) => product.details.offerPrice != null);
     }
-    if (params.mostRequestedProductsOnly == true) {
+    if (params.sort == ProductsSortEnum.mostRequested) {
       items = items.where((product) => product.isMostRequested);
     }
+    if (params.mainCategory != null) {
+      items = items.where((product) => product.details.category?.id == params.mainCategory!.id);
+    }
+    if (params.subCategory != null) {
+      items = items.where((product) => product.details.subCategory?.id == params.subCategory!.id);
+    }
+    if (params.search != null && params.search!.isNotEmpty) {
+      final query = params.search!.toLowerCase();
+      items = items.where((product) => product.details.name?.toLowerCase().contains(query) ?? false);
+    }
 
-    return _paginate(items.map(_toListModel).toList(), params.page ?? 1);
+    var models = items.map(_toListModel).toList();
+    models = _sortModels(models, params.sort);
+
+    return _paginate(models, params.page ?? 1);
+  }
+
+  List<ApiProductModel> _sortModels(List<ApiProductModel> models, ProductsSortEnum? sort) {
+    if (sort == null || sort == ProductsSortEnum.mostRequested) {
+      return models;
+    }
+
+    final sorted = [...models];
+    sorted.sort((a, b) {
+      final num priceA = a.offerPrice ?? a.price ?? 0;
+      final num priceB = b.offerPrice ?? b.price ?? 0;
+      return sort == ProductsSortEnum.priceDesc ? priceB.compareTo(priceA) : priceA.compareTo(priceB);
+    });
+    return sorted;
   }
 
   @override

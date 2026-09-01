@@ -22,9 +22,7 @@ const double _kSectionHeaderHeight = 28;
 const double _kCategoryCardHeight = 56;
 const double _kCategoryCardPadding = Dimensions.p4;
 const double _kCategoryImageHeight = _kCategoryCardHeight - (_kCategoryCardPadding * 2);
-const double _kArrowHitSize = 28;
-const double _kArrowIconSize = 20;
-const double _kArrowRotationDeg = 48.31;
+const double _kArrowIconSize = 24;
 const int _kHomePreviewCount = 4;
 
 class MainCategoriesHomeWidget extends StatelessWidget {
@@ -101,8 +99,6 @@ class _MainCategoriesHomeHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool isRtl = Directionality.of(context) == TextDirection.rtl;
-    const double radians = _kArrowRotationDeg * math.pi / 180;
 
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
@@ -122,16 +118,8 @@ class _MainCategoriesHomeHeader extends StatelessWidget {
               ),
             ),
             Text(appLocalizer.viewMore, style: TextStyles.medium14.copyWith(color: AppColors.mutedText, height: 1)),
-            SizedBox(
-              width: _kArrowHitSize,
-              height: _kArrowHitSize,
-              child: Center(
-                child: Transform.rotate(
-                  angle: isRtl ? radians : math.pi - radians,
-                  child: AppSvgIcon(path: AppIcons.arrowUpRight, width: _kArrowIconSize, height: _kArrowIconSize),
-                ),
-              ),
-            ),
+            SizedBox(width: 2),
+            AppSvgIcon(path: AppIcons.arrowLeft, width: _kArrowIconSize, height: _kArrowIconSize)
           ],
         ),
       ),

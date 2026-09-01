@@ -32,11 +32,16 @@ class ProductsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ProductsPageMode mode = productsPageModeOf(params);
+    final ProductsSortEnum initialSort = initialSortForMode(mode);
+    final GetProductsParams initialParams = params.copyWith(
+      page: params.page ?? 1,
+      sort: mode == ProductsPageMode.offers ? null : initialSort,
+    );
     return MultiBlocProvider(
       providers: [
         BlocProvider(
           create: (context) => injector<ProductsCubit>()
-            ..updateParams(params)
+            ..updateParams(initialParams)
             ..getProducts(),
         ),
         BlocProvider(
@@ -60,16 +65,17 @@ class ProductsPage extends StatelessWidget {
           },
         ),
       ],
-      child: _ProductsBody(mode: mode, entryParams: params),
+      child: _ProductsBody(mode: mode, entryParams: params, initialSort: initialSort),
     );
   }
 }
 
 class _ProductsBody extends StatefulWidget {
-  const _ProductsBody({required this.mode, required this.entryParams});
+  const _ProductsBody({required this.mode, required this.entryParams, required this.initialSort});
 
   final ProductsPageMode mode;
   final GetProductsParams entryParams;
+  final ProductsSortEnum initialSort;
 
   @override
   State<_ProductsBody> createState() => _ProductsBodyState();
@@ -81,15 +87,21 @@ class _ProductsBodyState extends State<_ProductsBody> {
   final TextEditingController _searchController = TextEditingController();
   late final ProductsCubit _cubit;
   Timer? _searchDebounce;
-  late ProductsSortOption _sortOption;
+  late ProductsSortEnum _sortOption;
 
-  bool get _showSortRow => widget.mode != ProductsPageMode.offers;
+  bool get _showSortOffersRow => widget.mode != ProductsPageMode.offers;
+
+  ProductsSortOffersRowDisplay get _sortOffersDisplay {
+    return widget.mode == ProductsPageMode.mostRequested
+        ? ProductsSortOffersRowDisplay.offers
+        : ProductsSortOffersRowDisplay.both;
+  }
 
   @override
   void initState() {
     super.initState();
     _cubit = context.read<ProductsCubit>();
-    _sortOption = widget.mode == ProductsPageMode.mostRequested ? ProductsSortOption.priceHighToLow : ProductsSortOption.mostRequested;
+    _sortOption = widget.initialSort;
     _searchController.text = widget.entryParams.search ?? '';
     _productsSubscription.add(
       GetProductsSubscription.stream().listen((_) {
@@ -135,19 +147,23 @@ class _ProductsBodyState extends State<_ProductsBody> {
     bool? offersProductsOnly,
     CategoryEntity? mainCategory,
     CategoryEntity? subCategory,
+    ProductsSortEnum? sortOption,
     bool clearMainCategory = false,
     bool clearSubCategory = false,
   }) {
     final GetProductsParams current = _cubit.state.params;
+    final ProductsSortEnum resolvedSort = sortOption ?? _sortOption;
     return GetProductsParams(
       page: 1,
       search: search ?? current.search,
       offersProductsOnly: offersProductsOnly ?? current.offersProductsOnly,
-      mostRequestedProductsOnly: widget.entryParams.mostRequestedProductsOnly,
       mainCategory: clearMainCategory
           ? (widget.mode == ProductsPageMode.category ? widget.entryParams.mainCategory : null)
           : (mainCategory ?? current.mainCategory),
       subCategory: clearSubCategory ? null : (subCategory ?? current.subCategory),
+      sort: widget.mode == ProductsPageMode.offers
+          ? null
+          : (widget.mode == ProductsPageMode.mostRequested ? ProductsSortEnum.mostRequested : resolvedSort),
     );
   }
 
@@ -166,17 +182,9 @@ class _ProductsBodyState extends State<_ProductsBody> {
     _applyParams(_buildParams(mainCategory: category, clearMainCategory: category == null, clearSubCategory: true));
   }
 
-  List<ProductEntity> _sorted(List<ProductEntity> products) {
-    if (_sortOption == ProductsSortOption.mostRequested) {
-      return products;
-    }
-    final List<ProductEntity> sorted = [...products];
-    sorted.sort((a, b) {
-      final num priceA = a.offerPrice ?? a.price;
-      final num priceB = b.offerPrice ?? b.price;
-      return _sortOption == ProductsSortOption.priceHighToLow ? priceB.compareTo(priceA) : priceA.compareTo(priceB);
-    });
-    return sorted;
+  void _onSortChanged(ProductsSortEnum option) {
+    setState(() => _sortOption = option);
+    _applyParams(_buildParams(sortOption: option));
   }
 
   @override
@@ -199,14 +207,15 @@ class _ProductsBodyState extends State<_ProductsBody> {
                       child: ProductsSearchField(controller: _searchController, onChanged: _onSearchChanged),
                     ),
                     ProductsFilterChips(mode: widget.mode, selectedCategory: selectedChip, onSelected: _onChipSelected),
-                    if (_showSortRow) ...[
+                    if (_showSortOffersRow) ...[
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: Dimensions.p16,).copyWith(top: Dimensions.p10),
+                        padding: const EdgeInsets.symmetric(horizontal: Dimensions.p16).copyWith(top: Dimensions.p10),
                         child: ProductsSortOffersRow(
                           mode: widget.mode,
+                          display: _sortOffersDisplay,
                           sortOption: _sortOption,
                           offersOnly: state.params.offersProductsOnly == true,
-                          onSortChanged: (option) => setState(() => _sortOption = option),
+                          onSortChanged: _onSortChanged,
                           onOffersOnlyChanged: (value) => _applyParams(_buildParams(offersProductsOnly: value)),
                         ),
                       ),
@@ -231,7 +240,7 @@ class _ProductsBodyState extends State<_ProductsBody> {
       return AppFailWidget(onRetry: _cubit.getProducts);
     }
     if (state.getProductsState.isSuccess) {
-      final List<ProductEntity> data = _sorted(state.getProductsState.data ?? []);
+      final List<ProductEntity> data = state.getProductsState.data ?? [];
       return LiquidPullToRefresh(
         color: AppColors.backgroundColor,
         backgroundColor: AppColors.primary,
@@ -260,7 +269,7 @@ class _ProductsBodyState extends State<_ProductsBody> {
                       GridView.builder(
                         controller: _scrollController,
                         physics: const AlwaysScrollableScrollPhysics(),
-                        padding: const EdgeInsets.fromLTRB(Dimensions.p16, 0, Dimensions.p16, Dimensions.p96, ),
+                        padding: const EdgeInsets.fromLTRB(Dimensions.p16, 0, Dimensions.p16, Dimensions.p96),
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: crossAxisCount,
                           crossAxisSpacing: spacing,
@@ -268,9 +277,7 @@ class _ProductsBodyState extends State<_ProductsBody> {
                           childAspectRatio: itemWidth / itemHeight,
                         ),
                         itemCount: data.length,
-                        itemBuilder: (context, index) => ProductGridCard(
-                          entity: data[index],
-                        ),
+                        itemBuilder: (context, index) => ProductGridCard(entity: data[index]),
                       ),
                       if (state.getProductsState.isPaginationLoading)
                         const Positioned(

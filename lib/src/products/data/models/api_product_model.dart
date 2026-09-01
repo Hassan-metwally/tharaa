@@ -3,6 +3,8 @@ import '../../../categories/data/models/api_category_model.dart';
 import '../../../categories/domain/entities/category_entity.dart';
 import '../../domain/entities/product_entity.dart';
 
+num? _parseNum(dynamic value) => num.tryParse(value?.toString() ?? '');
+
 class ApiProductModel {
   final int? id;
   final String? name;
@@ -28,15 +30,59 @@ class ApiProductModel {
 
   factory ApiProductModel.fromJson(Map<String, dynamic> json) {
     return ApiProductModel(
-      id: json["id"],
-      name: json["name"],
-      image: AttachmentEntity.fromNetwork(url: json["image"]),
-      category: json["category"] is Map<String, dynamic> ? ApiCategoryModel.fromJson(json["category"]) : null,
-      unit: json["unit"]?.toString(),
-      price: num.tryParse(json["price"]?.toString() ?? ''),
-      offerPrice: num.tryParse((json["offer_price"] ?? json["offerPrice"])?.toString() ?? ''),
-      amount: num.tryParse(json["amount"]?.toString() ?? ''),
-      volume: num.tryParse(json["volume"]?.toString() ?? ''),
+      id: json['id'],
+      name: json['name'],
+      image: AttachmentEntity.fromNetwork(url: json['image']),
+      category: json['category'] is Map<String, dynamic> ? ApiCategoryModel.fromJson(json['category']) : null,
+      unit: (json['unit_type'] ?? json['unit'])?.toString(),
+      price: _parseNum(json['price']),
+      offerPrice: _parseNum(json['discounted_price'] ?? json['offer_price'] ?? json['offerPrice']),
+      amount: _parseNum(json['units_count'] ?? json['amount']),
+      volume: _parseNum(json['unit_weight'] ?? json['volume']),
+    );
+  }
+}
+
+class ApiOfferModel {
+  final int? id;
+  final int? productId;
+  final num? discountedPrice;
+  final DateTime? startsAt;
+  final DateTime? endsAt;
+  final ApiProductModel? product;
+
+  ApiOfferModel({
+    required this.id,
+    required this.productId,
+    required this.discountedPrice,
+    required this.startsAt,
+    required this.endsAt,
+    required this.product,
+  });
+
+  factory ApiOfferModel.fromJson(Map<String, dynamic> json) {
+    return ApiOfferModel(
+      id: json['id'],
+      productId: json['product_id'],
+      discountedPrice: _parseNum(json['discounted_price']),
+      startsAt: json['starts_at'] != null ? DateTime.tryParse(json['starts_at'].toString()) : null,
+      endsAt: json['ends_at'] != null ? DateTime.tryParse(json['ends_at'].toString()) : null,
+      product: json['product'] is Map<String, dynamic> ? ApiProductModel.fromJson(json['product']) : null,
+    );
+  }
+
+  ApiProductModel toProductModel() {
+    final nested = product!;
+    return ApiProductModel(
+      id: nested.id,
+      name: nested.name,
+      image: nested.image,
+      category: nested.category,
+      unit: nested.unit,
+      price: nested.price,
+      offerPrice: discountedPrice ?? nested.offerPrice,
+      amount: nested.amount,
+      volume: nested.volume,
     );
   }
 }
@@ -53,4 +99,11 @@ extension ApiProductEXT on ApiProductModel {
     amount: amount,
     volume: volume,
   );
+}
+
+extension ApiOfferEXT on ApiOfferModel {
+  ProductEntity get map {
+    final entity = product!.map;
+    return entity.copyWith(offerPrice: discountedPrice ?? entity.offerPrice);
+  }
 }

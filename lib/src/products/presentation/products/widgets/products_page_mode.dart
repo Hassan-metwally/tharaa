@@ -3,7 +3,7 @@ import '../../../domain/usecases/get_products_usecase.dart';
 enum ProductsPageMode { category, offers, mostRequested }
 
 ProductsPageMode productsPageModeOf(GetProductsParams params) {
-  if (params.mostRequestedProductsOnly == true) {
+  if (params.sort == ProductsSortEnum.mostRequested) {
     return ProductsPageMode.mostRequested;
   }
   if (params.offersProductsOnly == true) {
@@ -12,4 +12,6 @@ ProductsPageMode productsPageModeOf(GetProductsParams params) {
   return ProductsPageMode.category;
 }
 
-enum ProductsSortOption { mostRequested, priceHighToLow, priceLowToHigh }
+ProductsSortEnum initialSortForMode(ProductsPageMode mode) {
+  return ProductsSortEnum.mostRequested;
+}

@@ -1,3 +1,5 @@
+import 'package:injectable/injectable.dart';
+
 import '../../../../../../core/core.dart';
 
 import '../../domain/usecases/get_products_usecase.dart';
@@ -12,6 +14,8 @@ abstract class ProductsDatasource {
   Future<ApiPaginatedData<ApiProductModel>> getProducts(GetProductsParams params);
 }
 
+
+@Injectable(as: ProductsDatasource)
 class ProductsDatasourceImpl extends ProductsDatasource {
   final DioHelper _dioHelper;
 
@@ -20,7 +24,7 @@ class ProductsDatasourceImpl extends ProductsDatasource {
   @override
   Future<ApiProductDetailsModel> showProductDetails(int id) async {
     try {
-      final response = await _dioHelper.get(url: "ApiConstants.addToApiUrlPath('/product/$id')");
+      final response = await _dioHelper.get(url: ApiConstants.addToApiUrlPath('products/$id'));
       return ApiProductDetailsModel.fromJson(response['data']);
     } catch (_) {
       rethrow;
@@ -30,12 +34,19 @@ class ProductsDatasourceImpl extends ProductsDatasource {
   @override
   Future<ApiPaginatedData<ApiProductModel>> getProducts(GetProductsParams params) async {
     try {
-      final response = await _dioHelper.get(url: "ApiConstants.addToApiUrlPath('/product')", queryParameters: params.toMap);
-      final data = ApiPaginatedData<ApiProductModel>.fromJson(
+      if (params.isDedicatedOffersList) {
+        final response = await _dioHelper.get(url: ApiConstants.addToApiUrlPath('offers'), queryParameters: params.toMap);
+        return ApiPaginatedData<ApiProductModel>.fromJson(
+          response['data'],
+          getData: (dataList) => dataList.map((e) => ApiOfferModel.fromJson(e).toProductModel()).toList(),
+        );
+      }
+
+      final response = await _dioHelper.get(url: ApiConstants.addToApiUrlPath('products'), queryParameters: params.toMap);
+      return ApiPaginatedData<ApiProductModel>.fromJson(
         response['data'],
         getData: (dataList) => dataList.map((e) => ApiProductModel.fromJson(e)).toList(),
       );
-      return data;
     } catch (_) {
       rethrow;
     }

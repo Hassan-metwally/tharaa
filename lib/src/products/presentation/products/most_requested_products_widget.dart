@@ -1,5 +1,3 @@
-import 'dart:math' as math;
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -29,9 +27,7 @@ const double _kProductCardHeight = 223;
 const double _kProductImageHeight = 120;
 const double _kAddButtonSize = 38;
 const double _kAddIconSize = 24;
-const double _kArrowHitSize = 28;
-const double _kArrowIconSize = 20;
-const double _kArrowRotationDeg = 48.31;
+const double _kArrowIconSize = 24;
 const int _kHomeShimmerCount = 3;
 
 class MostRequestedProductsWidget extends StatelessWidget {
@@ -41,7 +37,7 @@ class MostRequestedProductsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => injector<ProductsCubit>()
-        ..updateParams(const GetProductsParams(page: 1, mostRequestedProductsOnly: true))
+        ..updateParams(const GetProductsParams(page: 1, sort: ProductsSortEnum.mostRequested))
         ..getProducts(),
       child: _MostRequestedProductsBody(),
     );
@@ -55,13 +51,14 @@ class _MostRequestedProductsBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ProductsCubit, ProductsState>(
       builder: (context, state) {
-        
         if (state.getProductsState.isLoading) {
           return const _MostRequestedProductsLoading();
         }
         if (state.getProductsState.isFailure) {
           return _MostRequestedProductsError(
-            onRetry: () => context.read<ProductsCubit>().getProducts(),
+            onRetry: () => context.read<ProductsCubit>()
+              ..updateParams(const GetProductsParams(page: 1, sort: ProductsSortEnum.mostRequested))
+              ..getProducts(),
           );
         }
         if (state.getProductsState.isSuccess) {
@@ -112,9 +109,6 @@ class _MostRequestedProductsHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool isRtl = Directionality.of(context) == TextDirection.rtl;
-    const double radians = _kArrowRotationDeg * math.pi / 180;
-
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: Dimensions.p16),
       child: GestureDetector(
@@ -122,7 +116,7 @@ class _MostRequestedProductsHeader extends StatelessWidget {
         onTap: () {
           AppRouter.pushNamed(
             AppRoutes.productsPage,
-            arguments: const ProductsPage(params: GetProductsParams(page: 1, mostRequestedProductsOnly: true)),
+            arguments: const ProductsPage(params: GetProductsParams(page: 1, sort: ProductsSortEnum.mostRequested)),
           );
         },
         child: SizedBox(
@@ -137,20 +131,9 @@ class _MostRequestedProductsHeader extends StatelessWidget {
                   style: TextStyles.semiBold16.copyWith(color: AppColors.black900, height: 1, fontWeight: FontWeight.w600),
                 ),
               ),
-              Text(
-                appLocalizer.viewMore,
-                style: TextStyles.medium14.copyWith(color: AppColors.mutedText, height: 1),
-              ),
-              SizedBox(
-                width: _kArrowHitSize,
-                height: _kArrowHitSize,
-                child: Center(
-                  child: Transform.rotate(
-                    angle: isRtl ? radians : math.pi - radians,
-                    child: AppSvgIcon(path: AppIcons.arrowUpRight, width: _kArrowIconSize, height: _kArrowIconSize),
-                  ),
-                ),
-              ),
+              Text(appLocalizer.viewMore, style: TextStyles.medium14.copyWith(color: AppColors.mutedText, height: 1)),
+              SizedBox(width: 2),
+              AppSvgIcon(path: AppIcons.arrowLeft, width: _kArrowIconSize, height: _kArrowIconSize),
             ],
           ),
         ),
@@ -175,19 +158,13 @@ class _MostRequestedProductCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        AppRouter.pushNamed(
-          AppRoutes.showProductDetailsPage,
-          arguments: ShowProductDetailsPage(id: entity.id),
-        );
+        AppRouter.pushNamed(AppRoutes.showProductDetailsPage, arguments: ShowProductDetailsPage(id: entity.id));
       },
       child: Container(
         width: _kProductCardWidth,
         height: _kProductCardHeight,
         padding: const EdgeInsets.all(Dimensions.p8),
-        decoration: BoxDecoration(
-          color: AppColors.productCardFill,
-          borderRadius: BorderRadius.circular(Dimensions.r24),
-        ),
+        decoration: BoxDecoration(color: AppColors.productCardFill, borderRadius: BorderRadius.circular(Dimensions.r24)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -232,11 +209,7 @@ class _MostRequestedProductCard extends StatelessWidget {
                     style: TextStyles.regular12.copyWith(color: AppColors.mutedText, height: 1),
                   ),
                 ),
-                if (_unitLabel.isNotEmpty)
-                  Text(
-                    _unitLabel,
-                    style: TextStyles.regular12.copyWith(color: AppColors.mutedText, height: 1),
-                  ),
+                if (_unitLabel.isNotEmpty) Text(_unitLabel, style: TextStyles.regular12.copyWith(color: AppColors.mutedText, height: 1)),
               ],
             ),
             const Spacer(),
@@ -340,45 +313,30 @@ class _MostRequestedProductCardShimmer extends StatelessWidget {
         width: _kProductCardWidth,
         height: _kProductCardHeight,
         padding: const EdgeInsets.all(Dimensions.p8),
-        decoration: BoxDecoration(
-          color: AppColors.primary100,
-          borderRadius: BorderRadius.circular(Dimensions.r24),
-        ),
+        decoration: BoxDecoration(color: AppColors.primary100, borderRadius: BorderRadius.circular(Dimensions.r24)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Container(
               height: _kProductImageHeight,
-              decoration: BoxDecoration(
-                color: AppColors.primary100,
-                borderRadius: BorderRadius.circular(Dimensions.r16),
-              ),
+              decoration: BoxDecoration(color: AppColors.primary100, borderRadius: BorderRadius.circular(Dimensions.r16)),
             ),
             const SizedBox(height: Dimensions.p8),
             Container(
               height: 16,
-              decoration: BoxDecoration(
-                color: AppColors.primary100,
-                borderRadius: BorderRadius.circular(Dimensions.r4),
-              ),
+              decoration: BoxDecoration(color: AppColors.primary100, borderRadius: BorderRadius.circular(Dimensions.r4)),
             ),
             const SizedBox(height: Dimensions.p4),
             Container(
               height: 12,
-              decoration: BoxDecoration(
-                color: AppColors.primary100,
-                borderRadius: BorderRadius.circular(Dimensions.r4),
-              ),
+              decoration: BoxDecoration(color: AppColors.primary100, borderRadius: BorderRadius.circular(Dimensions.r4)),
             ),
             const Spacer(),
             Center(
               child: Container(
                 height: 20,
                 width: 64,
-                decoration: BoxDecoration(
-                  color: AppColors.primary100,
-                  borderRadius: BorderRadius.circular(Dimensions.r4),
-                ),
+                decoration: BoxDecoration(color: AppColors.primary100, borderRadius: BorderRadius.circular(Dimensions.r4)),
               ),
             ),
           ],

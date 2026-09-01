@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 
 import '../../../../../core/core.dart';
 import '../../../../../material/media/svg_icon.dart';
+import '../../../domain/usecases/get_products_usecase.dart';
 import 'products_page_mode.dart';
 
 const Color _kSwitchOff = Color(0xFF9EABBF);
 const Color _kMenuHighlight = Color(0xFFF0F4FA);
+
+enum ProductsSortOffersRowDisplay { sort, offers, both }
 
 class ProductsSortOffersRow extends StatefulWidget {
   const ProductsSortOffersRow({
@@ -15,12 +18,14 @@ class ProductsSortOffersRow extends StatefulWidget {
     required this.offersOnly,
     required this.onSortChanged,
     required this.onOffersOnlyChanged,
+    this.display = ProductsSortOffersRowDisplay.both,
   });
 
   final ProductsPageMode mode;
-  final ProductsSortOption sortOption;
+  final ProductsSortOffersRowDisplay display;
+  final ProductsSortEnum sortOption;
   final bool offersOnly;
-  final ValueChanged<ProductsSortOption> onSortChanged;
+  final ValueChanged<ProductsSortEnum> onSortChanged;
   final ValueChanged<bool> onOffersOnlyChanged;
 
   @override
@@ -31,44 +36,38 @@ class _ProductsSortOffersRowState extends State<ProductsSortOffersRow> {
   final LayerLink _layerLink = LayerLink();
   OverlayEntry? _overlayEntry;
 
-  List<ProductsSortOption> get _options {
+  List<ProductsSortEnum> get _options {
     if (widget.mode == ProductsPageMode.mostRequested) {
-      return const [ProductsSortOption.priceHighToLow, ProductsSortOption.priceLowToHigh];
+      return const [ProductsSortEnum.priceDesc, ProductsSortEnum.priceAsc];
     }
-    return const [
-      ProductsSortOption.mostRequested,
-      ProductsSortOption.priceHighToLow,
-      ProductsSortOption.priceLowToHigh,
-    ];
+    return const [ProductsSortEnum.mostRequested, ProductsSortEnum.priceDesc, ProductsSortEnum.priceAsc];
   }
 
   String _sortLabel() {
     if (widget.mode == ProductsPageMode.mostRequested) {
-      final String value = widget.sortOption == ProductsSortOption.priceLowToHigh
-          ? appLocalizer.fromLowToHigh
-          : appLocalizer.fromHighToLow;
+      final String value = widget.sortOption == ProductsSortEnum.priceAsc ? appLocalizer.fromLowToHigh : appLocalizer.fromHighToLow;
       return '${appLocalizer.sort}: $value';
     }
     switch (widget.sortOption) {
-      case ProductsSortOption.mostRequested:
+      case ProductsSortEnum.mostRequested:
         return '${appLocalizer.sort}: ${appLocalizer.mostRequested}';
-      case ProductsSortOption.priceHighToLow:
+      case ProductsSortEnum.priceDesc:
         return '${appLocalizer.sort}: ${appLocalizer.priceHighToLow}';
-      case ProductsSortOption.priceLowToHigh:
+      case ProductsSortEnum.priceAsc:
         return '${appLocalizer.sort}: ${appLocalizer.priceLowToHigh}';
     }
   }
 
-  String _optionLabel(ProductsSortOption option) {
+  String _optionLabel(ProductsSortEnum option) {
     if (widget.mode == ProductsPageMode.mostRequested) {
-      return option == ProductsSortOption.priceLowToHigh ? appLocalizer.fromLowToHigh : appLocalizer.fromHighToLow;
+      return option == ProductsSortEnum.priceAsc ? appLocalizer.fromLowToHigh : appLocalizer.fromHighToLow;
     }
     switch (option) {
-      case ProductsSortOption.mostRequested:
+      case ProductsSortEnum.mostRequested:
         return appLocalizer.mostRequested;
-      case ProductsSortOption.priceHighToLow:
+      case ProductsSortEnum.priceDesc:
         return appLocalizer.priceHighToLow;
-      case ProductsSortOption.priceLowToHigh:
+      case ProductsSortEnum.priceAsc:
         return appLocalizer.priceLowToHigh;
     }
   }
@@ -84,11 +83,7 @@ class _ProductsSortOffersRowState extends State<ProductsSortOffersRow> {
         return Stack(
           children: [
             Positioned.fill(
-              child: GestureDetector(
-                behavior: HitTestBehavior.opaque,
-                onTap: _removeMenu,
-                child: const SizedBox.expand(),
-              ),
+              child: GestureDetector(behavior: HitTestBehavior.opaque, onTap: _removeMenu, child: const SizedBox.expand()),
             ),
             CompositedTransformFollower(
               link: _layerLink,
@@ -129,42 +124,48 @@ class _ProductsSortOffersRowState extends State<ProductsSortOffersRow> {
     super.dispose();
   }
 
+  bool get _showSort => widget.display != ProductsSortOffersRowDisplay.offers;
+
+  bool get _showOffers => widget.display != ProductsSortOffersRowDisplay.sort;
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: 28,
       child: Row(
         children: [
-          CompositedTransformTarget(
-            link: _layerLink,
-            child: GestureDetector(
-              onTap: _toggleMenu,
+          if (_showSort)
+            CompositedTransformTarget(
+              link: _layerLink,
+              child: GestureDetector(
+                onTap: _toggleMenu,
+                behavior: HitTestBehavior.opaque,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      _sortLabel(),
+                      style: TextStyles.semiBold16.copyWith(color: AppColors.black900, height: 1, fontWeight: FontWeight.w600),
+                    ),
+                    AppSvgIcon(path: AppIcons.arrowDown2, width: Dimensions.ic24, height: Dimensions.ic24),
+                  ],
+                ),
+              ),
+            ),
+          if (_showOffers) const Spacer(),
+          if (_showOffers)
+            GestureDetector(
+              onTap: () => widget.onOffersOnlyChanged(!widget.offersOnly),
               behavior: HitTestBehavior.opaque,
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(
-                    _sortLabel(),
-                    style: TextStyles.semiBold16.copyWith(color: AppColors.black900, height: 1, fontWeight: FontWeight.w600),
-                  ),
-                  AppSvgIcon(path: AppIcons.arrowDown2, width: Dimensions.ic24, height: Dimensions.ic24),
+                  Text(appLocalizer.offersOnly, style: TextStyles.medium14.copyWith(color: AppColors.mutedText, height: 1)),
+                  const SizedBox(width: Dimensions.p4),
+                  _OffersSwitch(value: widget.offersOnly),
                 ],
               ),
             ),
-          ),
-          const Spacer(),
-          GestureDetector(
-            onTap: () => widget.onOffersOnlyChanged(!widget.offersOnly),
-            behavior: HitTestBehavior.opaque,
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(appLocalizer.offersOnly, style: TextStyles.medium14.copyWith(color: AppColors.mutedText, height: 1)),
-                const SizedBox(width: Dimensions.p4),
-                _OffersSwitch(value: widget.offersOnly),
-              ],
-            ),
-          ),
         ],
       ),
     );
@@ -184,10 +185,7 @@ class _OffersSwitch extends StatelessWidget {
       height: 20,
       padding: const EdgeInsets.all(2),
       alignment: value ? AlignmentDirectional.centerStart : AlignmentDirectional.centerEnd,
-      decoration: BoxDecoration(
-        color: value ? AppColors.primary : _kSwitchOff,
-        borderRadius: BorderRadius.circular(41),
-      ),
+      decoration: BoxDecoration(color: value ? AppColors.primary : _kSwitchOff, borderRadius: BorderRadius.circular(41)),
       child: Container(
         width: 16,
         height: 16,
@@ -200,10 +198,10 @@ class _OffersSwitch extends StatelessWidget {
 class _SortMenu extends StatelessWidget {
   const _SortMenu({required this.options, required this.selected, required this.labelOf, required this.onSelected});
 
-  final List<ProductsSortOption> options;
-  final ProductsSortOption selected;
-  final String Function(ProductsSortOption option) labelOf;
-  final ValueChanged<ProductsSortOption> onSelected;
+  final List<ProductsSortEnum> options;
+  final ProductsSortEnum selected;
+  final String Function(ProductsSortEnum option) labelOf;
+  final ValueChanged<ProductsSortEnum> onSelected;
 
   @override
   Widget build(BuildContext context) {
@@ -229,10 +227,7 @@ class _SortMenu extends StatelessWidget {
                   color: option == selected ? _kMenuHighlight : Colors.transparent,
                   borderRadius: BorderRadius.circular(Dimensions.r8),
                 ),
-                child: Text(
-                  labelOf(option),
-                  style: TextStyles.medium14.copyWith(color: AppColors.mutedText, height: 1),
-                ),
+                child: Text(labelOf(option), style: TextStyles.medium14.copyWith(color: AppColors.mutedText, height: 1)),
               ),
             ),
         ],

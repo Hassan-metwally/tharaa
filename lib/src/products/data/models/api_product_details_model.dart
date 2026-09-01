@@ -25,21 +25,22 @@ class ApiProductDetailsModel extends ApiProductModel {
   }) : super();
 
   factory ApiProductDetailsModel.fromJson(Map<String, dynamic> json) {
-    final dynamic subCategoryJson = json["sub_category"] ?? json["subCategory"] ?? json["subcategory"];
-    final dynamic offerEndDateJson = json["offer_end_date"] ?? json["offerEndDate"];
+    final product = ApiProductModel.fromJson(json);
+    final dynamic subCategoryJson = json['sub_category'] ?? json['subCategory'] ?? json['subcategory'];
+    final dynamic offerEndDateJson = json['offer_ends_at'] ?? json['offer_end_date'] ?? json['offerEndDate'];
 
     return ApiProductDetailsModel(
-      id: json["id"],
-      name: json["name"],
-      image: AttachmentEntity.fromNetwork(url: json["image"]),
-      category: json["category"] is Map<String, dynamic> ? ApiCategoryModel.fromJson(json["category"]) : null,
-      unit: json["unit"]?.toString(),
-      price: num.tryParse(json["price"]?.toString() ?? ''),
-      offerPrice: num.tryParse((json["offer_price"] ?? json["offerPrice"])?.toString() ?? ''),
+      id: product.id,
+      name: product.name,
+      image: product.image,
+      category: product.category,
+      unit: product.unit,
+      price: product.price,
+      offerPrice: product.offerPrice,
       offerEndDate: offerEndDateJson != null ? DateTime.tryParse(offerEndDateJson.toString()) : null,
-      amount: num.tryParse(json["amount"]?.toString() ?? ''),
-      volume: num.tryParse(json["volume"]?.toString() ?? ''),
-      description: json["description"],
+      amount: product.amount,
+      volume: product.volume,
+      description: json['description'],
       subCategory: subCategoryJson is Map<String, dynamic> ? ApiCategoryModel.fromJson(subCategoryJson) : null,
     );
   }

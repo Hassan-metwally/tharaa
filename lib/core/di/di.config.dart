@@ -189,8 +189,6 @@ import '../../src/orders/presentation/show_order_details/show_order_details_cubi
 import '../../src/orders/presentation/toggle_order_status/toggle_order_status_cubit.dart'
     as _i673;
 import '../../src/products/data/datasources/products_datasource.dart' as _i617;
-import '../../src/products/data/datasources/products_mock_datasource.dart'
-    as _i31;
 import '../../src/products/data/repositories/products_repository_impl.dart'
     as _i482;
 import '../../src/products/domain/repositories/products_repository.dart'
@@ -275,7 +273,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i788.AddressDatasource>(
       () => _i788.AddressDatasourceImpl(gh<_i351.DioHelper>()),
     );
-    gh.factory<_i617.ProductsDatasource>(() => _i31.ProductsMockDatasource());
     gh.factory<_i226.CategoriesDatasource>(
       () => _i226.CategoriesDatasourceImpl(gh<_i351.DioHelper>()),
     );
@@ -298,9 +295,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i351.SecureStorageRepository>(
       () =>
           _i526.SecureStorageRepositoryImp(gh<_i177.SecureStorageDataSource>()),
-    );
-    gh.factory<_i417.ProductsRepository>(
-      () => _i482.ProductsRepositoryImpl(gh<_i617.ProductsDatasource>()),
     );
     gh.factory<_i46.WalletRepository>(
       () => _i514.WalletRepositoryImp(gh<_i351.DioHelper>()),
@@ -494,6 +488,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i995.RatingDatasource>(
       () => _i995.RatingDatasourceImpl(gh<_i351.DioHelper>()),
     );
+    gh.factory<_i617.ProductsDatasource>(
+      () => _i617.ProductsDatasourceImpl(gh<_i351.DioHelper>()),
+    );
     gh.factory<_i740.AdsRepository>(
       () => _i331.AdsRepositoryImpl(gh<_i268.AdsDatasource>()),
     );
@@ -562,11 +559,8 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i161.GetAllAdsUsecase>(
       () => _i161.GetAllAdsUsecase(gh<_i740.AdsRepository>()),
     );
-    gh.factory<_i415.GetProductsUsecase>(
-      () => _i415.GetProductsUsecase(gh<_i417.ProductsRepository>()),
-    );
-    gh.factory<_i100.ShowProductDetailsUsecase>(
-      () => _i100.ShowProductDetailsUsecase(gh<_i417.ProductsRepository>()),
+    gh.factory<_i417.ProductsRepository>(
+      () => _i482.ProductsRepositoryImpl(gh<_i617.ProductsDatasource>()),
     );
     gh.factory<_i612.ClientWalletCubit>(
       () => _i612.ClientWalletCubit(
@@ -662,15 +656,8 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i976.SubCategoriesCubit>(
       () => _i976.SubCategoriesCubit(gh<_i919.GetSubCategoriesUsecase>()),
     );
-    gh.factory<_i746.ShowProductDetailsCubit>(
-      () =>
-          _i746.ShowProductDetailsCubit(gh<_i100.ShowProductDetailsUsecase>()),
-    );
     gh.factory<_i158.RatingsCubit>(
       () => _i158.RatingsCubit(gh<_i1024.GetRatingsUsecase>()),
-    );
-    gh.factory<_i681.ProductsCubit>(
-      () => _i681.ProductsCubit(gh<_i415.GetProductsUsecase>()),
     );
     gh.factory<_i725.GetBanksUseCase>(
       () => _i725.GetBanksUseCase(gh<_i92.CommonRepository>()),
@@ -690,6 +677,12 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i388.GetChatsInboxUsecase>(
       () => _i388.GetChatsInboxUsecase(gh<_i34.ChatsInboxRepository>()),
     );
+    gh.factory<_i415.GetProductsUsecase>(
+      () => _i415.GetProductsUsecase(gh<_i417.ProductsRepository>()),
+    );
+    gh.factory<_i100.ShowProductDetailsUsecase>(
+      () => _i100.ShowProductDetailsUsecase(gh<_i417.ProductsRepository>()),
+    );
     gh.factory<_i761.GetCouponsUsecase>(
       () => _i761.GetCouponsUsecase(gh<_i542.CouponsRepository>()),
     );
@@ -701,6 +694,13 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i987.CouponsCubit>(
       () => _i987.CouponsCubit(gh<_i761.GetCouponsUsecase>()),
+    );
+    gh.factory<_i746.ShowProductDetailsCubit>(
+      () =>
+          _i746.ShowProductDetailsCubit(gh<_i100.ShowProductDetailsUsecase>()),
+    );
+    gh.factory<_i681.ProductsCubit>(
+      () => _i681.ProductsCubit(gh<_i415.GetProductsUsecase>()),
     );
     return this;
   }
