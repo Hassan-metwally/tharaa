@@ -34,7 +34,6 @@ import '../../src/addresses/presentation/my_addresses/my_addresses_cubit.dart'
 import '../../src/addresses/presentation/upsert_address/upsert_address_cubit.dart'
     as _i170;
 import '../../src/ads/data/datasources/ads_datasource.dart' as _i268;
-import '../../src/ads/data/datasources/ads_mock_datasource.dart' as _i991;
 import '../../src/ads/data/repositories/ads_repository_impl.dart' as _i331;
 import '../../src/ads/domain/repositories/ads_repository.dart' as _i740;
 import '../../src/ads/domain/usecases/get_all_ads_usecase.dart' as _i161;
@@ -263,7 +262,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i298.EnableGpsAndHandlePermissionUseCase>(
       () => _i298.EnableGpsAndHandlePermissionUseCase(),
     );
-    gh.factory<_i268.AdsDatasource>(() => _i991.AdsMockDatasource());
     gh.factory<_i177.SecureStorageDataSource>(
       () => _i177.SecureStorageDataSourceImpl(),
     );
@@ -276,6 +274,9 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i331.AdsRepositoryImpl(gh<_i268.AdsDatasource>()),
     );
     gh.factory<_i351.DioHelper>(() => _i351.DioHelper(dio: gh<_i361.Dio>()));
+    gh.factory<_i268.AdsDatasource>(
+      () => _i268.AdsDatasourceImpl(gh<_i351.DioHelper>()),
+    );
     gh.factory<_i1069.StatisticsDatasource>(
       () => _i1069.StatisticsDatasourceImpl(gh<_i351.DioHelper>()),
     );

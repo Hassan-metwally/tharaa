@@ -1,10 +1,15 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../../../../core/config/router/app_routes.dart';
 import '../../../../../../../core/core.dart';
 import '../../../../../../../material/app_fail_widget.dart';
 import '../../../../../../../material/media/app_image.dart';
 import '../../../../../../../material/shimmer/shimmer_effect_widget.dart';
+import '../../../../categories/domain/entities/category_entity.dart';
+import '../../../../products/domain/usecases/get_products_usecase.dart';
+import '../../../../products/presentation/products/products_page.dart';
+import '../../../../products/presentation/show_product_details/show_product_details_page.dart';
 import '../../../domain/entities/ad_entity.dart';
 
 const double _kBannerHeight = 140;
@@ -95,14 +100,59 @@ class _AdsBannerCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppImage.rounded(
-      path: ad.image.path,
-      height: _kBannerHeight,
-      width: double.infinity,
-      radius: _kBannerRadius,
-      bgColor: AppColors.black800,
-      fit: BoxFit.cover,
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: ad.canOpen ? () => _openAd(ad) : null,
+      child: AppImage.rounded(
+        path: ad.image.path,
+        height: _kBannerHeight,
+        width: double.infinity,
+        radius: _kBannerRadius,
+        bgColor: AppColors.black800,
+        fit: BoxFit.cover,
+      ),
     );
+  }
+}
+
+void _openAd(AdEntity ad) {
+  switch (ad.type) {
+    case AdType.product:
+      final int? productId = ad.linkableId;
+      if (productId == null || productId <= 0) {
+        return;
+      }
+      AppRouter.pushNamed(AppRoutes.showProductDetailsPage, arguments: ShowProductDetailsPage(id: productId));
+    case AdType.category:
+      final int? categoryId = ad.linkableId;
+      if (categoryId == null || categoryId <= 0) {
+        return;
+      }
+      AppRouter.pushNamed(
+        AppRoutes.productsPage,
+        arguments: ProductsPage(
+          params: GetProductsParams(mainCategory: CategoryEntity(id: categoryId, name: ad.name, image: const AttachmentEntity.empty())),
+        ),
+      );
+    case AdType.offer:
+      final int? offerProductId = ad.linkableId;
+      if (offerProductId != null && offerProductId > 0) {
+        AppRouter.pushNamed(AppRoutes.showProductDetailsPage, arguments: ShowProductDetailsPage(id: offerProductId));
+        return;
+      }
+      AppRouter.pushNamed(
+        AppRoutes.productsPage,
+        arguments: const ProductsPage(params: GetProductsParams(page: 1, offersProductsOnly: true)),
+      );
+    case AdType.external:
+      final String? url = ad.externalUrl?.trim();
+      if (url == null || url.isEmpty) {
+        return;
+      }
+      LaunchUrlUtils.openUrl(url: url);
+    case AdType.none:
+    case AdType.unknown:
+      return;
   }
 }
 
