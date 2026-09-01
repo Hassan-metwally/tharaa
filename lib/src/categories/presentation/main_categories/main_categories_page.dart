@@ -13,12 +13,10 @@ import '../../../../material/media/app_image.dart';
 import '../../../../material/media/svg_icon.dart';
 import '../../../../material/overlay/show_modal_bottom_sheet.dart';
 import '../../../../material/shimmer/shimmer_effect_widget.dart';
-import '../../../../material/spin_kit_loading_widget.dart';
 import '../../../../material/toast/app_toast.dart';
 import '../../../products/domain/usecases/get_products_usecase.dart';
 import '../../../products/presentation/products/products_page.dart';
 import '../../domain/entities/category_entity.dart';
-import '../../domain/usecases/get_main_categories_usecase.dart';
 import 'main_categories_cubit.dart';
 import 'utils/get_main_categories_subscription.dart';
 
@@ -74,14 +72,6 @@ class _MainCategoriesBodyState extends State<_MainCategoriesBody> {
     super.initState();
     _cubit = context.read<MainCategoriesCubit>();
     _mainCategoriesSubsriptionListener();
-
-    _scrollController.addListener(() {
-      if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent) {
-        if (mounted) {
-          _cubit.getMoreMainCategories();
-        }
-      }
-    });
   }
 
   @override
@@ -140,11 +130,7 @@ class _MainCategoriesView extends StatelessWidget {
         },
         child: data.isEmpty
             ? const AppEmptyWidget()
-            : _MainCategoriesGrid(
-                categories: data,
-                scrollController: scrollController,
-                isPaginationLoading: state.getMainCategoriesState.isPaginationLoading,
-              ),
+            : _MainCategoriesGrid(categories: data, scrollController: scrollController),
       );
     }
 
@@ -153,45 +139,27 @@ class _MainCategoriesView extends StatelessWidget {
 }
 
 class _MainCategoriesGrid extends StatelessWidget {
-  const _MainCategoriesGrid({
-    required this.categories,
-    required this.scrollController,
-    required this.isPaginationLoading,
-  });
+  const _MainCategoriesGrid({required this.categories, required this.scrollController});
 
   final List<CategoryEntity> categories;
   final ScrollController scrollController;
-  final bool isPaginationLoading;
 
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        return Stack(
-          children: [
-            GridView.builder(
-              controller: scrollController,
-              physics: const AlwaysScrollableScrollPhysics(),
-              padding: const EdgeInsets.fromLTRB(Dimensions.p16, Dimensions.p12, Dimensions.p16, Dimensions.p16),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: _crossAxisCountFor(constraints.maxWidth - (Dimensions.p16 * 2)),
-                crossAxisSpacing: _kGridSpacing,
-                mainAxisSpacing: _kGridSpacing,
-                mainAxisExtent: _kCategoryItemHeight,
-              ),
-              itemCount: categories.length,
-              itemBuilder: (context, index) => _MainCategoryCard(entity: categories[index]),
-            ),
-            if (isPaginationLoading)
-              const Positioned(
-                bottom: -10,
-                right: 0,
-                left: 0,
-                child: Center(
-                  child: Padding(padding: EdgeInsets.symmetric(vertical: 20), child: SpinKitLoadingWidget()),
-                ),
-              ),
-          ],
+        return GridView.builder(
+          controller: scrollController,
+          physics: const AlwaysScrollableScrollPhysics(),
+          padding: const EdgeInsets.fromLTRB(Dimensions.p16, Dimensions.p12, Dimensions.p16, Dimensions.p16),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: _crossAxisCountFor(constraints.maxWidth - (Dimensions.p16 * 2)),
+            crossAxisSpacing: _kGridSpacing,
+            mainAxisSpacing: _kGridSpacing,
+            mainAxisExtent: _kCategoryItemHeight,
+          ),
+          itemCount: categories.length,
+          itemBuilder: (context, index) => _MainCategoryCard(entity: categories[index]),
         );
       },
     );

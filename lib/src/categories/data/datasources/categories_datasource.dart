@@ -1,30 +1,29 @@
+import 'package:injectable/injectable.dart';
+
 import '../../../../../../core/core.dart';
 
-import '../../domain/usecases/get_main_categories_usecase.dart';
 import '../../domain/usecases/get_sub_categories_usecase.dart';
 
 import '../models/api_category_model.dart';
 
 abstract class CategoriesDatasource {
-  Future<ApiPaginatedData<ApiCategoryModel>> getMainCategories(GetMainCategoriesParams params);
+  Future<List<ApiCategoryModel>> getMainCategories(NoParams params);
 
   Future<ApiPaginatedData<ApiCategoryModel>> getSubCategories(GetSubCategoriesParams params);
 }
 
+@Injectable(as: CategoriesDatasource)
 class CategoriesDatasourceImpl extends CategoriesDatasource {
   final DioHelper _dioHelper;
 
   CategoriesDatasourceImpl(this._dioHelper);
 
   @override
-  Future<ApiPaginatedData<ApiCategoryModel>> getMainCategories(GetMainCategoriesParams params) async {
+  Future<List<ApiCategoryModel>> getMainCategories(NoParams params) async {
     try {
-      final response = await _dioHelper.get(url: ApiConstants.addToApiUrlPath('category'), queryParameters: params.toMap);
-      final data = ApiPaginatedData<ApiCategoryModel>.fromJson(
-        response['data'],
-        getData: (dataList) => dataList.map((e) => ApiCategoryModel.fromJson(e)).toList(),
-      );
-      return data;
+      final response = await _dioHelper.get(url: ApiConstants.addToApiUrlPath('categories'));
+      final rawList = (response['data'] as List<dynamic>? ?? const <dynamic>[]);
+      return rawList.map((e) => ApiCategoryModel.fromJson(e as Map<String, dynamic>)).toList();
     } catch (_) {
       rethrow;
     }

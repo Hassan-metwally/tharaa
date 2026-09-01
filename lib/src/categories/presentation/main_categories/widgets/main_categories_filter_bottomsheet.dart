@@ -19,61 +19,49 @@ class _MainCategoriesFilterBottomSheet extends StatefulWidget {
 class _MainCategoriesFilterBottomSheetState extends State<_MainCategoriesFilterBottomSheet> {
   @override
   Widget build(BuildContext context) {
-    return BlocSelector<MainCategoriesCubit, MainCategoriesState, GetMainCategoriesParams>(
-      selector: (state) {
-        return state.params;
-      },
-      builder: (context, paramsState) {
-        return Column(
+    return Column(
+      children: [
+        const SizedBox(height: 20),
+        const SizedBox(height: 20),
+        Row(
           children: [
-            SizedBox(height: 20),
-
-            SizedBox(height: 20),
-            Row(
-              children: [
-                Expanded(
-                  child: BlocListener<MainCategoriesCubit, MainCategoriesState>(
-                    listenWhen: (previous, current) => previous.getMainCategoriesState != current.getMainCategoriesState,
-                    listener: (context, state) {
-                      if (state.getMainCategoriesState.isFailure) {
-                        AppToasts.error(context, message: state.getMainCategoriesState.failure?.message ?? appLocalizer.somethingWentWrong);
-                      }
-                    },
-                    child: BlocBuilder<MainCategoriesCubit, MainCategoriesState>(
-                      builder: (context, state) {
-                        return AppButton(
-                          text: "appLocalizer.filtering",
-                          buttonColor: AppColors.primary,
-                          onPressed: () {
-                            final cubit = context.read<MainCategoriesCubit>();
-                            cubit.updateParams(paramsState);
-                            cubit.getMainCategories();
-                            AppRouter.pop();
-                          },
-                        );
+            Expanded(
+              child: BlocListener<MainCategoriesCubit, MainCategoriesState>(
+                listenWhen: (previous, current) => previous.getMainCategoriesState != current.getMainCategoriesState,
+                listener: (context, state) {
+                  if (state.getMainCategoriesState.isFailure) {
+                    AppToasts.error(context, message: state.getMainCategoriesState.failure?.message ?? appLocalizer.somethingWentWrong);
+                  }
+                },
+                child: BlocBuilder<MainCategoriesCubit, MainCategoriesState>(
+                  builder: (context, state) {
+                    return AppButton(
+                      text: "appLocalizer.filtering",
+                      buttonColor: AppColors.primary,
+                      onPressed: () {
+                        context.read<MainCategoriesCubit>().getMainCategories();
+                        AppRouter.pop();
                       },
-                    ),
-                  ),
+                    );
+                  },
                 ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: AppButton(
-                    text: appLocalizer.cancel,
-                    onPressed: () {
-                      final cubit = context.read<MainCategoriesCubit>();
-                      cubit.resetParams();
-                      cubit.getMainCategories();
-                      AppRouter.pop();
-                    },
-                    buttonColor: AppColors.primary50,
-                    textStyle: TextStyles.medium16.copyWith(color: AppColors.primary),
-                  ),
-                ),
-              ],
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: AppButton(
+                text: appLocalizer.cancel,
+                onPressed: () {
+                  context.read<MainCategoriesCubit>().getMainCategories();
+                  AppRouter.pop();
+                },
+                buttonColor: AppColors.primary50,
+                textStyle: TextStyles.medium16.copyWith(color: AppColors.primary),
+              ),
             ),
           ],
-        );
-      },
+        ),
+      ],
     );
   }
 }

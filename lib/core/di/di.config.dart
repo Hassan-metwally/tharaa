@@ -72,8 +72,6 @@ import '../../src/cart/presentation/upsert_cart_item/upsert_cart_item_cubit.dart
     as _i601;
 import '../../src/categories/data/datasources/categories_datasource.dart'
     as _i226;
-import '../../src/categories/data/datasources/categories_mock_datasource.dart'
-    as _i152;
 import '../../src/categories/data/repositories/categories_repository_impl.dart'
     as _i1031;
 import '../../src/categories/domain/repositories/categories_repository.dart'
@@ -270,13 +268,7 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i984.ThemeRepository>(() => _i715.ThemeRepositoryImp());
     gh.factory<_i239.OrdersDatasource>(() => _i560.OrdersMockDatasource());
-    gh.factory<_i740.AdsRepository>(
-      () => _i331.AdsRepositoryImpl(gh<_i268.AdsDatasource>()),
-    );
     gh.factory<_i351.DioHelper>(() => _i351.DioHelper(dio: gh<_i361.Dio>()));
-    gh.factory<_i268.AdsDatasource>(
-      () => _i268.AdsDatasourceImpl(gh<_i351.DioHelper>()),
-    );
     gh.factory<_i1069.StatisticsDatasource>(
       () => _i1069.StatisticsDatasourceImpl(gh<_i351.DioHelper>()),
     );
@@ -284,6 +276,9 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i788.AddressDatasourceImpl(gh<_i351.DioHelper>()),
     );
     gh.factory<_i617.ProductsDatasource>(() => _i31.ProductsMockDatasource());
+    gh.factory<_i226.CategoriesDatasource>(
+      () => _i226.CategoriesDatasourceImpl(gh<_i351.DioHelper>()),
+    );
     gh.factory<_i401.MapsDataSource>(
       () => _i401.MapsDataSourceImpl(gh<_i351.DioHelper>()),
     );
@@ -297,18 +292,12 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i529.NotificationDataSource>(
       () => _i529.NotificationDataSourceImp(gh<_i351.DioHelper>()),
     );
-    gh.factory<_i226.CategoriesDatasource>(
-      () => _i152.CategoriesMockDatasource(),
-    );
     gh.factory<_i758.MenuCommonDatasource>(
       () => _i758.MenuCommonDatasourceImpl(gh<_i351.DioHelper>()),
     );
     gh.factory<_i351.SecureStorageRepository>(
       () =>
           _i526.SecureStorageRepositoryImp(gh<_i177.SecureStorageDataSource>()),
-    );
-    gh.factory<_i161.GetAllAdsUsecase>(
-      () => _i161.GetAllAdsUsecase(gh<_i740.AdsRepository>()),
     );
     gh.factory<_i417.ProductsRepository>(
       () => _i482.ProductsRepositoryImpl(gh<_i617.ProductsDatasource>()),
@@ -412,6 +401,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i262.DeleteCartItemCubit>(
       () => _i262.DeleteCartItemCubit(gh<_i607.DeleteCartItemUsecase>()),
     );
+    gh.factory<_i268.AdsDatasource>(
+      () => _i268.AdsDatasourceImpl(gh<_i351.DioHelper>()),
+    );
     gh.factory<_i339.AddLocationUseCase>(
       () => _i339.AddLocationUseCase(gh<_i768.AddressRepository>()),
     );
@@ -502,6 +494,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i995.RatingDatasource>(
       () => _i995.RatingDatasourceImpl(gh<_i351.DioHelper>()),
     );
+    gh.factory<_i740.AdsRepository>(
+      () => _i331.AdsRepositoryImpl(gh<_i268.AdsDatasource>()),
+    );
     gh.factory<_i268.GetContactUsDataUseCase>(
       () => _i268.GetContactUsDataUseCase(gh<_i646.MenuCommonRepository>()),
     );
@@ -524,9 +519,6 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i559.ChatDataSource>(),
         gh<_i351.GetCachedUserUseCase>(),
       ),
-    );
-    gh.factory<_i779.AdsCubit>(
-      () => _i779.AdsCubit(gh<_i161.GetAllAdsUsecase>()),
     );
     gh.factory<_i84.CartCubit>(
       () => _i84.CartCubit(gh<_i896.GetCartItemsUsecase>()),
@@ -566,6 +558,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i87.UpdateProfileUseCase>(
       () => _i87.UpdateProfileUseCase(gh<_i931.MoreRepository>()),
+    );
+    gh.factory<_i161.GetAllAdsUsecase>(
+      () => _i161.GetAllAdsUsecase(gh<_i740.AdsRepository>()),
     );
     gh.factory<_i415.GetProductsUsecase>(
       () => _i415.GetProductsUsecase(gh<_i417.ProductsRepository>()),
@@ -688,6 +683,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i1006.ChangeLanguageUseCase>(
       () => _i1006.ChangeLanguageUseCase(gh<_i92.CommonRepository>()),
+    );
+    gh.factory<_i779.AdsCubit>(
+      () => _i779.AdsCubit(gh<_i161.GetAllAdsUsecase>()),
     );
     gh.factory<_i388.GetChatsInboxUsecase>(
       () => _i388.GetChatsInboxUsecase(gh<_i34.ChatsInboxRepository>()),

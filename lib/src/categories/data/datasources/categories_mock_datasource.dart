@@ -1,7 +1,4 @@
-import 'package:injectable/injectable.dart';
-
 import '../../../../core/core.dart';
-import '../../domain/usecases/get_main_categories_usecase.dart';
 import '../../domain/usecases/get_sub_categories_usecase.dart';
 import '../models/api_category_model.dart';
 import 'categories_datasource.dart';
@@ -12,7 +9,7 @@ AttachmentEntity _marketImage(String photoId) {
   );
 }
 
-@Injectable(as: CategoriesDatasource)
+// @Injectable(as: CategoriesDatasource)
 class CategoriesMockDatasource extends CategoriesDatasource {
   static const _delay = Duration(milliseconds: 400);
 
@@ -74,9 +71,9 @@ class CategoriesMockDatasource extends CategoriesDatasource {
   };
 
   @override
-  Future<ApiPaginatedData<ApiCategoryModel>> getMainCategories(GetMainCategoriesParams params) async {
+  Future<List<ApiCategoryModel>> getMainCategories(NoParams params) async {
     await Future<void>.delayed(_delay);
-    return _paginate(_mainCategories, params.page);
+    return _mainCategories;
   }
 
   @override

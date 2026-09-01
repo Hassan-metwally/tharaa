@@ -14,7 +14,6 @@ import '../../../home/presentation/widgets/home_empty_widget.dart';
 import '../../../products/domain/usecases/get_products_usecase.dart';
 import '../../../products/presentation/products/products_page.dart';
 import '../../domain/entities/category_entity.dart';
-import '../sub_categories/sub_categories_page.dart';
 import 'main_categories_cubit.dart';
 import 'main_categories_page.dart';
 
@@ -86,7 +85,7 @@ class _MainCategoriesHomeContent extends StatelessWidget {
         const SizedBox(height: Dimensions.p12),
         Row(
           children: [
-            for (int index = 0; index < categories.length; index++) ...[
+            for (int index = 0; index < math.min(categories.length, _kHomePreviewCount); index++) ...[
               if (index > 0) const SizedBox(width: Dimensions.p16),
               Expanded(child: _MainCategoryHomeItem(entity: categories[index])),
             ],

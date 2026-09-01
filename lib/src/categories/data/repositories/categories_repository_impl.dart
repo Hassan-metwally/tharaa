@@ -6,7 +6,6 @@ import '../../../../../../core/core.dart';
 import '../../domain/entities/category_entity.dart';
 import '../../domain/repositories/categories_repository.dart';
 
-import '../../domain/usecases/get_main_categories_usecase.dart';
 import '../../domain/usecases/get_sub_categories_usecase.dart';
 
 import '../datasources/categories_datasource.dart';
@@ -20,11 +19,11 @@ class CategoriesRepositoryImpl extends CategoriesRepository {
   CategoriesRepositoryImpl(this._dataSource);
 
   @override
-  DomainServiceType<PaginatedData<CategoryEntity>> getMainCategories(GetMainCategoriesParams params) async {
+  DomainServiceType<List<CategoryEntity>> getMainCategories(NoParams params) async {
     return await failureCollect(() async {
       final result = await _dataSource.getMainCategories(params);
 
-      return Right(result.map((data) => data.map));
+      return Right(result.map((data) => data.map).toList());
     });
   }
 

@@ -9,9 +9,9 @@ class ApiCategoryModel {
   ApiCategoryModel({required this.id, required this.name, required this.image});
 
   factory ApiCategoryModel.fromJson(Map<String, dynamic> json) => ApiCategoryModel(
-    id: json["id"],
-    name: json["name"],
-    image: AttachmentEntity.fromNetwork(url: json["image"]),
+    id: int.tryParse(json["id"]?.toString() ?? ''),
+    name: json["name"]?.toString(),
+    image: AttachmentEntity.fromNetwork(url: json["image"]?.toString() ?? ''),
   );
 }
 
