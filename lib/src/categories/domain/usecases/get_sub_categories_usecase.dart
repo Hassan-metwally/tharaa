@@ -7,30 +7,28 @@ import '../entities/category_entity.dart';
 import '../repositories/categories_repository.dart';
 
 @injectable
-class GetSubCategoriesUsecase extends IUseCase<PaginatedData<CategoryEntity>, GetSubCategoriesParams> {
+class GetSubCategoriesUsecase extends IUseCase<List<CategoryEntity>, GetSubCategoriesParams> {
   final CategoriesRepository _repository;
 
   GetSubCategoriesUsecase(this._repository);
 
   @override
-  Future<Either<Failure, PaginatedData<CategoryEntity>>> call(GetSubCategoriesParams params) {
+  Future<Either<Failure, List<CategoryEntity>>> call(GetSubCategoriesParams params) {
     return _repository.getSubCategories(params);
   }
 }
 
 class GetSubCategoriesParams extends Equatable {
-  final int page;
   final int categoryId;
 
-  const GetSubCategoriesParams({required this.page, required this.categoryId});
+  const GetSubCategoriesParams({required this.categoryId});
 
-  const GetSubCategoriesParams.initial({required int categoryId}) : this(page: 1, categoryId: categoryId);
+  const GetSubCategoriesParams.initial({required int categoryId}) : this(categoryId: categoryId);
 
-  GetSubCategoriesParams copyWith({int? page, int? categoryId}) {
-    return GetSubCategoriesParams(page: page ?? this.page, categoryId: categoryId ?? this.categoryId);
+  GetSubCategoriesParams copyWith({int? categoryId}) {
+    return GetSubCategoriesParams(categoryId: categoryId ?? this.categoryId);
   }
 
-  Map<String, dynamic> get toMap => {'page': page, 'category_id': categoryId};
   @override
-  List<Object?> get props => [page, categoryId];
+  List<Object?> get props => [categoryId];
 }

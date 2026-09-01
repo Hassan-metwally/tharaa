@@ -47,6 +47,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/arrow-down.svg
   String get arrowDown => 'assets/icons/arrow-down.svg';
 
+  /// File path: assets/icons/arrow-down2.svg
+  String get arrowDown2 => 'assets/icons/arrow-down2.svg';
+
   /// File path: assets/icons/arrow-up-right.svg
   String get arrowUpRight => 'assets/icons/arrow-up-right.svg';
 
@@ -185,6 +188,7 @@ class $AssetsIconsGen {
     add,
     arrowBack,
     arrowDown,
+    arrowDown2,
     arrowUpRight,
     bag1,
     bag2,

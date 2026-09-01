@@ -14,26 +14,11 @@ class SubCategoriesCubit extends Cubit<SubCategoriesState> {
   SubCategoriesCubit(this._getSubCategoriesUsecase) : super(SubCategoriesState.initial());
 
   Future<void> getSubCategories() async {
-    emit(state.copyWith(getSubCategoriesState: const Async.loading(), currentPage: 1));
+    emit(state.copyWith(getSubCategoriesState: const Async.loading()));
     final result = await _getSubCategoriesUsecase(state.params);
     result.fold(
       (failure) => emit(state.copyWith(getSubCategoriesState: Async.failure(failure))),
-      (data) => emit(state.copyWith(getSubCategoriesState: Async.success(data.items), lastPage: data.pageInfo.lastPage)),
-    );
-  }
-
-  Future<void> getMoreSubCategories() async {
-    if (state.currentPage == state.lastPage) return;
-    emit(
-      state.copyWith(
-        getSubCategoriesState: Async.paginationLoading(state.getSubCategoriesState.data ?? []),
-        currentPage: state.currentPage + 1,
-      ),
-    );
-    final result = await _getSubCategoriesUsecase(state.params.copyWith(page: state.currentPage));
-    result.fold(
-      (failure) => emit(state.copyWith(getSubCategoriesState: Async.failure(failure), currentPage: state.currentPage - 1)),
-      (data) => emit(state.copyWith(getSubCategoriesState: Async.success([...state.getSubCategoriesState.data ?? [], ...data.items]))),
+      (data) => emit(state.copyWith(getSubCategoriesState: Async.success(data))),
     );
   }
 

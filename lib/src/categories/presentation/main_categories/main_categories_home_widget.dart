@@ -165,7 +165,7 @@ class _MainCategoryHomeItem extends StatelessWidget {
               path: entity.image.path,
               height: _kCategoryImageHeight,
               width: double.infinity,
-              radius: Dimensions.r4,
+              radius: Dimensions.r12,
               fit: BoxFit.cover,
               bgColor: _kCategoryCardFill,
             ),

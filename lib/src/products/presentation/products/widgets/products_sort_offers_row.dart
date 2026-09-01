@@ -143,11 +143,11 @@ class _ProductsSortOffersRowState extends State<ProductsSortOffersRow> {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  AppSvgIcon(path: AppIcons.arrowDown, width: Dimensions.ic24, height: Dimensions.ic24),
                   Text(
                     _sortLabel(),
                     style: TextStyles.semiBold16.copyWith(color: AppColors.black900, height: 1, fontWeight: FontWeight.w600),
                   ),
+                  AppSvgIcon(path: AppIcons.arrowDown2, width: Dimensions.ic24, height: Dimensions.ic24),
                 ],
               ),
             ),

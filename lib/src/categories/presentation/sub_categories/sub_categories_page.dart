@@ -51,7 +51,6 @@ class _SubCategoriesBody extends StatefulWidget {
 
 class _SubCategoriesBodyState extends State<_SubCategoriesBody> {
   final _subCategoriesSubscriptionObj = CompositeSubscription();
-  final ScrollController _scrollController = ScrollController();
   late final SubCategoriesCubit _cubit;
 
   void _subCategoriesSubsriptionListener() {
@@ -67,19 +66,10 @@ class _SubCategoriesBodyState extends State<_SubCategoriesBody> {
     super.initState();
     _cubit = context.read<SubCategoriesCubit>();
     _subCategoriesSubsriptionListener();
-
-    _scrollController.addListener(() {
-      if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent) {
-        if (mounted) {
-          _cubit.getMoreSubCategories();
-        }
-      }
-    });
   }
 
   @override
   void dispose() {
-    _scrollController.dispose();
     _subCategoriesSubscriptionObj.dispose();
     super.dispose();
   }
@@ -141,28 +131,12 @@ class _SubCategoriesBodyState extends State<_SubCategoriesBody> {
                 },
                 child: data.isEmpty
                     ? const AppEmptyWidget()
-                    : Stack(
-                        children: [
-                          ListView.separated(
-                            controller: _scrollController,
-
-                            physics: const AlwaysScrollableScrollPhysics(),
-                            itemBuilder: (context, index) => _SubCategoryCard(entity: data[index]),
-                            itemCount: data.length,
-                            padding: EdgeInsets.zero,
-                            separatorBuilder: (context, index) => const SizedBox(height: 8),
-                          ),
-
-                          if (state.getSubCategoriesState.isPaginationLoading)
-                            const Positioned(
-                              bottom: -10,
-                              right: 0,
-                              left: 0,
-                              child: Center(
-                                child: Padding(padding: EdgeInsets.symmetric(vertical: 20), child: SpinKitLoadingWidget()),
-                              ),
-                            ),
-                        ],
+                    : ListView.separated(
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        itemBuilder: (context, index) => _SubCategoryCard(entity: data[index]),
+                        itemCount: data.length,
+                        padding: EdgeInsets.zero,
+                        separatorBuilder: (context, index) => const SizedBox(height: 8),
                       ),
               );
             }

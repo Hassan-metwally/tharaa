@@ -198,12 +198,10 @@ class _ProductsBodyState extends State<_ProductsBody> {
                       padding: const EdgeInsets.symmetric(horizontal: Dimensions.p16),
                       child: ProductsSearchField(controller: _searchController, onChanged: _onSearchChanged),
                     ),
-                    const SizedBox(height: Dimensions.p24),
                     ProductsFilterChips(mode: widget.mode, selectedCategory: selectedChip, onSelected: _onChipSelected),
                     if (_showSortRow) ...[
-                      const SizedBox(height: Dimensions.p24),
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: Dimensions.p16),
+                        padding: const EdgeInsets.symmetric(horizontal: Dimensions.p16,).copyWith(top: Dimensions.p10),
                         child: ProductsSortOffersRow(
                           mode: widget.mode,
                           sortOption: _sortOption,
@@ -213,7 +211,7 @@ class _ProductsBodyState extends State<_ProductsBody> {
                         ),
                       ),
                     ],
-                    const SizedBox(height: Dimensions.p24),
+                    const SizedBox(height: Dimensions.p10),
                     Expanded(child: _buildGridArea(state)),
                   ],
                 );

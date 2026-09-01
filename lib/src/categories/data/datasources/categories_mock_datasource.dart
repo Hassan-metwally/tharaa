@@ -77,21 +77,8 @@ class CategoriesMockDatasource extends CategoriesDatasource {
   }
 
   @override
-  Future<ApiPaginatedData<ApiCategoryModel>> getSubCategories(GetSubCategoriesParams params) async {
+  Future<List<ApiCategoryModel>> getSubCategories(GetSubCategoriesParams params) async {
     await Future<void>.delayed(_delay);
-    final items = _subCategoriesByParent[params.categoryId] ?? const <ApiCategoryModel>[];
-    return _paginate(items, params.page);
-  }
-
-  ApiPaginatedData<ApiCategoryModel> _paginate(List<ApiCategoryModel> items, int page) {
-    const perPage = 10;
-    final lastPage = items.isEmpty ? 1 : (items.length / perPage).ceil();
-    final start = (page - 1) * perPage;
-    final pagedItems = start >= items.length ? const <ApiCategoryModel>[] : items.skip(start).take(perPage).toList();
-
-    return ApiPaginatedData(
-      items: pagedItems,
-      pageInfo: PageInfo(currentPage: page, lastPage: lastPage, totalPages: lastPage, countPerPage: perPage, totalItemsCount: items.length),
-    );
+    return _subCategoriesByParent[params.categoryId] ?? const <ApiCategoryModel>[];
   }
 }

@@ -7,5 +7,5 @@ import '../usecases/get_sub_categories_usecase.dart';
 abstract class CategoriesRepository {
   DomainServiceType<List<CategoryEntity>> getMainCategories(NoParams params);
 
-  DomainServiceType<PaginatedData<CategoryEntity>> getSubCategories(GetSubCategoriesParams params);
+  DomainServiceType<List<CategoryEntity>> getSubCategories(GetSubCategoriesParams params);
 }

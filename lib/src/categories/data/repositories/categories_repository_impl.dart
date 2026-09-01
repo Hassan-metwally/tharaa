@@ -28,11 +28,11 @@ class CategoriesRepositoryImpl extends CategoriesRepository {
   }
 
   @override
-  DomainServiceType<PaginatedData<CategoryEntity>> getSubCategories(GetSubCategoriesParams params) async {
+  DomainServiceType<List<CategoryEntity>> getSubCategories(GetSubCategoriesParams params) async {
     return await failureCollect(() async {
       final result = await _dataSource.getSubCategories(params);
 
-      return Right(result.map((data) => data.map));
+      return Right(result.map((data) => data.map).toList());
     });
   }
 }
