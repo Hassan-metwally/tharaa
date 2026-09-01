@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/core.dart';
 import '../../../../core/di/di.dart';
+import '../../../../material/app_fail_widget.dart';
+import '../../../../material/app_loading_widget.dart';
 import '../../../../material/app_select_location.dart';
 import '../../../../material/buttons/app_button.dart';
 import '../../../../material/inputs/app_text_form_field.dart';
@@ -10,7 +12,6 @@ import '../../../../material/media/svg_icon.dart';
 import '../../../../material/toast/app_toast.dart';
 import '../../../google_maps/domain/entities/address_entity.dart';
 import '../../domain/entities/location_entity.dart';
-import '../../domain/params/address_params.dart';
 import '../../domain/usecases/delete_location_use_case.dart';
 import '../utils/products_subscription.dart';
 import '../widgets/remove_address_bottom_sheet.dart';
@@ -48,7 +49,13 @@ class UpsertAddressPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => injector<UpsertAddressCubit>()..setInitialParams(address),
+      create: (context) {
+        final cubit = injector<UpsertAddressCubit>();
+        if (address != null) {
+          cubit.loadAddress(address!.id);
+        }
+        return cubit;
+      },
       child: _UpsertAddressView(address: address),
     );
   }
@@ -87,9 +94,16 @@ class _UpsertAddressView extends StatelessWidget {
             ),
         ],
       ),
-      body: BlocSelector<UpsertAddressCubit, UpsertAddressState, AddressParams>(
-        selector: (state) => state.params,
-        builder: (context, params) {
+      body: BlocBuilder<UpsertAddressCubit, UpsertAddressState>(
+        builder: (context, state) {
+          if (_isEdit && state.getAddressState.isLoading) {
+            return const Center(child: AppLoadingWidget());
+          }
+          if (_isEdit && state.getAddressState.isFailure) {
+            return AppFailWidget(onRetry: () => context.read<UpsertAddressCubit>().loadAddress(address!.id));
+          }
+
+          final params = state.params;
           final cubit = context.read<UpsertAddressCubit>();
           return Form(
             key: params.formKey,
@@ -148,7 +162,7 @@ class _UpsertAddressView extends StatelessWidget {
                     ),
                   ),
                 ),
-                _UpsertAddressFooter(isEdit: _isEdit, isDefault: address?.isDefault ?? false),
+                _UpsertAddressFooter(isEdit: _isEdit, isDefault: state.params.isDefault),
               ],
             ),
           );

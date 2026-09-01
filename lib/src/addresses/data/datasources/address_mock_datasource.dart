@@ -1,13 +1,13 @@
-import 'package:injectable/injectable.dart';
-
 import '../../../../core/core.dart';
 import '../../domain/params/address_params.dart';
 import '../../domain/usecases/delete_location_use_case.dart';
+import '../../domain/usecases/get_address_use_case.dart';
 import '../../domain/usecases/get_addresses_use_case.dart';
+import '../../domain/usecases/set_default_address_use_case.dart';
 import '../models/api_location_model.dart';
 import 'address_datasource.dart';
 
-@Injectable(as: AddressDatasource)
+// @Injectable(as: AddressDatasource)
 class AddressMockDatasource extends AddressDatasource {
   static const _delay = Duration(milliseconds: 400);
   static const _streetAddress = 'شارع الأمير محمد بن عبدالعزيز، حي العليا، الرياض 12241، المملكة العربية السعودية';
@@ -49,13 +49,20 @@ class AddressMockDatasource extends AddressDatasource {
   }
 
   @override
+  Future<ApiLocationModel> getAddress(GetAddressParams params) async {
+    await Future<void>.delayed(_delay);
+    final address = _addresses.firstWhere((element) => element.id == params.id);
+    return address;
+  }
+
+  @override
   Future<ApiLocationModel> addLocation(AddressParams params) async {
     await Future<void>.delayed(_delay);
     final int id = _addresses.isEmpty ? 1 : (_addresses.map((e) => e.id ?? 0).reduce((a, b) => a > b ? a : b) + 1);
     final model = ApiLocationModel(
       id: id,
       title: params.building.text,
-      description: params.address.isNotEmpty ? params.address : params.district.text,
+      description: params.district.text,
       lat: params.lat.toString(),
       lng: params.lng.toString(),
       address: params.address,
@@ -92,7 +99,7 @@ class AddressMockDatasource extends AddressDatasource {
     final model = ApiLocationModel(
       id: current.id,
       title: params.building.text,
-      description: params.address.isNotEmpty ? params.address : params.district.text,
+      description: params.district.text,
       lat: params.lat.toString(),
       lng: params.lng.toString(),
       address: params.address,
@@ -100,6 +107,30 @@ class AddressMockDatasource extends AddressDatasource {
     );
     _addresses[index] = model;
     return model;
+  }
+
+  @override
+  Future<ApiLocationModel> setDefaultAddress(SetDefaultAddressParams params) async {
+    await Future<void>.delayed(_delay);
+    final index = _addresses.indexWhere((element) => element.id == params.id);
+    if (index == -1) {
+      throw ServerException(message: 'Address not found');
+    }
+
+    for (var i = 0; i < _addresses.length; i++) {
+      final item = _addresses[i];
+      _addresses[i] = ApiLocationModel(
+        id: item.id,
+        title: item.title,
+        description: item.description,
+        lat: item.lat,
+        lng: item.lng,
+        address: item.address,
+        isDefault: item.id == params.id,
+      );
+    }
+
+    return _addresses[index];
   }
 
   @override

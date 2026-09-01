@@ -25,5 +25,5 @@ class GetAddressesParams extends Equatable {
   @override
   List<Object?> get props => [page, limit];
 
-  Map<String, dynamic> toMap() => {'page': page, if (limit != null) 'limit': limit};
+  Map<String, dynamic> toMap() => {'page': page, if (limit != null) 'per_page': limit};
 }

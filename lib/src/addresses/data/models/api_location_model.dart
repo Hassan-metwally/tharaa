@@ -21,11 +21,11 @@ class ApiLocationModel {
 
   factory ApiLocationModel.fromJson(Map<String, dynamic> json) => ApiLocationModel(
     id: json["id"],
-    title: json["title"],
-    description: json["description"],
+    title: (json['name'] ?? json['title'])?.toString(),
+    description: (json['details'] ?? json['description'])?.toString(),
     lat: json["lat"]?.toString(),
     lng: json["lng"]?.toString(),
-    address: json["address"],
+    address: json["address"]?.toString(),
     isDefault: json["is_default"] == true || json["isDefault"] == true,
   );
 }

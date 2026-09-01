@@ -6,7 +6,9 @@ import '../../domain/entities/location_entity.dart';
 import '../../domain/params/address_params.dart';
 import '../../domain/repositories/address_repository.dart';
 import '../../domain/usecases/delete_location_use_case.dart';
+import '../../domain/usecases/get_address_use_case.dart';
 import '../../domain/usecases/get_addresses_use_case.dart';
+import '../../domain/usecases/set_default_address_use_case.dart';
 import '../datasources/address_datasource.dart';
 import '../models/api_location_model.dart';
 
@@ -41,8 +43,26 @@ class AddressRepositoryImpl extends AddressRepository {
   }
 
   @override
+  DomainServiceType<LocationEntity> getAddress(GetAddressParams params) async {
+    return await failureCollect(() async {
+      final location = await _dataSource.getAddress(params);
+      return Right(location.map);
+    });
+  }
+
+  @override
   DomainServiceType<LocationEntity> updateAdressInAdressList(AddressParams params) async {
-    final location = await _dataSource.updateAddress(params);
-    return Right(location.map);
+    return await failureCollect(() async {
+      final location = await _dataSource.updateAddress(params);
+      return Right(location.map);
+    });
+  }
+
+  @override
+  DomainServiceType<LocationEntity> setDefaultAddress(SetDefaultAddressParams params) async {
+    return await failureCollect(() async {
+      final location = await _dataSource.setDefaultAddress(params);
+      return Right(location.map);
+    });
   }
 }

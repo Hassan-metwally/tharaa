@@ -134,6 +134,12 @@ extension DateTimeFormatExtention on DateTime {
     return intel.DateFormat('dd/MM/yyyy', getLocale.languageCode).format(this);
   }
 
+  // Output: 15/12/2023
+  String get DDMMYYYY_EN {
+    return intel.DateFormat('dd/MM/yyyy', 'en').format(this);
+  }
+
+
   // Output: 2023/12/15
   String get YYYYMMDD {
     return intel.DateFormat('yyyy/MM/dd', getLocale.languageCode).format(this);

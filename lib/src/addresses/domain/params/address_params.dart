@@ -68,13 +68,12 @@ class AddressParams extends Equatable {
 
   Map<String, dynamic> toMap() {
     return {
-      'building': building.text,
-      'district': district.text,
+      'name': building.text,
+      'details': district.text,
       'lat': lat,
       'lng': lng,
       'address': address,
-      'is_default': isDefault,
-      if (id != null) '_method': 'PUT',
+      'is_default': isDefault ? 1 : 0,
     };
   }
 

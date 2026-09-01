@@ -93,6 +93,7 @@ class _UpsertAddressActionButton extends StatelessWidget {
         return AppButton(
           text: text,
           buttonColor: buttonColor,
+          loadingColor: AppColors.primary,
           textStyle: textStyle,
           isLoading: state.upsertAddressState.isLoading,
           onPressed: () => onPressed(context.read<UpsertAddressCubit>()),

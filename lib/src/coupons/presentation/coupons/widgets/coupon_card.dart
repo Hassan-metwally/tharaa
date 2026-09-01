@@ -88,7 +88,7 @@ class _CouponCardState extends State<_CouponCard> {
             children: [
               Expanded(
                 child: Text(
-                  _entity.name,
+                  _entity.name ,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyles.medium12.copyWith(color: AppColors.primary, height: 1),
@@ -108,7 +108,7 @@ class _CouponCardState extends State<_CouponCard> {
           if (_entity.validFrom != null && _entity.validTo != null) ...[
             const SizedBox(height: 2),
             Text(
-              appLocalizer.couponValidFromTo(_entity.validFrom!.DDMMYYYY, _entity.validTo!.DDMMYYYY),
+              appLocalizer.couponValidFromTo(_entity.validFrom!.DDMMYYYY_EN, _entity.validTo!.DDMMYYYY_EN),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: TextStyles.medium12.copyWith(color: AppColors.mutedText.withOpacityPercent(90), height: 1),

@@ -3,7 +3,7 @@ part of core;
 class ApiConstants {
   const ApiConstants._();
 
-  static const String apiBaseUrl = "https://thara_elshark_api.dev-moltaqa.cloud";
+  static const String apiBaseUrl = "https://thara-elshark-api.dev-moltaqa.cloud";
   // static const String apiBaseUrl = "https://api-zahab-moltaqa.cloud";
 
   static String addToApiUrlPath(String url) {
