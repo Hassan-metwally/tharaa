@@ -147,12 +147,7 @@ class _MostRequestedProductCard extends StatelessWidget {
 
   final ProductEntity entity;
 
-  String get _unitLabel {
-    if (entity.amount != null) {
-      return '${entity.amount}*${entity.unit}';
-    }
-    return entity.unit;
-  }
+  String get _unitLabel => entity.unitLabel;
 
   @override
   Widget build(BuildContext context) {
@@ -199,6 +194,7 @@ class _MostRequestedProductCard extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
               style: TextStyles.medium16.copyWith(color: AppColors.black900, height: 1),
             ),
+            const SizedBox(height: Dimensions.p6),
             Row(
               children: [
                 Expanded(

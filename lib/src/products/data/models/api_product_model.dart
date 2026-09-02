@@ -36,7 +36,9 @@ class ApiProductModel {
       category: json['category'] is Map<String, dynamic> ? ApiCategoryModel.fromJson(json['category']) : null,
       unit: (json['unit_type'] ?? json['unit'])?.toString(),
       price: _parseNum(json['price']),
-      offerPrice: _parseNum(json['discounted_price'] ?? json['offer_price'] ?? json['offerPrice']),
+      offerPrice: _parseNum(
+        json['effective_price'],
+      ),
       amount: _parseNum(json['units_count'] ?? json['amount']),
       volume: _parseNum(json['unit_weight'] ?? json['volume']),
     );
@@ -46,6 +48,7 @@ class ApiProductModel {
 class ApiOfferModel {
   final int? id;
   final int? productId;
+  final num? originalPrice;
   final num? discountedPrice;
   final DateTime? startsAt;
   final DateTime? endsAt;
@@ -54,6 +57,7 @@ class ApiOfferModel {
   ApiOfferModel({
     required this.id,
     required this.productId,
+    required this.originalPrice,
     required this.discountedPrice,
     required this.startsAt,
     required this.endsAt,
@@ -64,11 +68,19 @@ class ApiOfferModel {
     return ApiOfferModel(
       id: json['id'],
       productId: json['product_id'],
-      discountedPrice: _parseNum(json['discounted_price']),
+      originalPrice: _parseNum(json['price']),
+      discountedPrice: _parseNum(json['effective_price'] ?? json['discounted_price']),
       startsAt: json['starts_at'] != null ? DateTime.tryParse(json['starts_at'].toString()) : null,
       endsAt: json['ends_at'] != null ? DateTime.tryParse(json['ends_at'].toString()) : null,
       product: json['product'] is Map<String, dynamic> ? ApiProductModel.fromJson(json['product']) : null,
     );
+  }
+
+  static ApiProductModel mapListItem(Map<String, dynamic> json) {
+    if (json['product'] is Map<String, dynamic>) {
+      return ApiOfferModel.fromJson(json).toProductModel();
+    }
+    return ApiProductModel.fromJson(json);
   }
 
   ApiProductModel toProductModel() {
@@ -79,7 +91,7 @@ class ApiOfferModel {
       image: nested.image,
       category: nested.category,
       unit: nested.unit,
-      price: nested.price,
+      price: originalPrice ?? nested.price,
       offerPrice: discountedPrice ?? nested.offerPrice,
       amount: nested.amount,
       volume: nested.volume,
@@ -104,6 +116,6 @@ extension ApiProductEXT on ApiProductModel {
 extension ApiOfferEXT on ApiOfferModel {
   ProductEntity get map {
     final entity = product!.map;
-    return entity.copyWith(offerPrice: discountedPrice ?? entity.offerPrice);
+    return entity.copyWith(price: originalPrice ?? entity.price, offerPrice: discountedPrice ?? entity.offerPrice);
   }
 }

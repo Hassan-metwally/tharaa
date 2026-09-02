@@ -37,6 +37,16 @@ class ProductEntity extends Equatable {
       amount = null,
       volume = null;
 
+  /// `12*1.000 kg` when [amount] exists, otherwise `1.000 kg`.
+  String get unitLabel {
+    final String weight = volume == null ? '' : volume!.toStringAsFixed(3);
+    final String weightAndUnit = [if (weight.isNotEmpty) weight, if (unit.isNotEmpty) unit].join(' ');
+    if (amount != null && weightAndUnit.isNotEmpty) {
+      return '$amount*$weightAndUnit';
+    }
+    return weightAndUnit;
+  }
+
   ProductEntity copyWith({
     int? id,
     String? name,

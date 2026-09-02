@@ -574,7 +574,7 @@
   "offerEndsIn": "ينتهى العرض خلال:",
   "productPrice": "سعر المنتج",
   "noProductsInThisSection": "لا توجد منتجات في هذا القسم 🥕",
-  "noProductsInThisSubsection": "حاليًا لا توجد منتجات ضمن هذا القسم الفرعي جرب اختيار قسم آخر",
+  "noProductsInThisSubsection": "حاليًا لا توجد منتجات ضمن هذا القسم جرب اختيار قسم آخر",
   "searchByOrderNumber": "ابحث برقم الطلب",
   "orderCreationDate": "تاريخ الإنشاء: {date}",
   "@orderCreationDate": {

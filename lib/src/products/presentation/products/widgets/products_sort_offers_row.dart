@@ -145,7 +145,7 @@ class _ProductsSortOffersRowState extends State<ProductsSortOffersRow> {
                   children: [
                     Text(
                       _sortLabel(),
-                      style: TextStyles.semiBold16.copyWith(color: AppColors.black900, height: 1, fontWeight: FontWeight.w600),
+                      style: TextStyles.semiBold14.copyWith(color: AppColors.black900, height: 1, fontWeight: FontWeight.w600),
                     ),
                     AppSvgIcon(path: AppIcons.arrowDown2, width: Dimensions.ic24, height: Dimensions.ic24),
                   ],

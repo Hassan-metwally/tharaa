@@ -38,7 +38,7 @@ class ProductsDatasourceImpl extends ProductsDatasource {
         final response = await _dioHelper.get(url: ApiConstants.addToApiUrlPath('offers'), queryParameters: params.toMap);
         return ApiPaginatedData<ApiProductModel>.fromJson(
           response['data'],
-          getData: (dataList) => dataList.map((e) => ApiOfferModel.fromJson(e).toProductModel()).toList(),
+          getData: (dataList) => dataList.map((e) => ApiOfferModel.mapListItem(e)).toList(),
         );
       }
 

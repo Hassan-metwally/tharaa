@@ -12,19 +12,7 @@ class _ProductDetailsInfo extends StatelessWidget {
 
   num get _displayPrice => _hasOffer ? product.offerPrice! : product.price;
 
-  String get _unitLabel {
-    final num? amount = product.amount;
-    final num? volume = product.volume;
-    final String unit = product.unit;
-
-    if (amount != null && volume != null && unit.isNotEmpty) {
-      return '$amount*$volume $unit';
-    }
-    if (amount != null && unit.isNotEmpty) {
-      return '$amount*$unit';
-    }
-    return unit;
-  }
+  String get _unitLabel => product.unitLabel;
 
   @override
   Widget build(BuildContext context) {

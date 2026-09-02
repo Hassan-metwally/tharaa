@@ -24,16 +24,11 @@ class ProductGridCard extends StatelessWidget {
 
   final ProductEntity entity;
 
-  String get _unitLabel {
-    if (entity.amount != null) {
-      return '${entity.amount}*${entity.unit}';
-    }
-    return entity.unit;
-  }
+  String get _unitLabel => entity.unitLabel;
 
   bool get _hasOffer {
     final num? offerPrice = entity.offerPrice;
-    return offerPrice != null && offerPrice < entity.price;
+    return offerPrice != null && offerPrice != entity.price;
   }
 
   num get _displayPrice => entity.offerPrice ?? entity.price;
@@ -83,6 +78,7 @@ class ProductGridCard extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
               style: TextStyles.medium16.copyWith(color: AppColors.black900, height: 1),
             ),
+            SizedBox(height: Dimensions.p6),
             Row(
               children: [
                 Expanded(

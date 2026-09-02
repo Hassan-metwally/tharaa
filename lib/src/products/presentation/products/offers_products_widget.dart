@@ -152,16 +152,11 @@ class _OfferProductCard extends StatelessWidget {
 
   final ProductEntity entity;
 
-  String get _unitLabel {
-    if (entity.amount != null) {
-      return '${entity.amount}*${entity.unit}';
-    }
-    return entity.unit;
-  }
+  String get _unitLabel => entity.unitLabel;
 
   bool get _hasOffer {
     final num? offerPrice = entity.offerPrice;
-    return offerPrice != null && offerPrice < entity.price;
+    return offerPrice != null && offerPrice != entity.price;
   }
 
   int? get _discountPercent {
@@ -204,14 +199,14 @@ class _OfferProductCard extends StatelessWidget {
                       bgColor: AppColors.offersCardFill,
                     ),
                   ),
-                  if (discountPercent != null && discountPercent > 0)
-                    Align(
-                      alignment: AlignmentDirectional.topStart,
-                      child: Padding(
-                        padding: const EdgeInsets.all(Dimensions.p8),
-                        child: _OfferDiscountBadge(percent: discountPercent),
-                      ),
-                    ),
+                  // if (discountPercent != null && discountPercent > 0)
+                  //   Align(
+                  //     alignment: AlignmentDirectional.topStart,
+                  //     child: Padding(
+                  //       padding: const EdgeInsets.all(Dimensions.p8),
+                  //       child: _OfferDiscountBadge(percent: discountPercent),
+                  //     ),
+                  //   ),
                   Align(
                     alignment: AlignmentDirectional.bottomStart,
                     child: Padding(
@@ -229,6 +224,7 @@ class _OfferProductCard extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
               style: TextStyles.medium16.copyWith(color: AppColors.black900, height: 1),
             ),
+            SizedBox(height: Dimensions.p6),
             Row(
               children: [
                 Expanded(
