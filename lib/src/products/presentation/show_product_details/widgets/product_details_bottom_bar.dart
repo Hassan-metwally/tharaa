@@ -31,7 +31,7 @@ class _ProductDetailsBottomBarBodyState extends State<_ProductDetailsBottomBarBo
     return ColoredBox(
       color: AppColors.white,
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(Dimensions.p16, Dimensions.p24, Dimensions.p16, 0),
+        padding: const EdgeInsets.all(Dimensions.p16),
         child: Row(
           children: [
             _ProductDetailsQuantitySelector(

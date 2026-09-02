@@ -30,6 +30,7 @@ class _ProductDetailsInfo extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
               style: TextStyles.semiBold16.copyWith(color: AppColors.black900, height: 1, fontWeight: FontWeight.w600),
             ),
+            const SizedBox(height: Dimensions.p8),
             if (_unitLabel.isNotEmpty) ...[
               const SizedBox(height: 2),
               Text(_unitLabel, style: TextStyles.regular14.copyWith(color: AppColors.mutedText, height: 1)),

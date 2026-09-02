@@ -1522,7 +1522,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get noProductsInThisSection => 'لا توجد منتجات في هذا القسم 🥕';
 
   @override
-  String get noProductsInThisSubsection => 'حاليًا لا توجد منتجات ضمن هذا القسم الفرعي جرب اختيار قسم آخر';
+  String get noProductsInThisSubsection => 'حاليًا لا توجد منتجات ضمن هذا القسم جرب اختيار قسم آخر';
 
   @override
   String get searchByOrderNumber => 'ابحث برقم الطلب';
