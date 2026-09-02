@@ -23,7 +23,10 @@ class RatingDatasourceImpl extends RatingDatasource {
   @override
   Future<String> addRate(UpsertRateParams params) async {
     try {
-      final response = await _dioHelper.post(url: "ApiConstants.appRoleApi('/rate')", body: params.toMap);
+      final response = await _dioHelper.post(
+        url: ApiConstants.addToApiUrlPath('orders/${params.orderId}/rate'),
+        body: params.toMap,
+      );
       return response['message'];
     } catch (_) {
       rethrow;

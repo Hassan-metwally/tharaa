@@ -172,7 +172,6 @@ import '../../src/notifications/domain/use_cases/read_notification_usecase.dart'
     as _i726;
 import '../../src/notifications/presentation/notifications_cubit.dart' as _i545;
 import '../../src/orders/data/datasources/orders_datasource.dart' as _i239;
-import '../../src/orders/data/datasources/orders_mock_datasource.dart' as _i560;
 import '../../src/orders/data/repositories/orders_repository_impl.dart'
     as _i833;
 import '../../src/orders/domain/repositories/orders_repository.dart' as _i247;
@@ -265,7 +264,6 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i203.LanguageCacheDateSourceImp(),
     );
     gh.factory<_i984.ThemeRepository>(() => _i715.ThemeRepositoryImp());
-    gh.factory<_i239.OrdersDatasource>(() => _i560.OrdersMockDatasource());
     gh.factory<_i351.DioHelper>(() => _i351.DioHelper(dio: gh<_i361.Dio>()));
     gh.factory<_i1069.StatisticsDatasource>(
       () => _i1069.StatisticsDatasourceImpl(gh<_i351.DioHelper>()),
@@ -304,9 +302,6 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i351.DioHelper>(),
         gh<_i351.SecureStorageRepository>(),
       ),
-    );
-    gh.factory<_i247.OrdersRepository>(
-      () => _i833.OrdersRepositoryImpl(gh<_i239.OrdersDatasource>()),
     );
     gh.factory<_i300.AuthenticationRepository>(
       () => _i469.AuthenticationRepositoryImp(
@@ -398,6 +393,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i268.AdsDatasource>(
       () => _i268.AdsDatasourceImpl(gh<_i351.DioHelper>()),
     );
+    gh.factory<_i239.OrdersDatasource>(
+      () => _i239.OrdersDatasourceImpl(gh<_i351.DioHelper>()),
+    );
     gh.factory<_i339.AddLocationUseCase>(
       () => _i339.AddLocationUseCase(gh<_i768.AddressRepository>()),
     );
@@ -443,21 +441,6 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i726.ReadNotificationUseCase>(
       () => _i726.ReadNotificationUseCase(gh<_i209.NotificationRepository>()),
-    );
-    gh.factory<_i496.AddOrderUsecase>(
-      () => _i496.AddOrderUsecase(gh<_i247.OrdersRepository>()),
-    );
-    gh.factory<_i488.GetOrdersUsecase>(
-      () => _i488.GetOrdersUsecase(gh<_i247.OrdersRepository>()),
-    );
-    gh.factory<_i770.ShowOrderDetailsUsecase>(
-      () => _i770.ShowOrderDetailsUsecase(gh<_i247.OrdersRepository>()),
-    );
-    gh.factory<_i1047.ToggleOrderStatusUseCase>(
-      () => _i1047.ToggleOrderStatusUseCase(gh<_i247.OrdersRepository>()),
-    );
-    gh.factory<_i177.ShowOrderDetailsCubit>(
-      () => _i177.ShowOrderDetailsCubit(gh<_i770.ShowOrderDetailsUsecase>()),
     );
     gh.factory<_i170.UpsertAddressCubit>(
       () => _i170.UpsertAddressCubit(
@@ -547,9 +530,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i17.MainCategoriesCubit>(
       () => _i17.MainCategoriesCubit(gh<_i574.GetMainCategoriesUsecase>()),
     );
-    gh.factory<_i383.AddOrderCubit>(
-      () => _i383.AddOrderCubit(gh<_i496.AddOrderUsecase>()),
-    );
     gh.factory<_i582.GetProfileUseCase>(
       () => _i582.GetProfileUseCase(gh<_i931.MoreRepository>()),
     );
@@ -588,8 +568,8 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i87.UpdateProfileUseCase>(),
       ),
     );
-    gh.factory<_i673.ToggleOrderStatusCubit>(
-      () => _i673.ToggleOrderStatusCubit(gh<_i1047.ToggleOrderStatusUseCase>()),
+    gh.factory<_i247.OrdersRepository>(
+      () => _i833.OrdersRepositoryImpl(gh<_i239.OrdersDatasource>()),
     );
     gh.factory<_i532.GetMapLocationAddressUseCase>(
       () => _i532.GetMapLocationAddressUseCase(gh<_i410.MapsRepository>()),
@@ -613,9 +593,6 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i814.GetAddressesUseCase>(),
         gh<_i837.DeleteLocationUseCase>(),
       ),
-    );
-    gh.factory<_i818.OrdersCubit>(
-      () => _i818.OrdersCubit(gh<_i488.GetOrdersUsecase>()),
     );
     gh.factory<_i34.ChatsInboxRepository>(
       () => _i399.ChatsInboxRepositoryImpl(gh<_i309.ChatsInboxDatasource>()),
@@ -656,6 +633,21 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i976.SubCategoriesCubit>(
       () => _i976.SubCategoriesCubit(gh<_i919.GetSubCategoriesUsecase>()),
     );
+    gh.factory<_i496.AddOrderUsecase>(
+      () => _i496.AddOrderUsecase(gh<_i247.OrdersRepository>()),
+    );
+    gh.factory<_i488.GetOrdersUsecase>(
+      () => _i488.GetOrdersUsecase(gh<_i247.OrdersRepository>()),
+    );
+    gh.factory<_i770.ShowOrderDetailsUsecase>(
+      () => _i770.ShowOrderDetailsUsecase(gh<_i247.OrdersRepository>()),
+    );
+    gh.factory<_i1047.ToggleOrderStatusUseCase>(
+      () => _i1047.ToggleOrderStatusUseCase(gh<_i247.OrdersRepository>()),
+    );
+    gh.factory<_i177.ShowOrderDetailsCubit>(
+      () => _i177.ShowOrderDetailsCubit(gh<_i770.ShowOrderDetailsUsecase>()),
+    );
     gh.factory<_i158.RatingsCubit>(
       () => _i158.RatingsCubit(gh<_i1024.GetRatingsUsecase>()),
     );
@@ -674,6 +666,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i779.AdsCubit>(
       () => _i779.AdsCubit(gh<_i161.GetAllAdsUsecase>()),
     );
+    gh.factory<_i383.AddOrderCubit>(
+      () => _i383.AddOrderCubit(gh<_i496.AddOrderUsecase>()),
+    );
     gh.factory<_i388.GetChatsInboxUsecase>(
       () => _i388.GetChatsInboxUsecase(gh<_i34.ChatsInboxRepository>()),
     );
@@ -685,6 +680,12 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i761.GetCouponsUsecase>(
       () => _i761.GetCouponsUsecase(gh<_i542.CouponsRepository>()),
+    );
+    gh.factory<_i673.ToggleOrderStatusCubit>(
+      () => _i673.ToggleOrderStatusCubit(gh<_i1047.ToggleOrderStatusUseCase>()),
+    );
+    gh.factory<_i818.OrdersCubit>(
+      () => _i818.OrdersCubit(gh<_i488.GetOrdersUsecase>()),
     );
     gh.factory<_i295.AddRateCubit>(
       () => _i295.AddRateCubit(gh<_i303.AddRateUsecase>()),

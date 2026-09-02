@@ -32,7 +32,7 @@ enum OrderStatusEnum {
       case OrderStatusEnum.neww:
         return 'new';
       case OrderStatusEnum.inProgress:
-        return 'in_progress';
+        return 'preparing';
       case OrderStatusEnum.readyForDelivery:
         return 'ready_for_delivery';
       case OrderStatusEnum.onTheWay:

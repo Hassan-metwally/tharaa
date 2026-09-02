@@ -20,12 +20,30 @@ class ApiOrderItemModel {
 
   factory ApiOrderItemModel.fromJson(Map<String, dynamic> json) => ApiOrderItemModel(
     id: json['id'],
-    name: json['name']?.toString(),
+    name: (json['product_name'] ?? json['name'] ?? json['product_name_en'])?.toString(),
     image: AttachmentEntity.fromNetwork(url: json['image']?.toString() ?? ''),
     quantity: json['quantity'] is int ? json['quantity'] as int : int.tryParse(json['quantity']?.toString() ?? ''),
-    unitLabel: (json['unit_label'] ?? json['unitLabel'] ?? json['unit'])?.toString(),
-    price: _parseNum(json['price'] ?? json['unit_price'] ?? json['unitPrice']),
+    unitLabel: _parseUnitLabel(json),
+    price: _parseNum(json['line_total'] ?? json['price'] ?? json['unit_price'] ?? json['unitPrice'] ?? json['offer_price']),
   );
+
+  static String? _parseUnitLabel(Map<String, dynamic> json) {
+    final dynamic existing = json['unit_label'] ?? json['unitLabel'] ?? json['unit'];
+    if (existing != null && existing.toString().trim().isNotEmpty) {
+      return existing.toString();
+    }
+
+    final num? unitsCount = _parseNum(json['units_count']);
+    final num? unitWeight = _parseNum(json['unit_weight']);
+    final String unitType = json['unit_type']?.toString() ?? '';
+
+    final String weight = unitWeight == null ? '' : unitWeight.toStringAsFixed(3);
+    final String weightAndUnit = [if (weight.isNotEmpty) weight, if (unitType.isNotEmpty) unitType].join(' ');
+    if (unitsCount != null && weightAndUnit.isNotEmpty) {
+      return '${unitsCount.toInt()}*$weightAndUnit';
+    }
+    return weightAndUnit.isEmpty ? null : weightAndUnit;
+  }
 
   static num? _parseNum(dynamic value) {
     if (value == null) return null;

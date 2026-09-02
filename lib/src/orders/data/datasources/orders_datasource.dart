@@ -1,3 +1,5 @@
+import 'package:injectable/injectable.dart';
+
 import '../../../../../../core/core.dart';
 
 import '../../domain/usecases/add_order_usecase.dart';
@@ -19,6 +21,7 @@ abstract class OrdersDatasource {
   Future<ApiOrderModel> addOrder(UpsertOrderParams params);
 }
 
+@Injectable(as: OrdersDatasource)
 class OrdersDatasourceImpl extends OrdersDatasource {
   final DioHelper _dioHelper;
 
@@ -27,7 +30,7 @@ class OrdersDatasourceImpl extends OrdersDatasource {
   @override
   Future<ApiOrderDetailsModel> showOrderDetails(int id) async {
     try {
-      final response = await _dioHelper.get(url: "ApiConstants.addToApiUrlPath('/order/$id')");
+      final response = await _dioHelper.get(url: ApiConstants.addToApiUrlPath('orders/$id'));
       return ApiOrderDetailsModel.fromJson(response['data']);
     } catch (_) {
       rethrow;
@@ -37,7 +40,7 @@ class OrdersDatasourceImpl extends OrdersDatasource {
   @override
   Future<ApiPaginatedData<ApiOrderModel>> getOrders(GetOrdersParams params) async {
     try {
-      final response = await _dioHelper.get(url: "ApiConstants.addToApiUrlPath('/order')", queryParameters: params.toMap);
+      final response = await _dioHelper.get(url: ApiConstants.addToApiUrlPath('orders'), queryParameters: params.toMap);
       final data = ApiPaginatedData<ApiOrderModel>.fromJson(
         response['data'],
         getData: (dataList) => dataList.map((e) => ApiOrderModel.fromJson(e)).toList(),

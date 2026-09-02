@@ -18,20 +18,20 @@ class AddRateUsecase extends IUseCase<String, UpsertRateParams> {
 }
 
 class UpsertRateParams extends Equatable {
-  final int rateItemId;
-  final int rating;
+  final int orderId;
+  final int stars;
   final String comment;
 
-  const UpsertRateParams({required this.rateItemId, required this.rating, required this.comment});
+  const UpsertRateParams({required this.orderId, required this.stars, required this.comment});
 
-  const UpsertRateParams.initial() : rateItemId = 0, rating = 0, comment = '';
+  const UpsertRateParams.initial() : orderId = 0, stars = 0, comment = '';
 
-  UpsertRateParams copyWith({int? rateItemId, int? rating, String? comment}) {
-    return UpsertRateParams(rateItemId: rateItemId ?? this.rateItemId, rating: rating ?? this.rating, comment: comment ?? this.comment);
+  UpsertRateParams copyWith({int? orderId, int? stars, String? comment}) {
+    return UpsertRateParams(orderId: orderId ?? this.orderId, stars: stars ?? this.stars, comment: comment ?? this.comment);
   }
 
-  Map<String, dynamic> get toMap => {'rate_item_id': rateItemId, 'rating': rating, 'comment': comment};
+  Map<String, dynamic> get toMap => {'stars': stars, 'comment': comment};
 
   @override
-  List<Object?> get props => [rateItemId, rating, comment];
+  List<Object?> get props => [orderId, stars, comment];
 }

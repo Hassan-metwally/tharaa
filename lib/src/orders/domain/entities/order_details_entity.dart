@@ -13,6 +13,7 @@ class OrderDetailsEntity extends OrderEntity {
   final num deliveryPrice;
   final num vatAmount;
   final String cancelReason;
+  final DateTime? ratedAt;
 
   const OrderDetailsEntity({
     required super.id,
@@ -30,6 +31,7 @@ class OrderDetailsEntity extends OrderEntity {
     this.deliveryPrice = 0,
     this.vatAmount = 0,
     this.cancelReason = '',
+    this.ratedAt,
   });
 
   const OrderDetailsEntity.initial()
@@ -41,6 +43,7 @@ class OrderDetailsEntity extends OrderEntity {
       deliveryPrice = 0,
       vatAmount = 0,
       cancelReason = '',
+      ratedAt = null,
       super.initial();
 
   @override
@@ -60,6 +63,7 @@ class OrderDetailsEntity extends OrderEntity {
     num? deliveryPrice,
     num? vatAmount,
     String? cancelReason,
+    DateTime? ratedAt,
   }) {
     return OrderDetailsEntity(
       id: id ?? this.id,
@@ -77,6 +81,7 @@ class OrderDetailsEntity extends OrderEntity {
       deliveryPrice: deliveryPrice ?? this.deliveryPrice,
       vatAmount: vatAmount ?? this.vatAmount,
       cancelReason: cancelReason ?? this.cancelReason,
+      ratedAt: ratedAt ?? this.ratedAt,
     );
   }
 
@@ -90,5 +95,6 @@ class OrderDetailsEntity extends OrderEntity {
     deliveryPrice,
     vatAmount,
     cancelReason,
+    ratedAt,
   ]);
 }

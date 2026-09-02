@@ -57,7 +57,7 @@ class _OrderCard extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                         style: TextStyles.semiBold14.copyWith(color: AppColors.black900, height: 1, fontWeight: FontWeight.w600),
                       ),
-                      const SizedBox(height: 2),
+                      const SizedBox(height: 6),
                       Text(
                         appLocalizer.orderNumber,
                         maxLines: 1,
@@ -72,7 +72,7 @@ class _OrderCard extends StatelessWidget {
               ],
             ),
             const SizedBox(height: Dimensions.p12),
-            Divider(height: 1, thickness: 1, color: AppColors.black200),
+            Divider(height: 1, thickness: 1, color: AppColors.white),
             const SizedBox(height: Dimensions.p12),
             const _OrderDetailsAction(),
           ],
@@ -99,14 +99,14 @@ class _OrderDateBadge extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
+          AppSvgIcon(path: AppIcons.calendarBulk, width: Dimensions.ic14, height: Dimensions.ic14),
+          const SizedBox(width: 2),
           Text(
             label,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: TextStyles.medium12.copyWith(color: AppColors.mutedText, height: 1),
           ),
-          const SizedBox(width: 2),
-          AppSvgIcon(path: AppIcons.calendarBulk, width: Dimensions.ic14, height: Dimensions.ic14),
         ],
       ),
     );

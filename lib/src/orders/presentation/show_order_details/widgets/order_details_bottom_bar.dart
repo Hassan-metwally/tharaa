@@ -16,16 +16,23 @@ class _OrderDetailsBottomBar extends StatelessWidget {
       color: AppColors.white,
       child: SafeArea(
         top: false,
-        child: Padding(padding: const EdgeInsets.fromLTRB(Dimensions.p16, Dimensions.p24, Dimensions.p16, Dimensions.p32), child: content),
+        child: Padding(padding: const EdgeInsets.all( Dimensions.p16, ), child: content),
       ),
     );
   }
 
   Widget? _buildContent(BuildContext context) {
     switch (order.status) {
-      case OrderStatusEnum.neww:
-        return _OrderDetailsActionButton(label: appLocalizer.cancelOrder, backgroundColor: _kCancelButtonFill, textColor: AppColors.red500);
       case OrderStatusEnum.delivered:
+        final bool canRate = order.ratedAt == null;
+        if (!canRate) {
+          return _OrderDetailsActionButton(
+            label: appLocalizer.taxInvoice,
+            backgroundColor: AppColors.white,
+            textColor: AppColors.primary,
+            borderColor: AppColors.primary,
+          );
+        }
         return Row(
           spacing: Dimensions.p12,
           children: [
@@ -47,6 +54,8 @@ class _OrderDetailsBottomBar extends StatelessWidget {
             ),
           ],
         );
+      case OrderStatusEnum.neww:
+        // return _OrderDetailsActionButton(label: appLocalizer.cancelOrder, backgroundColor: _kCancelButtonFill, textColor: AppColors.red500);
       case OrderStatusEnum.inProgress:
       case OrderStatusEnum.readyForDelivery:
       case OrderStatusEnum.onTheWay:

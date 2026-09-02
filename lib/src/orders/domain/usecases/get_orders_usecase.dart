@@ -48,7 +48,8 @@ class GetOrdersParams extends Equatable {
 
   Map<String, dynamic> get toMap => {
     'page': page,
-    if (search != null && search!.isNotEmpty) 'search': search,
+    'per_page': 15,
+    if (search != null && search!.isNotEmpty) 'number': search,
     if (status != null) 'status': status!.value,
     if (date != null) 'date': date!.YYYY_MM_DD_EN,
   };

@@ -7,6 +7,7 @@ import '../../../../../../material/inputs/app_text_form_field.dart';
 import '../../../../../../material/media/svg_icon.dart';
 import '../../../../../../material/spin_kit_loading_widget.dart';
 import '../../../../../../material/toast/app_toast.dart';
+import '../../../orders/presentation/show_order_details/utils/show_order_details_subscription.dart';
 import '../../domain/usecases/add_rate_usecase.dart';
 import 'add_rate_cubit.dart';
 
@@ -23,25 +24,25 @@ const double _kActionButtonHeight = 50;
 const int _kStarCount = 5;
 
 class AddRatePage extends StatelessWidget {
-  final int itemId;
-  const AddRatePage({super.key, required this.itemId});
+  final int orderId;
+  const AddRatePage({super.key, required this.orderId});
 
   static Future<void> show(BuildContext context, int orderId) {
-    return Navigator.of(context).push<void>(MaterialPageRoute(builder: (_) => AddRatePage(itemId: orderId)));
+    return Navigator.of(context).push<void>(MaterialPageRoute(builder: (_) => AddRatePage(orderId: orderId)));
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => injector<AddRateCubit>(),
-      child: _AddRateView(itemId: itemId),
+      child: _AddRateView(orderId: orderId),
     );
   }
 }
 
 class _AddRateView extends StatefulWidget {
-  final int itemId;
-  const _AddRateView({required this.itemId});
+  final int orderId;
+  const _AddRateView({required this.orderId});
 
   @override
   State<_AddRateView> createState() => _AddRateViewState();
@@ -60,8 +61,16 @@ class _AddRateViewState extends State<_AddRateView> {
 
   void _submit(bool isLoading) {
     if (isLoading) return;
+    if (rate < 1 || rate > _kStarCount) {
+      AppToasts.error(context, message: appLocalizer.chooseRate);
+      return;
+    }
     if (!(_formKey.currentState?.validate() ?? false)) return;
-    final params = UpsertRateParams(rateItemId: widget.itemId, rating: rate.toInt(), comment: commentController.text);
+    final params = UpsertRateParams(
+      orderId: widget.orderId,
+      stars: rate.toInt(),
+      comment: commentController.text.trim(),
+    );
     context.read<AddRateCubit>().addRate(params);
   }
 
@@ -73,6 +82,7 @@ class _AddRateViewState extends State<_AddRateView> {
           AppToasts.error(context, message: state.addRateState.errorMessage ?? '');
         } else if (state.addRateState.isSuccess && state.addRateState.data != null) {
           AppToasts.success(context, message: state.addRateState.data ?? appLocalizer.successfullyRated);
+          ShowOrderDetailSubscription.pushUpdate(NoParams());
           Navigator.pop(context);
         }
       },

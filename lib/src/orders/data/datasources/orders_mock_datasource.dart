@@ -1,5 +1,3 @@
-import 'package:injectable/injectable.dart';
-
 import '../../../../../../core/core.dart';
 import '../../../addresses/data/models/api_location_model.dart';
 import '../../../common/domain/enums/orders/order_status_enum.dart';
@@ -11,73 +9,78 @@ import '../models/api_order_item_model.dart';
 import '../models/api_order_model.dart';
 import 'orders_datasource.dart';
 
-@Injectable(as: OrdersDatasource)
+// @Injectable(as: OrdersDatasource)
 class OrdersMockDatasource extends OrdersDatasource {
   static const _delay = Duration(milliseconds: 400);
 
-  static AttachmentEntity _marketImage(String photoId) => AttachmentEntity.fromNetwork(
-    url: 'https://images.unsplash.com/photo-$photoId?auto=format&fit=crop&w=400&h=400&q=80',
-  );
-
   static final ApiLocationModel _riyadhAddress = ApiLocationModel(
     id: 1,
-    title: 'Home',
-    description: 'مدينة الرياض شارع الأمير',
+    title: 'Home11',
+    description: 'Riyadh, Al Olaya District, Building 12',
     lat: '24.7136',
     lng: '46.6753',
-    address: 'مدينة الرياض شارع الأمير',
+    address: 'this is the address',
   );
 
   static final List<ApiOrderItemModel> _oliveOilItems = [
-    ApiOrderItemModel(
-      id: 21,
-      name: 'زيت زيتون جاردن من الصالحية - زيت زيتون اصلي',
-      image: _marketImage('1474979266404-7eaacbcd87c5'),
-      quantity: 5,
-      unitLabel: '5*1 كجم',
-      price: 20,
-    ),
-    ApiOrderItemModel(
-      id: 22,
-      name: 'زيت زيتون جاردن من الصالحية - زيت زيتون اصلي',
-      image: _marketImage('1474979266404-7eaacbcd87c5'),
-      quantity: 5,
-      unitLabel: '5*1 كجم',
-      price: 20,
-    ),
-    ApiOrderItemModel(
-      id: 23,
-      name: 'زيت زيتون جاردن من الصالحية - زيت زيتون اصلي',
-      image: _marketImage('1474979266404-7eaacbcd87c5'),
-      quantity: 5,
-      unitLabel: '5*1 كجم',
-      price: 20,
-    ),
+    ApiOrderItemModel.fromJson({
+      'id': 21,
+      'product_name': 'زيت زيتون جاردن من الصالحية - زيت زيتون اصلي',
+      'units_count': 5,
+      'unit_weight': 1,
+      'unit_type': 'kg',
+      'quantity': 5,
+      'line_total': 100,
+    }),
+    ApiOrderItemModel.fromJson({
+      'id': 22,
+      'product_name': 'زيت زيتون جاردن من الصالحية - زيت زيتون اصلي',
+      'units_count': 5,
+      'unit_weight': 1,
+      'unit_type': 'kg',
+      'quantity': 5,
+      'line_total': 100,
+    }),
+    ApiOrderItemModel.fromJson({
+      'id': 23,
+      'product_name': 'زيت زيتون جاردن من الصالحية - زيت زيتون اصلي',
+      'units_count': 5,
+      'unit_weight': 1,
+      'unit_type': 'kg',
+      'quantity': 5,
+      'line_total': 100,
+    }),
   ];
 
-  static ApiOrderDetailsModel _sampleOrder({required int id, required String status, String? cancelReason}) {
+  static ApiOrderDetailsModel _sampleOrder({
+    required int id,
+    required String status,
+    String? cancelReason,
+    DateTime? ratedAt,
+  }) {
     return ApiOrderDetailsModel(
       id: id,
       name: 'Order $id',
       image: const AttachmentEntity.empty(),
-      orderNumber: '#ORD-$id',
+      orderNumber: 'ORD-20260825-0001',
       createdAt: DateTime(2026, 8, 16),
       total: 488,
       status: status,
       description: '',
       address: _riyadhAddress,
       items: _oliveOilItems,
-      paymentMethod: 'electronic',
+      paymentMethod: 'Cash',
       productsPrice: 502,
       deliveryPrice: 106,
       vatAmount: 106,
       cancelReason: cancelReason,
+      ratedAt: ratedAt,
     );
   }
 
   static final List<ApiOrderDetailsModel> _orders = [
     _sampleOrder(id: 10245, status: 'new'),
-    _sampleOrder(id: 10246, status: 'in_progress'),
+    _sampleOrder(id: 10246, status: 'preparing'),
     _sampleOrder(id: 10247, status: 'ready_for_delivery'),
     _sampleOrder(id: 10248, status: 'on_the_way'),
     _sampleOrder(id: 10249, status: 'delivered'),

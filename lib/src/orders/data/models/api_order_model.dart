@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart' as intel;
+
 import '../../../../core/core.dart';
 import '../../../common/domain/enums/orders/order_status_enum.dart';
 import '../../domain/entities/order_entity.dart';
@@ -32,7 +34,19 @@ class ApiOrderModel {
 
   static DateTime? parseOrderDate(dynamic value) {
     if (value == null) return null;
-    return DateTime.tryParse(value.toString());
+    final String text = value.toString().trim();
+    if (text.isEmpty) return null;
+
+    final DateTime? iso = DateTime.tryParse(text);
+    if (iso != null) return iso;
+
+    for (final String pattern in ['yyyy-MM-dd HH:mm:ss', 'yyyy-MM-dd HH:mm']) {
+      try {
+        return intel.DateFormat(pattern).parse(text);
+      } catch (_) {}
+    }
+
+    return null;
   }
 
   static num? parseOrderNum(dynamic value) {
