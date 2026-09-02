@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 import '../../../../../core/core.dart';
 import '../../../../../material/media/svg_icon.dart';
-import '../../../../../material/toast/app_toast.dart';
 
 const double _kQuantitySelectorWidth = 112;
 const double _kQuantitySelectorRadius = 18;
@@ -14,8 +13,15 @@ class UpdateCartItemQuantityWidget extends StatefulWidget {
   final int? cartQuantity;
   final int? availableQuantity;
   final Function(int quantity) onQuantityChanged;
+  final VoidCallback? onExceededAvailableQuantity;
 
-  const UpdateCartItemQuantityWidget({super.key, this.cartQuantity, this.availableQuantity, required this.onQuantityChanged});
+  const UpdateCartItemQuantityWidget({
+    super.key,
+    this.cartQuantity,
+    this.availableQuantity,
+    required this.onQuantityChanged,
+    this.onExceededAvailableQuantity,
+  });
 
   @override
   State<UpdateCartItemQuantityWidget> createState() => _UpdateCartItemQuantityWidgetState();
@@ -46,7 +52,7 @@ class _UpdateCartItemQuantityWidgetState extends State<UpdateCartItemQuantityWid
             icon: AppIcons.add,
             onTap: () {
               if (quantity >= availableQuantity) {
-                AppToasts.error(context, message: appLocalizer.youCannotAddMoreThanTheAvailableQuantity);
+                widget.onExceededAvailableQuantity?.call();
                 return;
               }
               setState(() {

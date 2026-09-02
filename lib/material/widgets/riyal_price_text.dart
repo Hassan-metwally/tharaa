@@ -25,14 +25,20 @@ class RiyalPriceText extends StatelessWidget {
 
   String getPrice() {
     if (checkIfPriceOnly()) {
-      return intl.NumberFormat('###,###.0#', 'en_US').format(double.parse(price));
+      return _formatAmount(double.parse(price));
     } else {
       final newPrice = price.split(' ').firstOrNull ?? '';
       if (newPrice.isEmpty) {
         return '';
       }
-      return intl.NumberFormat('###,###.0#', 'en_US').format(double.parse(newPrice));
+      return _formatAmount(double.parse(newPrice));
     }
+  }
+
+  String _formatAmount(double value) {
+    if (value == 0) return '0';
+    final formatted = intl.NumberFormat('###,###.0#', 'en_US').format(value);
+    return formatted.endsWith('.') ? formatted.substring(0, formatted.length - 1) : formatted;
   }
 
   @override

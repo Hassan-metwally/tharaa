@@ -1446,6 +1446,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get cartTotal => 'Cart total';
 
   @override
+  String get savings => 'Savings';
+
+  @override
   String get grandTotal => 'Grand total';
 
   @override

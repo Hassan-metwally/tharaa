@@ -35,6 +35,14 @@ class _CartPaymentSummary extends StatelessWidget {
                 currencySize: Dimensions.ic14,
               ),
               const SizedBox(height: Dimensions.p8),
+              _CartSummaryRow(
+                label: appLocalizer.savings,
+                price: cart.savingsAmount,
+                labelStyle: TextStyles.regular14.copyWith(color: AppColors.mutedText, height: 1),
+                priceStyle: TextStyles.medium16.copyWith(color: AppColors.chipText, height: 1),
+                currencySize: Dimensions.ic14,
+              ),
+              const SizedBox(height: Dimensions.p8),
               Divider(height: 1, thickness: 1, color: AppColors.black200),
               const SizedBox(height: Dimensions.p8),
               _CartSummaryRow(

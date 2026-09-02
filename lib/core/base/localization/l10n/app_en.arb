@@ -541,6 +541,7 @@
   "emptyCartSubtitle": "You haven't chosen what you like yet! Browse our products, add everything you need to your cart, and start shopping.",
   "paymentSummary": "Payment summary",
   "cartTotal": "Cart total",
+  "savings": "Savings",
   "grandTotal": "Grand total",
   "productNoLongerAvailable": "Sorry, this product is no longer available and cannot be purchased",
   "@-Payment-": {

@@ -15,8 +15,6 @@ import '../../../../material/media/svg_icon.dart';
 import '../../../../material/spin_kit_loading_widget.dart';
 import '../../../../material/toast/app_toast.dart';
 import '../../../../material/widgets/riyal_price_text.dart';
-import '../../../main_page/models/client_main_page_tabs_enum.dart';
-import '../../../main_page/observer/client_main_page_observer.dart';
 import '../../domain/entities/cart_entity.dart';
 import '../../domain/entities/cart_item_entity.dart';
 import '../../domain/usecases/upsert_cart_item_usecase.dart';
@@ -31,7 +29,6 @@ part 'widgets/cart_item_widget.dart';
 part 'widgets/cart_page_body.dart';
 part 'widgets/cart_payment_summary.dart';
 
-const double _kCartActionSize = 48;
 const double _kCartItemHeight = 112;
 const double _kCartItemImageWidth = 104;
 const double _kCartBottomNavClearance = 96;
@@ -99,12 +96,11 @@ class _CartPageState extends State<_CartPage> {
               backgroundColor: AppColors.primary,
               child: cart.items.isEmpty
                   ? AppEmptyWidget(
-                    heightPercentage: 0.5,
                       text: appLocalizer.emptyCartTitle,
                       subText: appLocalizer.emptyCartSubtitle,
                       imagePath: AppImages.emptyCart,
                       imageFit: BoxFit.contain,
-                      imageSize: 200 / 0.5,
+                      imageSize: 200 / 0.7,
                       spacing: Dimensions.p32 / 0.5,
                       subTextSpacing: Dimensions.p16,
                       textStyle: TextStyles.semiBold22.copyWith(color: AppColors.black, height: 1, fontWeight: FontWeight.w600),

@@ -18,28 +18,36 @@ class UpsertCartItemUsecase extends IUseCase<CartEntity, AddToCartParams> {
 
 class AddToCartParams extends Equatable {
   final int productId;
+  final int? cartItemId;
   final int? quantity;
   final UpsertTypeEnum upsertType;
-  const AddToCartParams({required this.productId, this.quantity, required this.upsertType});
+  const AddToCartParams({required this.productId, this.cartItemId, this.quantity, required this.upsertType});
 
   factory AddToCartParams.initial() => const AddToCartParams(productId: 1, quantity: 1, upsertType: UpsertTypeEnum.add);
 
-  AddToCartParams copyWith({int? productId, int? quantity, UpsertTypeEnum? upsertType}) {
+  AddToCartParams copyWith({int? productId, int? cartItemId, int? quantity, UpsertTypeEnum? upsertType}) {
     return AddToCartParams(
       productId: productId ?? this.productId,
+      cartItemId: cartItemId ?? this.cartItemId,
       quantity: quantity ?? this.quantity,
       upsertType: upsertType ?? this.upsertType,
     );
   }
 
-  Map<String, dynamic> get toMap => {
-    if (upsertType == UpsertTypeEnum.update) '_method': 'PATCH',
-    if (upsertType == UpsertTypeEnum.add) 'product_id': productId,
-    'quantity': quantity,
-  };
+  Map<String, dynamic> get toMap {
+    switch (upsertType) {
+      case UpsertTypeEnum.add:
+        return {'product_id': productId, 'quantity': quantity ?? 1};
+      case UpsertTypeEnum.increase:
+      case UpsertTypeEnum.decrease:
+        return {'quantity': quantity ?? 1};
+      case UpsertTypeEnum.update:
+        return {'_method': 'PATCH', 'quantity': quantity};
+    }
+  }
 
   @override
-  List<Object?> get props => [productId, quantity, upsertType];
+  List<Object?> get props => [productId, cartItemId, quantity, upsertType];
 }
 
-enum UpsertTypeEnum { add, update }
+enum UpsertTypeEnum { add, update, increase, decrease }

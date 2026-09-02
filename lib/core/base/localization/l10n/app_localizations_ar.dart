@@ -1441,6 +1441,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get cartTotal => 'مجموع السلة';
 
   @override
+  String get savings => 'مبلغ التوفير';
+
+  @override
   String get grandTotal => 'المبلغ الإجمالي';
 
   @override

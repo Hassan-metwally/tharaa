@@ -2948,6 +2948,12 @@ abstract class AppLocalizations {
   /// **'Cart total'**
   String get cartTotal;
 
+  /// No description provided for @savings.
+  ///
+  /// In en, this message translates to:
+  /// **'Savings'**
+  String get savings;
+
   /// No description provided for @grandTotal.
   ///
   /// In en, this message translates to:

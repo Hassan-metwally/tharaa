@@ -15,7 +15,7 @@ class _CartPageBody extends StatelessWidget {
       children: [
         for (int index = 0; index < cart.items.length; index++) ...[
           MultiBlocProvider(
-            key: ValueKey(cart.items[index].productId),
+            key: ValueKey(cart.items[index].id),
             providers: [
               BlocProvider<UpsertCartItemCubit>(create: (context) => injector<UpsertCartItemCubit>()),
               BlocProvider<DeleteCartItemCubit>(create: (context) => injector<DeleteCartItemCubit>()),

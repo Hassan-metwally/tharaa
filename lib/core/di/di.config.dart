@@ -55,7 +55,6 @@ import '../../src/authentication/domain/use_case/resend_otp_use_case.dart'
 import '../../src/authentication/domain/use_case/verify_otp_use_case.dart'
     as _i902;
 import '../../src/cart/data/datasource/cart_datasource.dart' as _i690;
-import '../../src/cart/data/datasource/cart_mock_datasource.dart' as _i646;
 import '../../src/cart/data/repositories/cart_repository_impl.dart' as _i933;
 import '../../src/cart/domain/repositories/cart_repository.dart' as _i630;
 import '../../src/cart/domain/usecases/delete_cart_item_usecase.dart' as _i607;
@@ -277,7 +276,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i401.MapsDataSource>(
       () => _i401.MapsDataSourceImpl(gh<_i351.DioHelper>()),
     );
-    gh.factory<_i690.CartDatasource>(() => _i646.CartMockDatasource());
     gh.factory<_i581.StatisticsRepository>(
       () => _i550.StatisticsRepositoryImpl(gh<_i1069.StatisticsDatasource>()),
     );
@@ -289,6 +287,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i758.MenuCommonDatasource>(
       () => _i758.MenuCommonDatasourceImpl(gh<_i351.DioHelper>()),
+    );
+    gh.factory<_i690.CartDatasource>(
+      () => _i690.CartDatasourceImpl(gh<_i351.DioHelper>()),
     );
     gh.factory<_i351.SecureStorageRepository>(
       () =>

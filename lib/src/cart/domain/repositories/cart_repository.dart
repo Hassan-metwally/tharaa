@@ -6,7 +6,7 @@ import '../usecases/upsert_cart_item_usecase.dart';
 abstract class CartRepository {
   DomainServiceType<CartEntity> getCartItems(NoParams params);
   DomainServiceType<CartEntity> upsertCartItem(AddToCartParams params);
-  DomainServiceType<CartEntity> deleteItemFromCart(int itemId);
+  DomainServiceType<CartEntity> deleteItemFromCart(int cartItemId);
   DomainServiceType<CartEntity> updateCartDeliveryFees(UpdateCartDeliveryFeesParams params);
   DomainServiceType<String> checkoutCart(NoParams params);
 }

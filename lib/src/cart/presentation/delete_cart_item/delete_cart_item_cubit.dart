@@ -13,9 +13,9 @@ class DeleteCartItemCubit extends Cubit<DeleteCartItemState> {
   final DeleteCartItemUsecase _deleteCartItemUsecase;
   DeleteCartItemCubit(this._deleteCartItemUsecase) : super(DeleteCartItemState.initial());
 
-  Future<void> deleteCartItem(int itemId) async {
+  Future<void> deleteCartItem(int cartItemId) async {
     emit(state.copyWith(deleteItemsState: Async.loading()));
-    final result = await _deleteCartItemUsecase(itemId);
+    final result = await _deleteCartItemUsecase(cartItemId);
     result.fold(
       (failure) {
         emit(state.copyWith(deleteItemsState: Async.failure(failure)));

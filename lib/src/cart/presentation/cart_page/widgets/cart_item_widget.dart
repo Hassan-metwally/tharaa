@@ -10,15 +10,28 @@ class _CartItemWidget extends StatefulWidget {
 
 class __CartItemWidgetState extends State<_CartItemWidget> {
   Timer? _debounceTimer;
+  bool _exceededAvailableQuantity = false;
 
-  bool get _isUnavailable => widget.item.availableQuantity != null && widget.item.availableQuantity! <= 0;
+  bool get _isUnavailable =>
+      widget.item.unavailable ||
+      (widget.item.availableQuantity != null && widget.item.availableQuantity! <= 0) ||
+      _exceededAvailableQuantity;
 
-  void _onQuantityChanged(BuildContext context, CartItemEntity updatedItem) async {
+  void _onQuantityChanged(BuildContext context, int newQuantity) async {
+    final delta = newQuantity - widget.item.cartQuantity;
+    if (delta == 0) return;
+
     _debounceTimer?.cancel();
     _debounceTimer = null;
     _debounceTimer = Timer(const Duration(milliseconds: 700), () {
+      final upsertType = delta > 0 ? UpsertTypeEnum.increase : UpsertTypeEnum.decrease;
       context.read<UpsertCartItemCubit>().updateParams(
-        AddToCartParams(productId: updatedItem.productId, quantity: updatedItem.cartQuantity, upsertType: UpsertTypeEnum.update),
+        AddToCartParams(
+          productId: widget.item.productId,
+          cartItemId: widget.item.id,
+          quantity: delta.abs(),
+          upsertType: upsertType,
+        ),
       );
       context.read<UpsertCartItemCubit>().upsertCartItem();
     });
@@ -60,8 +73,15 @@ class __CartItemWidgetState extends State<_CartItemWidget> {
           _CartItemCard(
             item: widget.item,
             onQuantityChanged: (quantity) {
-              final updatedItem = widget.item.copyWith(cartQuantity: quantity);
-              _onQuantityChanged(context, updatedItem);
+              if (_exceededAvailableQuantity) {
+                setState(() => _exceededAvailableQuantity = false);
+              }
+              _onQuantityChanged(context, quantity);
+            },
+            onExceededAvailableQuantity: () {
+              if (!_exceededAvailableQuantity) {
+                setState(() => _exceededAvailableQuantity = true);
+              }
             },
           ),
           if (_isUnavailable) ...[const SizedBox(height: Dimensions.p16), const _CartUnavailableNotice()],
@@ -72,10 +92,11 @@ class __CartItemWidgetState extends State<_CartItemWidget> {
 }
 
 class _CartItemCard extends StatelessWidget {
-  const _CartItemCard({required this.item, required this.onQuantityChanged});
+  const _CartItemCard({required this.item, required this.onQuantityChanged, this.onExceededAvailableQuantity});
 
   final CartItemEntity item;
   final ValueChanged<int> onQuantityChanged;
+  final VoidCallback? onExceededAvailableQuantity;
 
   @override
   Widget build(BuildContext context) {
@@ -115,7 +136,7 @@ class _CartItemCard extends StatelessWidget {
                         }
                         return GestureDetector(
                           onTap: () {
-                            context.read<DeleteCartItemCubit>().deleteCartItem(item.productId);
+                            context.read<DeleteCartItemCubit>().deleteCartItem(item.id);
                             CartItemsCountSubscription.pushUpdate(NoParams());
                           },
                           child: AppSvgIcon(path: AppIcons.trash, width: Dimensions.ic20, height: Dimensions.ic20),
@@ -139,6 +160,7 @@ class _CartItemCard extends StatelessWidget {
                       availableQuantity: item.availableQuantity,
                       cartQuantity: item.cartQuantity,
                       onQuantityChanged: onQuantityChanged,
+                      onExceededAvailableQuantity: onExceededAvailableQuantity,
                     ),
                   ],
                 ),

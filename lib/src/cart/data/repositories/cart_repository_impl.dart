@@ -15,9 +15,9 @@ class CartRepositoryImpl extends CartRepository {
   CartRepositoryImpl(this._dataSource);
 
   @override
-  DomainServiceType<CartEntity> deleteItemFromCart(int itemId) async {
+  DomainServiceType<CartEntity> deleteItemFromCart(int cartItemId) async {
     return await failureCollect(() async {
-      final result = await _dataSource.deleteItemFromCart(itemId);
+      final result = await _dataSource.deleteItemFromCart(cartItemId);
       return Right(result.map);
     });
   }

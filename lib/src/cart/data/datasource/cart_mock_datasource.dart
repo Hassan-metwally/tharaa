@@ -21,14 +21,14 @@ class _MockCatalogProduct {
   const _MockCatalogProduct({required this.id, required this.name, required this.image, required this.unitPrice}) : availableQuantity = 50;
 }
 
-@Injectable(as: CartDatasource)
+// @Injectable(as: CartDatasource)
 class CartMockDatasource extends CartDatasource {
   static const _delay = Duration(milliseconds: 400);
-  static const _cartId = 1;
-  static const _taxRate = 0.15;
   static const _defaultDeliveryPrice = 15.0;
+  static const _savingsRate = 0.1;
 
   static num _deliveryPrice = _defaultDeliveryPrice;
+  static int _nextCartItemId = 1;
 
   static final Map<int, _MockCatalogProduct> _catalog = {
     for (final product in [
@@ -80,38 +80,73 @@ class CartMockDatasource extends CartDatasource {
       throw ServerException(message: 'Quantity must be at least 1');
     }
 
+    switch (params.upsertType) {
+      case UpsertTypeEnum.add:
+        return _addCartItem(params, quantity);
+      case UpsertTypeEnum.increase:
+        return _changeCartItemQuantity(params.cartItemId, quantity, isIncrease: true);
+      case UpsertTypeEnum.decrease:
+        return _changeCartItemQuantity(params.cartItemId, quantity, isIncrease: false);
+      case UpsertTypeEnum.update:
+        return _setCartItemQuantity(params.productId, quantity);
+    }
+  }
+
+  Future<ApiCartModel> _addCartItem(AddToCartParams params, int quantity) async {
     final existingIndex = _items.indexWhere((item) => item.productId == params.productId);
 
-    if (params.upsertType == UpsertTypeEnum.add) {
-      if (existingIndex >= 0) {
-        final existing = _items[existingIndex];
-        final nextQuantity = (existing.cartQuantity ?? 0) + quantity;
-        _assertAvailableQuantity(existing, nextQuantity);
-        _items[existingIndex] = _withQuantity(existing, nextQuantity);
-      } else {
-        final catalogProduct = _catalog[params.productId];
-        if (catalogProduct == null) {
-          throw ServerException(message: 'Product not found');
-        }
-        _assertAvailableQuantity(_itemFromCatalog(catalogProduct, quantity: quantity), quantity);
-        _items.add(_itemFromCatalog(catalogProduct, quantity: quantity));
-      }
-    } else {
-      if (existingIndex < 0) {
-        throw ServerException(message: 'Cart item not found');
-      }
+    if (existingIndex >= 0) {
       final existing = _items[existingIndex];
-      _assertAvailableQuantity(existing, quantity);
-      _items[existingIndex] = _withQuantity(existing, quantity);
+      final nextQuantity = (existing.cartQuantity ?? 0) + quantity;
+      _assertAvailableQuantity(existing, nextQuantity);
+      _items[existingIndex] = _withQuantity(existing, nextQuantity);
+    } else {
+      final catalogProduct = _catalog[params.productId];
+      if (catalogProduct == null) {
+        throw ServerException(message: 'Product not found');
+      }
+      _assertAvailableQuantity(_itemFromCatalog(catalogProduct, quantity: quantity), quantity);
+      _items.add(_itemFromCatalog(catalogProduct, quantity: quantity));
     }
 
     return _buildCart();
   }
 
+  Future<ApiCartModel> _changeCartItemQuantity(int? cartItemId, int delta, {required bool isIncrease}) async {
+    if (cartItemId == null) {
+      throw ServerException(message: 'Cart item not found');
+    }
+
+    final existingIndex = _items.indexWhere((item) => item.id == cartItemId);
+    if (existingIndex < 0) {
+      throw ServerException(message: 'Cart item not found');
+    }
+
+    final existing = _items[existingIndex];
+    final currentQuantity = existing.cartQuantity ?? 0;
+    final nextQuantity = isIncrease ? currentQuantity + delta : (currentQuantity - delta).clamp(1, currentQuantity);
+
+    _assertAvailableQuantity(existing, nextQuantity);
+    _items[existingIndex] = _withQuantity(existing, nextQuantity);
+
+    return _buildCart();
+  }
+
+  Future<ApiCartModel> _setCartItemQuantity(int productId, int quantity) async {
+    final existingIndex = _items.indexWhere((item) => item.productId == productId);
+    if (existingIndex < 0) {
+      throw ServerException(message: 'Cart item not found');
+    }
+    final existing = _items[existingIndex];
+    _assertAvailableQuantity(existing, quantity);
+    _items[existingIndex] = _withQuantity(existing, quantity);
+    return _buildCart();
+  }
+
   @override
-  Future<ApiCartModel> deleteItemFromCart(int itemId) async {
+  Future<ApiCartModel> deleteItemFromCart(int cartItemId) async {
     await Future<void>.delayed(_delay);
-    final existingIndex = _items.indexWhere((item) => item.productId == itemId);
+    final existingIndex = _items.indexWhere((item) => item.id == cartItemId);
     if (existingIndex < 0) {
       throw ServerException(message: 'Cart item not found');
     }
@@ -138,25 +173,30 @@ class CartMockDatasource extends CartDatasource {
     return 'Order placed successfully';
   }
 
-  static ApiCartItemModel _itemFromCatalog(_MockCatalogProduct product, {required int quantity}) {
+  static ApiCartItemModel _itemFromCatalog(_MockCatalogProduct product, {required int quantity, int? id}) {
     return ApiCartItemModel(
+      id: id ?? _nextCartItemId++,
       productId: product.id,
       productName: product.name,
       productImage: product.image,
       cartQuantity: quantity,
       availableQuantity: product.availableQuantity,
+      unavailable: product.availableQuantity <= 0,
       price: _format(product.unitPrice * quantity),
     );
   }
 
   static ApiCartItemModel _withQuantity(ApiCartItemModel item, int quantity) {
     final unitPrice = _catalog[item.productId]?.unitPrice ?? 0;
+    final availableQuantity = item.availableQuantity;
     return ApiCartItemModel(
+      id: item.id,
       productId: item.productId,
       productName: item.productName,
       productImage: item.productImage,
       cartQuantity: quantity,
-      availableQuantity: item.availableQuantity,
+      availableQuantity: availableQuantity,
+      unavailable: availableQuantity != null && availableQuantity <= 0,
       price: _format(unitPrice * quantity),
     );
   }
@@ -169,17 +209,19 @@ class CartMockDatasource extends CartDatasource {
   }
 
   static ApiCartModel _buildCart() {
-    final productsPrice = _items.fold<num>(0, (sum, item) => sum + (num.tryParse(item.price ?? '0') ?? 0));
-    final taxAmount = productsPrice * _taxRate;
-    final totalPrice = productsPrice + _deliveryPrice;
+    final lineTotal = _items.fold<num>(0, (sum, item) => sum + (num.tryParse(item.price ?? '0') ?? 0));
+    final savingsAmount = lineTotal * _savingsRate;
+    final cartTotal = lineTotal + savingsAmount;
+    final hasUnavailableItems = _items.any((item) => item.unavailable == true);
 
     return ApiCartModel(
-      id: _cartId,
       items: List<ApiCartItemModel>.from(_items),
-      productsPrice: _format(productsPrice),
+      productsPrice: _format(cartTotal),
       deliveryPrice: _format(_deliveryPrice),
-      totalPrice: _format(totalPrice),
-      taxAmount: _format(taxAmount),
+      totalPrice: _format(lineTotal),
+      taxAmount: '',
+      savingsAmount: _format(savingsAmount),
+      hasUnavailableItems: hasUnavailableItems,
     );
   }
 
