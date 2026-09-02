@@ -2,8 +2,11 @@ import '../../../../../../core/core.dart';
 import '../../../addresses/data/models/api_location_model.dart';
 import '../../../common/domain/enums/orders/order_status_enum.dart';
 import '../../domain/usecases/add_order_usecase.dart';
+import '../../domain/usecases/apply_checkout_coupon_usecase.dart';
 import '../../domain/usecases/get_orders_usecase.dart';
+import '../../domain/usecases/preview_checkout_usecase.dart';
 import '../../domain/usecases/toggle_order_status_usecase.dart';
+import '../models/api_checkout_preview_model.dart';
 import '../models/api_order_details_model.dart';
 import '../models/api_order_item_model.dart';
 import '../models/api_order_model.dart';
@@ -136,14 +139,36 @@ class OrdersMockDatasource extends OrdersDatasource {
     );
   }
 
+  static const ApiCheckoutPreviewModel _previewData = ApiCheckoutPreviewModel(
+    productsExclTax: 34,
+    deliveryFee: 15,
+    vat: 39.1,
+    discountPercent: 10,
+    total: 50.7,
+  );
+
+  @override
+  Future<ApiCheckoutPreviewModel> previewCheckout(PreviewCheckoutParams params) async {
+    await Future<void>.delayed(_delay);
+    return _previewData;
+  }
+
+  @override
+  Future<ApiCheckoutPreviewModel> applyCheckoutCoupon(ApplyCheckoutCouponParams params) async {
+    await Future<void>.delayed(_delay);
+    return _previewData;
+  }
+
   @override
   Future<ApiOrderModel> addOrder(UpsertOrderParams params) async {
     await Future<void>.delayed(_delay);
     return ApiOrderModel(
-      id: 10251,
-      name: 'Order 10251',
+      id: 2,
+      name: 'ORD-20260825-0001',
       image: const AttachmentEntity.empty(),
-      orderNumber: '#ORD-10251',
+      orderNumber: 'ORD-20260825-0001',
+      total: 50.7,
+      status: 'new',
     );
   }
 }

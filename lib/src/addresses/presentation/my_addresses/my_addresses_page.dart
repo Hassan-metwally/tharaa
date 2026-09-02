@@ -1,5 +1,3 @@
-import 'dart:math' as math;
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
@@ -10,21 +8,13 @@ import '../../../../material/app_fail_widget.dart';
 import '../../../../material/media/svg_icon.dart';
 import '../../../../material/spin_kit_loading_widget.dart';
 import '../../domain/entities/location_entity.dart';
-import '../../domain/usecases/delete_location_use_case.dart';
 import '../upsert_address/upsert_address_page.dart';
 import '../utils/products_subscription.dart';
+import '../widgets/address_tile.dart';
 import '../widgets/empty_addresses_list_body.dart';
-import '../widgets/remove_address_bottom_sheet.dart';
 import 'my_addresses_cubit.dart';
 
-part 'widgets/addresses_tile.dart';
-
-const Color _kAddressCardFill = Color(0xFFF7F8FA);
-const Color _kAddressDescriptionColor = Color(0xFF94A3B8);
 const double _kAddIconSize = 18;
-const double _kAddressArrowSize = 32;
-const double _kAddressArrowIconSize = 16;
-const double _kAddressArrowRotationDeg = 34.84;
 
 class MyAddressesPage extends StatefulWidget {
   const MyAddressesPage({super.key});
@@ -130,7 +120,7 @@ class _AddAddressButton extends StatelessWidget {
         height: 40,
         padding: const EdgeInsets.symmetric(horizontal: Dimensions.p10),
         alignment: Alignment.center,
-        decoration: BoxDecoration(color: _kAddressCardFill, borderRadius: BorderRadius.circular(80)),
+        decoration: BoxDecoration(color: kAddressCardFill, borderRadius: BorderRadius.circular(80)),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: isRtl ? [label, const SizedBox(width: Dimensions.p4), icon] : [icon, const SizedBox(width: Dimensions.p4), label],

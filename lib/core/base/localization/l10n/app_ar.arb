@@ -611,5 +611,18 @@
         "type": "int"
       }
     }
-  }
+  },
+  "deliveryMethod": "طريقة التسليم",
+  "homeDelivery": "توصيل إلى المنزل",
+  "storePickup": "استلام من المتجر",
+  "addNewAddress": "إضافة عنوان جديد",
+  "cash": "كاش",
+  "electronicShort": "إلكترونى",
+  "discountCoupon": "كوبون الخصم",
+  "enterDiscountCoupon": "أدخل كوبون الخصم",
+  "invoiceDetails": "تفاصيل الفاتورة",
+  "discount": "الخصم",
+  "placeOrder": "إتمام الطلب",
+  "selectDeliveryAddress": "يرجى اختيار عنوان التوصيل",
+  "orderPlacedSuccessfully": "تم إتمام الطلب بنجاح"
 }

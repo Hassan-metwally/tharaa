@@ -175,7 +175,11 @@ import '../../src/orders/data/repositories/orders_repository_impl.dart'
     as _i833;
 import '../../src/orders/domain/repositories/orders_repository.dart' as _i247;
 import '../../src/orders/domain/usecases/add_order_usecase.dart' as _i496;
+import '../../src/orders/domain/usecases/apply_checkout_coupon_usecase.dart'
+    as _i18;
 import '../../src/orders/domain/usecases/get_orders_usecase.dart' as _i488;
+import '../../src/orders/domain/usecases/preview_checkout_usecase.dart'
+    as _i364;
 import '../../src/orders/domain/usecases/show_order_details_usecase.dart'
     as _i770;
 import '../../src/orders/domain/usecases/toggle_order_status_usecase.dart'
@@ -637,8 +641,14 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i496.AddOrderUsecase>(
       () => _i496.AddOrderUsecase(gh<_i247.OrdersRepository>()),
     );
+    gh.factory<_i18.ApplyCheckoutCouponUsecase>(
+      () => _i18.ApplyCheckoutCouponUsecase(gh<_i247.OrdersRepository>()),
+    );
     gh.factory<_i488.GetOrdersUsecase>(
       () => _i488.GetOrdersUsecase(gh<_i247.OrdersRepository>()),
+    );
+    gh.factory<_i364.PreviewCheckoutUsecase>(
+      () => _i364.PreviewCheckoutUsecase(gh<_i247.OrdersRepository>()),
     );
     gh.factory<_i770.ShowOrderDetailsUsecase>(
       () => _i770.ShowOrderDetailsUsecase(gh<_i247.OrdersRepository>()),
@@ -668,7 +678,11 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i779.AdsCubit(gh<_i161.GetAllAdsUsecase>()),
     );
     gh.factory<_i383.AddOrderCubit>(
-      () => _i383.AddOrderCubit(gh<_i496.AddOrderUsecase>()),
+      () => _i383.AddOrderCubit(
+        gh<_i496.AddOrderUsecase>(),
+        gh<_i364.PreviewCheckoutUsecase>(),
+        gh<_i18.ApplyCheckoutCouponUsecase>(),
+      ),
     );
     gh.factory<_i388.GetChatsInboxUsecase>(
       () => _i388.GetChatsInboxUsecase(gh<_i34.ChatsInboxRepository>()),

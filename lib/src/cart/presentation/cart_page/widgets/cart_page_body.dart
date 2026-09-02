@@ -31,7 +31,7 @@ class _CartPageBody extends StatelessWidget {
           text: appLocalizer.completeOrder,
           textStyle: TextStyles.semiBold18.copyWith(color: AppColors.white, height: 1, fontWeight: FontWeight.w600),
           onPressed: () {
-            // AppRouter.pushNamed(AppRoutes.addClientProductOrderPage, arguments: AddClientProductOrderPage(cart: widget.cart));
+            AppRouter.pushNamed(AppRoutes.addOrderPage);
           },
         ),
       ],

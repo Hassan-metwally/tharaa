@@ -608,5 +608,18 @@
         "type": "int"
       }
     }
-  }
+  },
+  "deliveryMethod": "Delivery method",
+  "homeDelivery": "Home delivery",
+  "storePickup": "Store pickup",
+  "addNewAddress": "Add new address",
+  "cash": "Cash",
+  "electronicShort": "Electronic",
+  "discountCoupon": "Discount coupon",
+  "enterDiscountCoupon": "Enter discount coupon",
+  "invoiceDetails": "Invoice details",
+  "discount": "Discount",
+  "placeOrder": "Place order",
+  "selectDeliveryAddress": "Please select a delivery address",
+  "orderPlacedSuccessfully": "Order placed successfully"
 }

@@ -3253,6 +3253,84 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Quantity: {count}'**
   String quantityCount(int count);
+
+  /// No description provided for @deliveryMethod.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery method'**
+  String get deliveryMethod;
+
+  /// No description provided for @homeDelivery.
+  ///
+  /// In en, this message translates to:
+  /// **'Home delivery'**
+  String get homeDelivery;
+
+  /// No description provided for @storePickup.
+  ///
+  /// In en, this message translates to:
+  /// **'Store pickup'**
+  String get storePickup;
+
+  /// No description provided for @addNewAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Add new address'**
+  String get addNewAddress;
+
+  /// No description provided for @cash.
+  ///
+  /// In en, this message translates to:
+  /// **'Cash'**
+  String get cash;
+
+  /// No description provided for @electronicShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Electronic'**
+  String get electronicShort;
+
+  /// No description provided for @discountCoupon.
+  ///
+  /// In en, this message translates to:
+  /// **'Discount coupon'**
+  String get discountCoupon;
+
+  /// No description provided for @enterDiscountCoupon.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter discount coupon'**
+  String get enterDiscountCoupon;
+
+  /// No description provided for @invoiceDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Invoice details'**
+  String get invoiceDetails;
+
+  /// No description provided for @discount.
+  ///
+  /// In en, this message translates to:
+  /// **'Discount'**
+  String get discount;
+
+  /// No description provided for @placeOrder.
+  ///
+  /// In en, this message translates to:
+  /// **'Place order'**
+  String get placeOrder;
+
+  /// No description provided for @selectDeliveryAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a delivery address'**
+  String get selectDeliveryAddress;
+
+  /// No description provided for @orderPlacedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Order placed successfully'**
+  String get orderPlacedSuccessfully;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

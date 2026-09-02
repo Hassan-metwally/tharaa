@@ -3,12 +3,13 @@ import 'package:injectable/injectable.dart';
 import '../../../../../../core/core.dart';
 
 import '../../domain/usecases/add_order_usecase.dart';
+import '../../domain/usecases/apply_checkout_coupon_usecase.dart';
 import '../../domain/usecases/get_orders_usecase.dart';
-
+import '../../domain/usecases/preview_checkout_usecase.dart';
 import '../../domain/usecases/toggle_order_status_usecase.dart';
 
+import '../models/api_checkout_preview_model.dart';
 import '../models/api_order_details_model.dart';
-
 import '../models/api_order_model.dart';
 
 abstract class OrdersDatasource {
@@ -17,6 +18,10 @@ abstract class OrdersDatasource {
   Future<ApiPaginatedData<ApiOrderModel>> getOrders(GetOrdersParams params);
 
   Future<String> toggleOrderStatus(ToggleOrderStatusParams params);
+
+  Future<ApiCheckoutPreviewModel> previewCheckout(PreviewCheckoutParams params);
+
+  Future<ApiCheckoutPreviewModel> applyCheckoutCoupon(ApplyCheckoutCouponParams params);
 
   Future<ApiOrderModel> addOrder(UpsertOrderParams params);
 }
@@ -73,12 +78,41 @@ class OrdersDatasourceImpl extends OrdersDatasource {
     }
   }
 
+  @override
+  Future<ApiCheckoutPreviewModel> previewCheckout(PreviewCheckoutParams params) async {
+    try {
+      final response = await _dioHelper.post(
+        url: ApiConstants.addToApiUrlPath('checkout/preview'),
+        body: params.toMap,
+      );
+      return ApiCheckoutPreviewModel.fromJson(response['data'] as Map<String, dynamic>);
+    } catch (_) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<ApiCheckoutPreviewModel> applyCheckoutCoupon(ApplyCheckoutCouponParams params) async {
+    try {
+      final response = await _dioHelper.post(
+        url: ApiConstants.addToApiUrlPath('checkout/apply-coupon'),
+        body: params.toMap,
+      );
+      return ApiCheckoutPreviewModel.fromJson(response['data'] as Map<String, dynamic>);
+    } catch (_) {
+      rethrow;
+    }
+  }
 
   @override
   Future<ApiOrderModel> addOrder(UpsertOrderParams params) async {
     try {
-      final response = await _dioHelper.post(url: "ApiConstants.appRoleApi('/order')", body: params.toMap);
-      return ApiOrderModel.fromJson(response['data']);
+      final response = await _dioHelper.post(
+        url: ApiConstants.addToApiUrlPath('checkout/place'),
+        body: params.toMap,
+      );
+      final data = response['data'] as Map<String, dynamic>;
+      return ApiOrderModel.fromJson(data['order'] as Map<String, dynamic>);
     } catch (_) {
       rethrow;
     }

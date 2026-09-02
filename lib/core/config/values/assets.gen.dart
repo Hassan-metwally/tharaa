@@ -74,6 +74,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/camera.svg
   String get camera => 'assets/icons/camera.svg';
 
+  /// File path: assets/icons/card.svg
+  String get card => 'assets/icons/card.svg';
+
   /// File path: assets/icons/check-circle-solid.svg
   String get checkCircleSolid => 'assets/icons/check-circle-solid.svg';
 
@@ -129,6 +132,9 @@ class $AssetsIconsGen {
 
   /// File path: assets/icons/mobile.svg
   String get mobile => 'assets/icons/mobile.svg';
+
+  /// File path: assets/icons/money.svg
+  String get money => 'assets/icons/money.svg';
 
   /// File path: assets/icons/notification-bing.svg
   String get notificationBing => 'assets/icons/notification-bing.svg';
@@ -200,6 +206,7 @@ class $AssetsIconsGen {
     calendar,
     callCalling,
     camera,
+    card,
     checkCircleSolid,
     copy,
     documentText,
@@ -218,6 +225,7 @@ class $AssetsIconsGen {
     minus,
     mobileBulk,
     mobile,
+    money,
     notificationBing,
     profileAdd,
     profileBulk,

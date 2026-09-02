@@ -1596,4 +1596,43 @@ class AppLocalizationsAr extends AppLocalizations {
   String quantityCount(int count) {
     return 'الكمية: $count';
   }
+
+  @override
+  String get deliveryMethod => 'طريقة التسليم';
+
+  @override
+  String get homeDelivery => 'توصيل إلى المنزل';
+
+  @override
+  String get storePickup => 'استلام من المتجر';
+
+  @override
+  String get addNewAddress => 'إضافة عنوان جديد';
+
+  @override
+  String get cash => 'كاش';
+
+  @override
+  String get electronicShort => 'إلكترونى';
+
+  @override
+  String get discountCoupon => 'كوبون الخصم';
+
+  @override
+  String get enterDiscountCoupon => 'أدخل كوبون الخصم';
+
+  @override
+  String get invoiceDetails => 'تفاصيل الفاتورة';
+
+  @override
+  String get discount => 'الخصم';
+
+  @override
+  String get placeOrder => 'إتمام الطلب';
+
+  @override
+  String get selectDeliveryAddress => 'يرجى اختيار عنوان التوصيل';
+
+  @override
+  String get orderPlacedSuccessfully => 'تم إتمام الطلب بنجاح';
 }

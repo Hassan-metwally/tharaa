@@ -1601,4 +1601,43 @@ class AppLocalizationsEn extends AppLocalizations {
   String quantityCount(int count) {
     return 'Quantity: $count';
   }
+
+  @override
+  String get deliveryMethod => 'Delivery method';
+
+  @override
+  String get homeDelivery => 'Home delivery';
+
+  @override
+  String get storePickup => 'Store pickup';
+
+  @override
+  String get addNewAddress => 'Add new address';
+
+  @override
+  String get cash => 'Cash';
+
+  @override
+  String get electronicShort => 'Electronic';
+
+  @override
+  String get discountCoupon => 'Discount coupon';
+
+  @override
+  String get enterDiscountCoupon => 'Enter discount coupon';
+
+  @override
+  String get invoiceDetails => 'Invoice details';
+
+  @override
+  String get discount => 'Discount';
+
+  @override
+  String get placeOrder => 'Place order';
+
+  @override
+  String get selectDeliveryAddress => 'Please select a delivery address';
+
+  @override
+  String get orderPlacedSuccessfully => 'Order placed successfully';
 }

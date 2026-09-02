@@ -10,6 +10,7 @@ class AppRoutes {
   static const myAddressesPage = '/MyAddressesPage';
   static const showProductDetailsPage = '/ShowProductDetailsPage';
   static const showOrderDetailsPage = '/ShowOrderDetailsPage';
+  static const addOrderPage = '/AddOrderPage';
   static const couponsPage = '/couponsPage';
 
   /// Common and static and common pages

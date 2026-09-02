@@ -3,8 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../../../core/core.dart';
-import '../../../../material/inputs/validator_field/validator_field.dart';
+import '../../../../core/core.dart';
 import '../entities/order_entity.dart';
 import '../repositories/orders_repository.dart';
 
@@ -21,50 +20,53 @@ class AddOrderUsecase extends IUseCase<OrderEntity, UpsertOrderParams> {
 }
 
 class UpsertOrderParams extends Equatable {
-  final int? id;
-  final GlobalKey<FormState> formKey;
-  final TextEditingController name;
-  final ValidatorFieldController<AttachmentEntity?> imageController;
+  final String deliveryMethod;
+  final String paymentMethod;
+  final int? addressId;
+  final TextEditingController couponCode;
 
-  const UpsertOrderParams({this.id, required this.formKey, required this.name, required this.imageController});
+  const UpsertOrderParams({
+    required this.deliveryMethod,
+    required this.paymentMethod,
+    this.addressId,
+    required this.couponCode,
+  });
 
   UpsertOrderParams.initial()
-    : this(
-        id: null,
-        formKey: GlobalKey<FormState>(),
-        name: TextEditingController(),
-        imageController: ValidatorFieldController<AttachmentEntity?>(),
-      );
+    : deliveryMethod = 'home_delivery',
+      paymentMethod = 'electronic',
+      addressId = null,
+      couponCode = TextEditingController();
 
   UpsertOrderParams copyWith({
-    int? id,
-    TextEditingController? name,
-    TextEditingController? mobile,
-    ValidatorFieldController<AttachmentEntity?>? imageController,
+    String? deliveryMethod,
+    String? paymentMethod,
+    int? addressId,
+    bool clearAddressId = false,
   }) {
     return UpsertOrderParams(
-      id: id ?? this.id,
-      formKey: formKey,
-      name: name ?? this.name,
-      imageController: imageController ?? this.imageController,
+      deliveryMethod: deliveryMethod ?? this.deliveryMethod,
+      paymentMethod: paymentMethod ?? this.paymentMethod,
+      addressId: clearAddressId ? null : (addressId ?? this.addressId),
+      couponCode: couponCode,
     );
   }
 
-  factory UpsertOrderParams.fromEntity(OrderEntity entity) {
-    return UpsertOrderParams(
-      id: entity.id,
-      formKey: GlobalKey<FormState>(),
-      name: TextEditingController(text: entity.name),
-      imageController: ValidatorFieldController<AttachmentEntity?>(initialValue: entity.image),
-    );
+  Map<String, dynamic> get toMap {
+    final map = <String, dynamic>{
+      'delivery_method': deliveryMethod,
+      'payment_method': paymentMethod,
+    };
+    if (deliveryMethod == 'home_delivery' && addressId != null) {
+      map['address_id'] = addressId;
+    }
+    final code = couponCode.text.trim();
+    if (code.isNotEmpty) {
+      map['coupon_code'] = code;
+    }
+    return map;
   }
-
-  Map<String, dynamic> get toMap => {
-    'name': name.text,
-    if (imageController.value != null) 'avatar': imageController.value!.path.toMultipartFile,
-    if (id != null) '_method': 'PUT',
-  };
 
   @override
-  List<Object?> get props => [id, formKey, name, imageController];
+  List<Object?> get props => [deliveryMethod, paymentMethod, addressId, couponCode];
 }

@@ -24,6 +24,7 @@ import '../../../src/categories/presentation/sub_categories/sub_categories_page.
 import '../../../src/products/presentation/products/products_page.dart';
 import '../../../src/products/presentation/products/search_products_page.dart';
 import '../../../src/notifications/presentation/notifications_page.dart';
+import '../../../src/orders/presentation/add_order/add_order_page.dart';
 import '../../../src/orders/presentation/show_order_details/show_order_details_page.dart';
 import '../../../src/products/presentation/show_product_details/show_product_details_page.dart';
 import '../../../src/wallet/presentation/_client_wallet/client_wallet_page.dart';
@@ -76,6 +77,8 @@ class AppRoutesGenerator {
       case AppRoutes.showOrderDetailsPage:
         final arguments = settings.arguments as ShowOrderDetailsPage;
         page = arguments;
+      case AppRoutes.addOrderPage:
+        page = const AddOrderPage();
 
       /// Common and static and common pages
       ///

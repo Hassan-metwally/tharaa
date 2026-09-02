@@ -59,13 +59,7 @@ class _UpsertAddressFooter extends StatelessWidget {
 }
 
 class _UpsertAddressActionButton extends StatelessWidget {
-  const _UpsertAddressActionButton({
-    required this.text,
-    required this.isEdit,
-    required this.onPressed,
-    this.buttonColor,
-    this.textStyle,
-  });
+  const _UpsertAddressActionButton({required this.text, required this.isEdit, required this.onPressed, this.buttonColor, this.textStyle});
 
   final String text;
   final bool isEdit;
@@ -79,10 +73,7 @@ class _UpsertAddressActionButton extends StatelessWidget {
       listenWhen: (previous, current) => previous.upsertAddressState != current.upsertAddressState,
       listener: (context, state) {
         if (state.upsertAddressState.isSuccess) {
-          AppToasts.success(
-            context,
-            message: isEdit ? appLocalizer.addressUpdatedSuccessfully : appLocalizer.addressAddedSuccessfully,
-          );
+          AppToasts.success(context, message: isEdit ? appLocalizer.addressUpdatedSuccessfully : appLocalizer.addressAddedSuccessfully);
           MyAddressesSubscription.pushUpdate(NoParams());
           AppRouter.pop();
         } else if (state.upsertAddressState.isFailure) {
@@ -93,7 +84,7 @@ class _UpsertAddressActionButton extends StatelessWidget {
         return AppButton(
           text: text,
           buttonColor: buttonColor,
-          loadingColor: AppColors.primary,
+          loadingColor: textStyle?.color ?? AppColors.white,
           textStyle: textStyle,
           isLoading: state.upsertAddressState.isLoading,
           onPressed: () => onPressed(context.read<UpsertAddressCubit>()),
