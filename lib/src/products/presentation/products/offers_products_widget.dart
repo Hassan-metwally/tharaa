@@ -5,6 +5,8 @@ import '../../../../core/config/router/app_routes.dart';
 import '../../../../core/core.dart';
 import '../../../../core/di/di.dart';
 import '../../../../material/app_fail_widget.dart';
+import '../../../../material/auth_states/guest_bottom_sheet.dart';
+import '../../../../material/auth_states/guest_checker_widget.dart';
 import '../../../../material/media/app_image.dart';
 import '../../../../material/media/svg_icon.dart';
 import '../../../../material/shimmer/shimmer_effect_widget.dart';
@@ -122,7 +124,11 @@ class _OffersProductsHeader extends StatelessWidget {
       child: GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: () {
-          ClientMainPageUpdater.notifyOnChangedCallbacks(ClientMainPageTabsEnum.offers);
+          GuestCheckerWidget.check(
+            context,
+            caseGuest: () => GuestBottomSheet.show(context),
+            elseCase: () => ClientMainPageUpdater.notifyOnChangedCallbacks(ClientMainPageTabsEnum.offers),
+          );
         },
         child: SizedBox(
           height: _kSectionHeaderHeight,
@@ -172,10 +178,7 @@ class _OfferProductCard extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
-        AppRouter.pushNamed(
-          AppRoutes.showProductDetailsPage,
-          arguments: ShowProductDetailsPage(id: entity.id),
-        );
+        AppRouter.pushNamed(AppRoutes.showProductDetailsPage, arguments: ShowProductDetailsPage(id: entity.id));
       },
       child: Container(
         width: _kProductCardWidth,
@@ -248,7 +251,7 @@ class _OfferProductCard extends StatelessWidget {
                   currencyTextStyle: TextStyles.semiBold20.copyWith(color: AppColors.primary, height: 1),
                 ),
                 const SizedBox(width: Dimensions.p12),
-      
+
                 if (_hasOffer) ...[
                   RiyalPriceText(
                     price: entity.price.toString(),
@@ -322,14 +325,20 @@ class _OfferAddToCartButton extends StatelessWidget {
         builder: (context, state) {
           final bool isLoading = state.upsertCartItemsState.isLoading;
           return GestureDetector(
-            onTap: isLoading
-                ? null
-                : () {
-                    context.read<UpsertCartItemCubit>().updateParams(
-                      AddToCartParams(productId: productId, quantity: 1, upsertType: UpsertTypeEnum.add),
-                    );
-                    context.read<UpsertCartItemCubit>().upsertCartItem();
-                  },
+            onTap: () {
+              GuestCheckerWidget.check(
+                context,
+                caseGuest: () => GuestBottomSheet.show(context),
+                elseCase: () {
+                  isLoading
+                      ? null
+                      : context.read<UpsertCartItemCubit>().updateParams(
+                          AddToCartParams(productId: productId, quantity: 1, upsertType: UpsertTypeEnum.add),
+                        );
+                  context.read<UpsertCartItemCubit>().upsertCartItem();
+                },
+              );
+            },
             child: Container(
               width: _kAddButtonSize,
               height: _kAddButtonSize,

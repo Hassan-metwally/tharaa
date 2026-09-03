@@ -7,6 +7,8 @@ import '../../../../core/config/router/app_routes.dart';
 import '../../../../core/core.dart';
 import '../../../../core/di/di.dart';
 import '../../../../material/app_fail_widget.dart';
+import '../../../../material/auth_states/guest_bottom_sheet.dart';
+import '../../../../material/auth_states/guest_checker_widget.dart';
 import '../../../../material/media/app_image.dart';
 import '../../../../material/media/svg_icon.dart';
 import '../../../../material/shimmer/shimmer_effect_widget.dart';
@@ -103,7 +105,11 @@ class _MainCategoriesHomeHeader extends StatelessWidget {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () {
-        Navigator.of(context).pushNamed(AppRoutes.mainCategoriesPage, arguments: const MainCategoriesPage());
+        GuestCheckerWidget.check(
+          context,
+          caseGuest: () => GuestBottomSheet.show(context),
+          elseCase: () => Navigator.of(context).pushNamed(AppRoutes.mainCategoriesPage, arguments: const MainCategoriesPage()),
+        );
       },
       child: SizedBox(
         height: _kSectionHeaderHeight,

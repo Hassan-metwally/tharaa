@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../core/config/router/app_routes.dart';
 import '../../../../../core/core.dart';
 import '../../../../../core/di/di.dart';
+import '../../../../../material/auth_states/guest_bottom_sheet.dart';
+import '../../../../../material/auth_states/guest_checker_widget.dart';
 import '../../../../../material/media/app_image.dart';
 import '../../../../../material/media/svg_icon.dart';
 import '../../../../../material/spin_kit_loading_widget.dart';
@@ -39,7 +41,7 @@ class ProductGridCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-         AppRouter.pushNamed(AppRoutes.showProductDetailsPage, arguments: ShowProductDetailsPage(id: entity.id));
+        AppRouter.pushNamed(AppRoutes.showProductDetailsPage, arguments: ShowProductDetailsPage(id: entity.id));
       },
       child: Container(
         padding: const EdgeInsets.all(Dimensions.p8),
@@ -89,8 +91,7 @@ class ProductGridCard extends StatelessWidget {
                     style: TextStyles.regular12.copyWith(color: AppColors.mutedText, height: 1),
                   ),
                 ),
-                if (_unitLabel.isNotEmpty)
-                  Text(_unitLabel, style: TextStyles.regular12.copyWith(color: AppColors.mutedText, height: 1)),
+                if (_unitLabel.isNotEmpty) Text(_unitLabel, style: TextStyles.regular12.copyWith(color: AppColors.mutedText, height: 1)),
               ],
             ),
             const Spacer(),
@@ -177,10 +178,7 @@ class _ProductCartControlState extends State<_ProductCartControl> {
               },
             );
           }
-          return _AddButton(
-            isLoading: isLoading,
-            onTap: () => _submit(context, 1, UpsertTypeEnum.add),
-          );
+          return _AddButton(isLoading: isLoading, onTap: () => _submit(context, 1, UpsertTypeEnum.add));
         },
       ),
     );
@@ -188,9 +186,7 @@ class _ProductCartControlState extends State<_ProductCartControl> {
 
   void _submit(BuildContext context, int quantity, UpsertTypeEnum type) {
     _pendingQuantity = quantity;
-    context.read<UpsertCartItemCubit>().updateParams(
-      AddToCartParams(productId: widget.productId, quantity: quantity, upsertType: type),
-    );
+    context.read<UpsertCartItemCubit>().updateParams(AddToCartParams(productId: widget.productId, quantity: quantity, upsertType: type));
     context.read<UpsertCartItemCubit>().upsertCartItem();
   }
 }
@@ -204,7 +200,9 @@ class _AddButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: isLoading ? null : onTap,
+      onTap: () {
+        isLoading ? null : GuestCheckerWidget.check(context, caseGuest: () => GuestBottomSheet.show(context), elseCase: onTap);
+      },
       child: Container(
         width: _kAddButtonSize,
         height: _kAddButtonSize,

@@ -5,6 +5,7 @@ import 'package:rxdart/rxdart.dart';
 import '../../../../../core/config/router/app_routes.dart';
 import '../../../../../core/core.dart';
 import '../../../../../core/di/di.dart';
+import '../../../../../material/auth_states/guest_checker_widget.dart';
 import '../../../../../material/media/svg_icon.dart';
 import '../../../../cart/presentation/cart_page/cart_cubit.dart';
 import '../../../../cart/presentation/utils/cart_items_count_subscription.dart';
@@ -52,7 +53,10 @@ class ProductsAppBar extends StatelessWidget {
                     style: TextStyles.semiBold20.copyWith(color: AppColors.black900, height: 1, fontWeight: FontWeight.w600),
                   ),
                 ),
-                const _ProductsCartButton(),
+                const GuestCheckerWidget(
+                  guestWidget: SizedBox(width: _kActionSize),
+                  child: _ProductsCartButton(),
+                ),
               ],
             ),
           ),

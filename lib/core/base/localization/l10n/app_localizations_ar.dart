@@ -102,10 +102,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get englishLanguage => 'اللغة الإنجليزية';
 
   @override
-  String get guestHeaderMessage => 'الرجاء تسجيل الدخول اولاً';
+  String get guestHeaderMessage => 'سجّل دخولك لإضافة المنتجات';
 
   @override
-  String get guestSubHeaderMessage => 'حتى تستمتع بباقى خدمات التطبيق';
+  String get guestSubHeaderMessage => 'سجّل الدخول إلى حسابك لتتمكن من إضافة المنتجات إلى السلة وإتمام طلبك.';
 
   @override
   String get city => 'المدينة';

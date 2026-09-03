@@ -102,10 +102,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get englishLanguage => 'English';
 
   @override
-  String get guestHeaderMessage => 'Please log in first';
+  String get guestHeaderMessage => 'Log in to add products';
 
   @override
-  String get guestSubHeaderMessage => 'to enjoy all the features of the app';
+  String get guestSubHeaderMessage => 'Log in to your account so you can add products to the cart and complete your order.';
 
   @override
   String get city => 'City';

@@ -75,24 +75,17 @@ class _NotificationsPageBodyState extends State<NotificationsPageBody> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.white,
-      body: SafeArea(
-        top: false,
-        child: Column(
-          children: [
-            const _NotificationsHeader(),
-            Expanded(
-              child: BlocBuilder<NotificationsCubit, NotificationsState>(
-                builder: (context, state) {
-                  return _NotificationsView(
-                    state: state,
-                    scrollController: _scrollController,
-                    onNotificationRead: widget.onNotificationRead,
-                  );
-                },
-              ),
-            ),
-          ],
-        ),
+      appBar: AppBar(
+        title: Text(appLocalizer.notifications),
+      ),
+      body: BlocBuilder<NotificationsCubit, NotificationsState>(
+        builder: (context, state) {
+          return _NotificationsView(
+            state: state,
+            scrollController: _scrollController,
+            onNotificationRead: widget.onNotificationRead,
+          );
+        },
       ),
     );
   }

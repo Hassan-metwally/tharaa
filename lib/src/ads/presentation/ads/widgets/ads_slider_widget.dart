@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import '../../../../../../../core/config/router/app_routes.dart';
 import '../../../../../../../core/core.dart';
 import '../../../../../../../material/app_fail_widget.dart';
+import '../../../../../../../material/auth_states/guest_bottom_sheet.dart';
+import '../../../../../../../material/auth_states/guest_checker_widget.dart';
 import '../../../../../../../material/media/app_image.dart';
 import '../../../../../../../material/shimmer/shimmer_effect_widget.dart';
 import '../../../../categories/domain/entities/category_entity.dart';
@@ -102,7 +104,7 @@ class _AdsBannerCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
-      onTap: ad.canOpen ? () => _openAd(ad) : null,
+      onTap: ad.canOpen ? () => _openAd(context, ad) : null,
       child: AppImage.rounded(
         path: ad.image.path,
         height: _kBannerHeight,
@@ -115,45 +117,51 @@ class _AdsBannerCard extends StatelessWidget {
   }
 }
 
-void _openAd(AdEntity ad) {
-  switch (ad.type) {
-    case AdType.product:
-      final int? productId = ad.linkableId;
-      if (productId == null || productId <= 0) {
-        return;
+void _openAd(BuildContext context, AdEntity ad) {
+  GuestCheckerWidget.check(
+    context,
+    caseGuest: () => GuestBottomSheet.show(context),
+    elseCase: () {
+      switch (ad.type) {
+        case AdType.product:
+          final int? productId = ad.linkableId;
+          if (productId == null || productId <= 0) {
+            return;
+          }
+          AppRouter.pushNamed(AppRoutes.showProductDetailsPage, arguments: ShowProductDetailsPage(id: productId));
+        case AdType.category:
+          final int? categoryId = ad.linkableId;
+          if (categoryId == null || categoryId <= 0) {
+            return;
+          }
+          AppRouter.pushNamed(
+            AppRoutes.productsPage,
+            arguments: ProductsPage(
+              params: GetProductsParams(mainCategory: CategoryEntity(id: categoryId, name: ad.name, image: const AttachmentEntity.empty())),
+            ),
+          );
+        case AdType.offer:
+          final int? offerProductId = ad.linkableId;
+          if (offerProductId != null && offerProductId > 0) {
+            AppRouter.pushNamed(AppRoutes.showProductDetailsPage, arguments: ShowProductDetailsPage(id: offerProductId));
+            return;
+          }
+          AppRouter.pushNamed(
+            AppRoutes.productsPage,
+            arguments: const ProductsPage(params: GetProductsParams(page: 1, offersProductsOnly: true)),
+          );
+        case AdType.external:
+          final String? url = ad.externalUrl?.trim();
+          if (url == null || url.isEmpty) {
+            return;
+          }
+          LaunchUrlUtils.openUrl(url: url);
+        case AdType.none:
+        case AdType.unknown:
+          return;
       }
-      AppRouter.pushNamed(AppRoutes.showProductDetailsPage, arguments: ShowProductDetailsPage(id: productId));
-    case AdType.category:
-      final int? categoryId = ad.linkableId;
-      if (categoryId == null || categoryId <= 0) {
-        return;
-      }
-      AppRouter.pushNamed(
-        AppRoutes.productsPage,
-        arguments: ProductsPage(
-          params: GetProductsParams(mainCategory: CategoryEntity(id: categoryId, name: ad.name, image: const AttachmentEntity.empty())),
-        ),
-      );
-    case AdType.offer:
-      final int? offerProductId = ad.linkableId;
-      if (offerProductId != null && offerProductId > 0) {
-        AppRouter.pushNamed(AppRoutes.showProductDetailsPage, arguments: ShowProductDetailsPage(id: offerProductId));
-        return;
-      }
-      AppRouter.pushNamed(
-        AppRoutes.productsPage,
-        arguments: const ProductsPage(params: GetProductsParams(page: 1, offersProductsOnly: true)),
-      );
-    case AdType.external:
-      final String? url = ad.externalUrl?.trim();
-      if (url == null || url.isEmpty) {
-        return;
-      }
-      LaunchUrlUtils.openUrl(url: url);
-    case AdType.none:
-    case AdType.unknown:
-      return;
-  }
+    },
+  );
 }
 
 class _AdsPageIndicator extends StatelessWidget {

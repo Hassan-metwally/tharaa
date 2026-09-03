@@ -5,6 +5,8 @@ import '../../../../core/config/router/app_routes.dart';
 import '../../../../core/core.dart';
 import '../../../../core/di/di.dart';
 import '../../../../material/app_fail_widget.dart';
+import '../../../../material/auth_states/guest_bottom_sheet.dart';
+import '../../../../material/auth_states/guest_checker_widget.dart';
 import '../../../../material/media/app_image.dart';
 import '../../../../material/media/svg_icon.dart';
 import '../../../../material/shimmer/shimmer_effect_widget.dart';
@@ -114,9 +116,13 @@ class _MostRequestedProductsHeader extends StatelessWidget {
       child: GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: () {
-          AppRouter.pushNamed(
-            AppRoutes.productsPage,
-            arguments: const ProductsPage(params: GetProductsParams(page: 1, sort: ProductsSortEnum.mostRequested)),
+          GuestCheckerWidget.check(
+            context,
+            caseGuest: () => GuestBottomSheet.show(context),
+            elseCase: () => AppRouter.pushNamed(
+              AppRoutes.productsPage,
+              arguments: const ProductsPage(params: GetProductsParams(page: 1, sort: ProductsSortEnum.mostRequested)),
+            ),
           );
         },
         child: SizedBox(
@@ -246,14 +252,20 @@ class _MostRequestedAddToCartButton extends StatelessWidget {
         builder: (context, state) {
           final bool isLoading = state.upsertCartItemsState.isLoading;
           return GestureDetector(
-            onTap: isLoading
-                ? null
-                : () {
-                    context.read<UpsertCartItemCubit>().updateParams(
-                      AddToCartParams(productId: productId, quantity: 1, upsertType: UpsertTypeEnum.add),
-                    );
-                    context.read<UpsertCartItemCubit>().upsertCartItem();
-                  },
+             onTap: () {
+              GuestCheckerWidget.check(
+                context,
+                caseGuest: () => GuestBottomSheet.show(context),
+                elseCase: () {
+                  isLoading
+                      ? null
+                      : context.read<UpsertCartItemCubit>().updateParams(
+                          AddToCartParams(productId: productId, quantity: 1, upsertType: UpsertTypeEnum.add),
+                        );
+                  context.read<UpsertCartItemCubit>().upsertCartItem();
+                },
+              );
+            },
             child: Container(
               width: _kAddButtonSize,
               height: _kAddButtonSize,

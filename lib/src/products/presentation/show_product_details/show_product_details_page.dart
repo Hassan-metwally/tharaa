@@ -7,6 +7,7 @@ import 'package:rxdart/rxdart.dart';
 import '../../../../core/core.dart';
 import '../../../../core/di/di.dart';
 import '../../../../material/app_fail_widget.dart';
+import '../../../../material/auth_states/guest_checker_widget.dart';
 import '../../../../material/media/app_image.dart';
 import '../../../../material/media/svg_icon.dart';
 import '../../../../material/spin_kit_loading_widget.dart';
@@ -137,7 +138,7 @@ class _ProductDetailsContent extends StatelessWidget {
             ),
           ),
         ),
-        _ProductDetailsBottomBar(productId: product.id),
+        GuestCheckerWidget(child: _ProductDetailsBottomBar(productId: product.id)),
       ],
     );
   }

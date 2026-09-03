@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 
 import '../../core/core.dart';
 import '../buttons/app_button.dart';
-import '../media/svg_icon.dart';
 import '../overlay/show_modal_bottom_sheet.dart';
 
 const String _routeName = "GuestDialog";
+const Color _kSheetScrim = Color(0x4D000000);
+const Color _kSecondaryButtonFill = Color(0xFFF7F8FA);
+const Color _kSecondaryButtonText = Color(0xFF647691);
+const double _kSheetRadius = 20;
 
 class GuestBottomSheet extends StatelessWidget {
   const GuestBottomSheet({super.key, this.isFullReview = false});
@@ -15,47 +18,92 @@ class GuestBottomSheet extends StatelessWidget {
   static Future<void> show(BuildContext context) async {
     final currentRouteName = AppRouter.getCurrentRoute;
     if (_routeName == currentRouteName) return;
-    return await showAppModalBottomSheet<void>(context: context, child: const GuestBottomSheet(isFullReview: true));
+    return await showAppModalBottomSheet<void>(
+      context: context,
+      hasTopInductor: false,
+      backgroundColor: Colors.transparent,
+      barrierColor: _kSheetScrim,
+      padding: const EdgeInsets.fromLTRB(4, 0, 4, 4),
+      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(_kSheetRadius))),
+      child: const GuestBottomSheet(isFullReview: true),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(Dimensions.p16),
+      clipBehavior: Clip.antiAlias,
+      decoration: BoxDecoration(color: AppColors.white, borderRadius: BorderRadius.circular(_kSheetRadius)),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const _GuestHeader(),
+          const SizedBox(height: Dimensions.p32),
+          _GuestActions(isFullReview: isFullReview),
+        ],
+      ),
+    );
+  }
+}
+
+class _GuestHeader extends StatelessWidget {
+  const _GuestHeader();
+
+  @override
+  Widget build(BuildContext context) {
     return Column(
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        AppSvgIcon(path: "", size: 75),
-        const SizedBox(height: 12),
-        Text(appLocalizer.guestHeaderMessage, style: TextStyles.light16),
-        Text(appLocalizer.guestSubHeaderMessage, style: TextStyles.light12.copyWith(color: AppColors.black600)),
-        const SizedBox(height: 24),
-        Row(
-          children: [
-            if (isFullReview)
-              Expanded(
-                flex: 4,
-                child: AppButton(
-                  text: appLocalizer.cancel,
-                  buttonColor: AppColors.primary50,
-                  textStyle: TextStyles.regular14.copyWith(color: AppColors.primary700),
-                  onPressed: Navigator.of(context).pop,
-                ),
-              ),
-            if (isFullReview) const SizedBox(width: Dimensions.p12),
-            Expanded(
-              flex: 5,
-              child: AppButton(
-                text: appLocalizer.login,
-                padding: const EdgeInsets.symmetric(horizontal: 32),
-                onPressed: () {
-                  Navigator.of(context).popUntil((route) => route.isFirst);
-                  AppAuthenticationBloc.of(context).add(const LoggedOutEvent());
-                },
-              ),
-            ),
-          ],
+        Text(
+          appLocalizer.guestHeaderMessage,
+          textAlign: TextAlign.center,
+          style: TextStyles.semiBold18.copyWith(color: AppColors.black900, height: 1, fontWeight: FontWeight.w600),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: Dimensions.p4),
+        Text(
+          appLocalizer.guestSubHeaderMessage,
+          textAlign: TextAlign.center,
+          style: TextStyles.regular14.copyWith(color: AppColors.mutedText, height: 1.4),
+        ),
+      ],
+    );
+  }
+}
+
+class _GuestActions extends StatelessWidget {
+  const _GuestActions({required this.isFullReview});
+
+  final bool isFullReview;
+
+  @override
+  Widget build(BuildContext context) {
+    final TextStyle buttonTextStyle = TextStyles.semiBold18.copyWith(height: 1, fontWeight: FontWeight.w600);
+
+    return Row(
+      children: [
+        Expanded(
+          child: AppButton(
+            text: appLocalizer.login,
+            buttonColor: AppColors.primary,
+            textStyle: buttonTextStyle.copyWith(color: Colors.white),
+            onPressed: () {
+              Navigator.of(context).popUntil((route) => route.isFirst);
+              AppAuthenticationBloc.of(context).add(const LoggedOutEvent());
+            },
+          ),
+        ),
+        if (isFullReview) ...[
+          const SizedBox(width: Dimensions.p12),
+          Expanded(
+            child: AppButton(
+              text: appLocalizer.goBack,
+              buttonColor: _kSecondaryButtonFill,
+              textStyle: buttonTextStyle.copyWith(color: _kSecondaryButtonText),
+              onPressed: Navigator.of(context).pop,
+            ),
+          ),
+        ],
       ],
     );
   }

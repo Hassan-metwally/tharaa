@@ -281,13 +281,13 @@ abstract class AppLocalizations {
   /// No description provided for @guestHeaderMessage.
   ///
   /// In en, this message translates to:
-  /// **'Please log in first'**
+  /// **'Log in to add products'**
   String get guestHeaderMessage;
 
   /// No description provided for @guestSubHeaderMessage.
   ///
   /// In en, this message translates to:
-  /// **'to enjoy all the features of the app'**
+  /// **'Log in to your account so you can add products to the cart and complete your order.'**
   String get guestSubHeaderMessage;
 
   /// No description provided for @city.
