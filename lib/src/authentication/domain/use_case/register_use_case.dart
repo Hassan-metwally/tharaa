@@ -3,7 +3,6 @@ import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../core/core.dart';
-import '../../../notifications/helpers/firebase/firebase_helper.dart';
 import '../repository/authentication_repository.dart';
 
 @Injectable()
@@ -34,7 +33,7 @@ class RegisterParams extends Equatable {
       "name": name,
       "country_code": countryCode,
       "phone": (phone.isNotEmpty && !phone.startsWith('0')) ? '0$phone' : phone,
-      "terms": 1,
+      "terms_accepted": 1,
     };
   }
 
